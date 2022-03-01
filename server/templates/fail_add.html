@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<body>
+<div>
+    Diese Person scheint bereits in der Datenbank zu sein:
+</div>
+
+<div>
+    <span>
+        <tr>Vorname(n): {{info["vorname"]}}</tr>
+        <tr>Nachname: {{info["nachname"]}}</tr>
+        <tr>Ende der URL: {{info["url"]}}</tr>
+    </span>
+</div>
+
+<div>
+    <button btn btn-primary onclick="location.href='index';" id="index">zurück zum Index</button>
+</div>
+</body>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "split_survey.html" %}
+{% block form %}
+<form action="/{{post_route}}">
+    <div class="form-group">
+        <label for="vorname">Vorname(n):</label>
+        <input type="text" id="vorname" name="vorname">
+    </div>
+    <div class="form-group">
+        <label for="nachname">Nachname:</label>
+        <input type="text" id="nachname" name="nachname">
+        <span class="material-icons" data-toggle="tooltip"
+              title="How to deal with married names, Geburtsname asked later">help</span>
+    </div>
+    <div>
+        <label for="url">Ende der URL:</label>
+        <input type="text" id="url" name="url">
+        <span class="material-icons" data-toggle="tooltip"
+              title="The end of the website, not including html, usually nachname_vorname">help</span>
+    </div>
+    {% block additionalquestions %}
+
+    {% endblock%}
+    <input type="submit" value="Absenden">
+</form>
+</span>
+</div>
+</body>
+{% endblock %}

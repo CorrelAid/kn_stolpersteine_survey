@@ -1,0 +1,7 @@
+CherryPy
+numpy
+pandas
+pymongo
+jinja2
+dnspython
+python-dotenv

@@ -1,0 +1,228 @@
+{% extends "add.html" %}
+{% block jslibs %}
+<script src="static/js/survey.js"></script>
+<script>
+
+</script>
+{% endblock %}
+#TODO Add all the default variables passed in from database
+{% block additionalquestions %}
+<div class="form-group">
+    <label for="geburtsname">Geburtsname:</label>
+    <input type="text" id="geburtsname" name="geburtsname">
+    <span class="material-icons" data-toggle="tooltip" title="How to deal with married names, see Nachname">help</span>
+</div>
+<div class="form-group">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="doktortitel" id="doktortitel">
+        <label for="doktortitel">Doktortitel</label>
+    </div>
+</div>
+<div class="form-group">
+    <label for="anderenamen">Andere Namen:</label>
+    <input type="text" id="anderenamen" name="anderenamen">
+    <span class="material-icons" data-toggle="tooltip" title="Would be nice to have examples here">help</span>
+</div>
+<div class="form-group">
+    <label for="adresse">Adresse des Stolpersteins:</label>
+    <input type="text" id="adresse" name="adresse">
+    <span class="material-icons" data-toggle="tooltip" title="Straße Hausnummer, aktueller Standort">help</span>
+</div>
+<div class="form-group">
+    <label>Opfergruppe:</label>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="juedisch" id="juedisch" , name="opfergruppen">
+        <label class="form-check-label" for="juedisch">
+            Juden und Jüdinnen
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="politisch" id="politisch" , name="opfergruppen">
+        <label class="form-check-label" for="politisch">
+            Politisch Verfolgte
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="euthanasie" id="euthanasie" , name="opfergruppen">
+        <label class="form-check-label" for="euthanasie">
+            "Euthanasie"
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="religioes" id="religioes" , name="opfergruppen">
+        <label class="form-check-label" for="religioes">
+            Religiös Verfolgte
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="sinti_und_roma" id="sinti_und_roma" ,
+               name="opfergruppen">
+        <label class="form-check-label" for="sinti_und_roma">
+            Sinti und Roma
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="homosexuelle" id="homosexuelle" , name="opfergruppen">
+        <label class="form-check-label" for="homosexuelle">
+            Homosexuelle
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value=deserteure"" id="deserteure" , name="opfergruppen">
+        <label class="form-check-label" for="deserteure">
+            Deserteure
+        </label>
+    </div>
+</div>
+<div class="form-group">
+    <label for="weitere_opfergruppen">zusätzliche Opferuppen:</label>
+    <input type="text" id="weitere_opfergruppen" name="weitere_opfergruppen">
+</div>
+<div class="form-group" id="familie">
+    <label>Familie</label>
+    <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
+    <div class="form-group-member">
+        <input type="text" placeholder="Nachname, Vorname" name="familienmitglied ">
+        <div class="dropdown">
+            <label>
+                Verwandtschaftsgrad:
+            </label>
+            <select class="verwandtschaftsgrad">
+                <option value="">--</option>
+            </select>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary">weitere Familienangehörige</button>
+</div>
+<div class="form-group">
+    <label>Geburtsdaten</label>
+
+    <label for="todesdatum">Geburtsdatum:</label>
+    <div class="form_date">
+        <select class="jahr" id="geburtsjahr" name="geburtsjahr">
+            <option value="">--</option>
+        </select>
+        <select class="monat" id="geburtsmonat" name="geburtsmonat">
+            <option value="">--</option>
+        </select>
+        <select class="datum" id="geburtsdatum" pname="geburtsdatum">
+            <option value="">--</option>
+        </select>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="todedatum_vermutet" id="geburtsdatum_vermutet">
+        <label for="geburtsdatum_vermutet">nur vermutet</label>
+    </div>
+
+    <label for="geburtsort">Geburtsort:
+        <input type="text" id="geburtsort" name="geburtsort">
+        <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
+    </label>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="geburtsort_vermutet" id="geburtsort_vermutet">
+        <label for="geburtsort_vermutet">nur vermutet</label>
+    </div>
+</div>
+<div class="form-group">
+    <label>Todesdaten</label>
+
+    <label for="todesdatum">Todesdatum:</label>
+    <div class="form_date">
+        <select class="jahr" id="todesjahr" name="todesjahr">
+            <option value="">--</option>
+        </select>
+        <select class="monat" id="todesmonat" name="todesmonat">
+            <option value="">--</option>
+        </select>
+        <select class="datum" id="todesdatum" pname="todesdatum">
+            <option value="">--</option>
+        </select>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="todedatum_vermutet" id="todedatum_vermutet">
+        <label for="todedatum_vermutet">nur vermutet</label>
+    </div>
+
+    <label for="todesort">Todesort:
+        <input type="text" id="todesort" name="todesort">
+        <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
+    </label>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="todesort_vermutet" id="todesort_vermutet">
+        <label for="todesort_vermutet">nur vermutet</label>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="todesort_haft" id="todesort_haft">
+        <label for="todesort_vermutet">in Haft</label>
+    </div>
+    <div class="form-group" id="stationen">
+        <label>Stationen:
+            <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
+        </label>
+        <div>
+            <input type="text" placeholder="Haftort" name="haftorte">
+            <span class="material-icons" data-toggle="tooltip"
+                  title="What abbreviations should be used? KZ, one for jails?">help</span>
+        </div>
+        <label>Anfangsdatum:</label>
+        <div class="form_date">
+            <select class="jahr" name="stationen_af_jahr">
+                <option value="">--</option>
+            </select>
+            <select class="monat" name="stationen_af_monat">
+                <option value="">--</option>
+            </select>
+            <select class="datum" pname="stationen_af_datum">
+                <option value="">--</option>
+            </select>
+        </div>
+        <label>Enddatum:</label>
+        <div class="form_date">
+            <select class="jahr" name="stationen_ed_jahr">
+                <option value="">--</option>
+            </select>
+            <select class="monat" name="stationen_ed_monat">
+                <option value="">--</option>
+            </select>
+            <select class="datum" pname="stationen_ed_monat">
+                <option value="">--</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary">weitere Stationen</button>
+    </div>
+    <div class="form-group">
+        <label>
+            Überlebt?
+        </label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ueberlebt" id="ueberlebt_ja" value="ja">
+            <label class="form-check-label" for="ueberlebt_ja">
+                Ja
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ueberlebt" id="ueberlebt_nein" value="nein">
+            <label class="form-check-label" for="ueberlebt_nein">
+                Nein
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ueberlebt" id="ueberlebt_unklar" value="unklar" }>
+            <label class="form-check-label" for="ueberlebt_unklar">
+                Unklar
+            </label>
+        </div>
+    </div>
+    {% endblock%}
+
+
+
+
+
+
+

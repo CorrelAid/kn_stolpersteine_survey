@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block jslibs %}
+<script type="text/javascript">
+    $("addVictim").click(function () {
+        alert("The paragraph was clicked.");
+        window.location.href = "/add";
+    });
+</script>
+{% endblock %}
+{% block styles %}
+<style>
+    div {
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="list-group">
+    {% for item in data %}
+    <a href="survey?url={{item['url']}}&nachname={{item['nachname']}}&vorname={{item['vorname']}}" class="list-group-item">{{item['nachname']}}, {{item['vorname']}}</a>
+    {% endfor %}
+</div>
+<div>
+    <button class="btn btn-primary" onclick="location.href='add';" id="addVictim">Opfer einfügen</button>
+</div>
+{% endblock %}
