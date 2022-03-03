@@ -1,6 +1,3 @@
-
-Current WIP: https://pacific-river-36151.herokuapp.com/index
-
 # How do I run this locally?
 
 You can run this with a local MongoDB, but since we're still developing this and that can be a bit onerous:
