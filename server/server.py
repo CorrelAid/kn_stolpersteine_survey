@@ -15,7 +15,8 @@ class AppServer:
         """
         Sets up some basic information, like template path and environment.
         """
-        self._tmpl_dir = Path(__file__).parents[0].resolve().joinpath('templates')
+        self._tmpl_dir = Path(
+            __file__).parents[0].resolve().joinpath('templates')
         print(self._tmpl_dir)
         self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
 
@@ -24,7 +25,7 @@ class AppServer:
         # client = MongoClient("localhost", 27010)
         client = MongoClient(os.environ["MONGODB_URI"])
         print(client.list_database_names())
-        self.db = client["data"]["victims"]
+        self.db = client.survey["data"]["victims"] #using collections instead of databases here now i think
 
         # # example entry to start with
         # example_entries = [{"vorname": "Emma", "nachname": "Adler", "url": "adler_emma", "data": []},
@@ -63,14 +64,15 @@ class AppServer:
         :param url:
         :return:
         """
-        identifying_info = {"vorname": vorname, "nachname": nachname, "url": url}
+        identifying_info = {"vorname": vorname,
+                            "nachname": nachname, "url": url}
         res = [entry for entry in self.db.find(identifying_info)]
 
         # if existing data, take most up-to-date copy
-        if len(res[0]["data"])>0:
-            current_data=res[0]["data"][-1]
+        if len(res[0]["data"]) > 0:
+            current_data = res[0]["data"][-1]
         else:
-            current_data={}
+            current_data = {}
 
         return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", **identifying_info,
                                                             **current_data})
@@ -116,7 +118,7 @@ class AppServer:
             return self.fail_add(kwargs)
         else:
             # add data, with empty data entry
-            self.db.insert_one({**kwargs, "data":[]})
+            self.db.insert_one({**kwargs, "data": []})
             return self.success_add(kwargs)
 
     @cherrypy.expose
@@ -125,7 +127,8 @@ class AppServer:
 
         :return:
         """
-        res = [entry for entry in self.db.find({"nachname": nachname, "vorname": vorname, "url": url})]
+        res = [entry for entry in self.db.find(
+            {"nachname": nachname, "vorname": vorname, "url": url})]
         if len(res) > 0:
             res = res[0]
             res["data"].append(kwargs)
@@ -133,6 +136,7 @@ class AppServer:
         else:
             # this should only happen if incorrect identifying info
             # might be better to handle this by getting identifying info before POST and comparing
-            self.db.insert_one({"nachname": nachname, "vorname": vorname, "url": url, "data": [kwargs]})
+            self.db.insert_one(
+                {"nachname": nachname, "vorname": vorname, "url": url, "data": [kwargs]})
         # maybe better to have a landing page for this or new profile shown
         return self.index()

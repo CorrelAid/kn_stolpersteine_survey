@@ -8,13 +8,13 @@ You can run this with a local MongoDB, but since we're still developing this and
 1. First, ask Val for a MongoDB URI (it's under my MongoDB Atlas account.)
 2. Create a .env file and save this as `MONGODB_URI` in it along with the PORT `8080`, e.g.:
 ```
-touch survey/.env
-echo "MONGODB_URI=<value you got>" > survey/.env
-echo "PORT=8080" >> survey/.env
+touch .env
+echo "MONGODB_URI=<value you got>" > .env
+echo "PORT=8080" >> .env
 ```
 > **_NOTE:_**  If you accidentally commit this .env publicly you expose the database credentials. That's why we use a .gitignore. It might not matter here, but let Val know so she can rotate the keys. It happens to the best of us. :)
 3. Download the subfolder's python (pip install -r survey/requirements.txt, maybe in a python virtual environment)
-3. Run main.py (`python survey/main.py`)
+3. Run main.py (`python main.py`)
 4. Open up [0.0.0.0:8000](0.0.0.0:8080) your web browser
 
 Import things that need to be added:
