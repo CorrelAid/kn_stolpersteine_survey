@@ -5,6 +5,7 @@ import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
 
+import pickle
 
 class AppServer:
     """
@@ -27,15 +28,6 @@ class AppServer:
         print(client.list_database_names())
         self.db = client.survey["data"]["victims"] #using collections instead of databases here now i think
 
-        # # example entry to start with
-        # example_entries = [{"vorname": "Emma", "nachname": "Adler", "url": "adler_emma", "data": []},
-        #                    {"vorname": "Margarete", "nachname": "DURST", "url": "durst_margarete",
-        #                     "data": [{"geburtsname": "Halbach",
-        #                               "opfergruppen": ["juedisch"],
-        #                               "geburtsjahr": 1905}]}]
-        #
-        # self.db.insert_many(example_entries)
-
     def _render_template(self, tmpl_name, params={}):
         """
 
@@ -54,6 +46,22 @@ class AppServer:
         """
         data = self.db.find({})
         return self._render_template('index.html', params={'title': "Index Page", "data": data})
+
+    @cherrypy.expose
+    def upload(self):
+        return self._render_template("upload.html")
+
+    @cherrypy.expose
+    def upload_file(self, starting_data):
+        out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.pickle")
+
+        with open(out_file, "wb") as f:
+            data = starting_data.file.read()
+            f.write(data)
+
+        with open(out_file, "rb") as f:
+            entries = pickle.load(f)
+        self.db.insert_many(entries)
 
     @cherrypy.expose
     def survey(self, vorname, nachname, url):
