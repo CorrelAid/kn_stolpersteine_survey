@@ -4,3 +4,5 @@ pandas
 pymongo
 jinja2
 dnspython
+python-dotenv
+Faker
