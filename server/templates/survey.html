@@ -5,11 +5,10 @@
 
 </script>
 {% endblock %}
-#TODO Add all the default variables passed in from database
 {% block additionalquestions %}
 <div class="form-group">
     <label for="geburtsname">Geburtsname:</label>
-    <input type="text" id="geburtsname" name="geburtsname">
+    <input type="text" id="geburtsname" name="geburtsname" value={% if geburtsname %}{{geburtsname}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="How to deal with married names, see Nachname">help</span>
 </div>
 <div class="form-group">
@@ -20,12 +19,12 @@
 </div>
 <div class="form-group">
     <label for="anderenamen">Andere Namen:</label>
-    <input type="text" id="anderenamen" name="anderenamen">
+    <input type="text" id="anderenamen" name="anderenamen" value={% if anderenamen %}{{anderenamen}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="Would be nice to have examples here">help</span>
 </div>
 <div class="form-group">
     <label for="adresse">Adresse des Stolpersteins:</label>
-    <input type="text" id="adresse" name="adresse">
+    <input type="text" id="adresse" name="adresse" value={% if adresse %}{{adresse}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="Straße Hausnummer, aktueller Standort">help</span>
 </div>
 <div class="form-group">
@@ -76,13 +75,13 @@
 </div>
 <div class="form-group">
     <label for="weitere_opfergruppen">zusätzliche Opferuppen:</label>
-    <input type="text" id="weitere_opfergruppen" name="weitere_opfergruppen">
+    <input type="text" id="weitere_opfergruppen" name="weitere_opfergruppen" value={% if weitere_opfergruppen %}{{weitere_opfergruppen}}{% endif %}>
 </div>
 <div class="form-group" id="familie">
     <label>Familie</label>
     <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
     <div class="form-group-member">
-        <input type="text" placeholder="Nachname, Vorname" name="familienmitglied ">
+        <input type="text" placeholder="Nachname, Vorname" name="familienmitglied" value={% if familienmitglied %}{{familienmitglied}}{% endif %}>
         <div class="dropdown">
             <label>
                 Verwandtschaftsgrad:
@@ -116,7 +115,7 @@
     </div>
 
     <label for="geburtsort">Geburtsort:
-        <input type="text" id="geburtsort" name="geburtsort">
+        <input type="text" id="geburtsort" name="geburtsort" value={% if geburtsort %}{{geburtsort}}{% endif %}>
         <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
     </label>
 
@@ -147,7 +146,7 @@
     </div>
 
     <label for="todesort">Todesort:
-        <input type="text" id="todesort" name="todesort">
+        <input type="text" id="todesort" name="todesort" value={% if todesort %}{{todesort}}{% endif %}>
         <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
     </label>
 
@@ -165,7 +164,7 @@
             <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
         </label>
         <div>
-            <input type="text" placeholder="Haftort" name="haftorte">
+            <input type="text" placeholder="Haftort" name="haftorte" value={% if haftorte %}{{haftorte}}{% endif %}>
             <span class="material-icons" data-toggle="tooltip"
                   title="What abbreviations should be used? KZ, one for jails?">help</span>
         </div>
