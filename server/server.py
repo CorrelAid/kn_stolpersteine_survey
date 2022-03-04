@@ -26,7 +26,7 @@ class AppServer:
         # client = MongoClient("localhost", 27010)
         client = MongoClient(os.environ["MONGODB_URI"])
         print(client.list_database_names())
-        self.db = client.survey["data"]["victims"] #using collections instead of databases here now i think
+        self.db = client.survey-test["data"]["victims"] #using collections instead of databases here now i think
 
     def _render_template(self, tmpl_name, params={}):
         """
