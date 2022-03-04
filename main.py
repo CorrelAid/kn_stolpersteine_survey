@@ -1,10 +1,8 @@
 from pathlib import Path
-
 import os
 import cherrypy
 from server import AppServer
 from dotenv import load_dotenv
-from pathlib import Path
 
 if __name__ == '__main__':
     if "PORT" not in os.environ:
