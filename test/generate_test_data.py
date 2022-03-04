@@ -28,11 +28,12 @@ if __name__ == "__main__":
         full_data.append({
             "vorname":first,
             "nachname":last,
-            "data": {
+            "url": f"{last}_{first}",
+            "data": [{
                 "adresse": address,
                 "geburtsname" : maiden,
                 "geburtsort":birthplace
-            }
+            }]
         })
 
     with open(Path(__file__).parents[0].joinpath("data.pickle"), "wb") as f:
