@@ -45,9 +45,8 @@ $(document).ready(function () {
 
     $("#add_familie").click(function() {
         $("#familie").append(`
-            <div>
-            <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
             <div class="form-group-member">
+            <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>        
                 <input type="text" placeholder="Nachname, Vorname" name="familienmitglied">
                 <div class="dropdown">
                     <label>
