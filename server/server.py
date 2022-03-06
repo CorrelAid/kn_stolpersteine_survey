@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from bson.objectid import ObjectId
 import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
@@ -89,15 +90,16 @@ class AppServer:
         :return:
         """
         query = {"vorname": vorname, "nachname": nachname, "url": url}
-        res = [entry for entry in self.db.find(query)]
+        existing_records = [entry for entry in self.db.find(query)]
 
         # if existing data, take most up-to-date copy
-        if len(res[0]["data"]) > 0:
-            current_data = res[0]["data"][-1]
+        if len(existing_records[0]["data"]) > 0:
+            current_data = existing_records[0]["data"][-1]
+            id = existing_records[0]['_id']
         else:
             current_data = {}
 
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", **query,
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id, **query,
                                                             **current_data})
 
     @cherrypy.expose
@@ -145,22 +147,22 @@ class AppServer:
             return self.success_add(kwargs)
 
     @cherrypy.expose
-    def POST(self, vorname, nachname, url, **kwargs):
+    def POST(self, vorname, nachname, url, id, **kwargs):
         """
 
         :return:
         """
         query = {"nachname": nachname, "vorname": vorname, "url": url}
-        res = [entry for entry in self.db.find(
-            query)]
-        if len(res) > 0:
-            res = res[0]
-            res["data"].append(kwargs)
-            self.db.update_one(query, {"$set": {**query, "data": [kwargs]}})
-        else:
-            # this should only happen if incorrect identifying info
-            # might be better to handle this by getting identifying info before POST and comparing
-            self.db.insert_one(
-                {**query, "data": [kwargs]})
+        existing_records = [entry for entry in self.db.find(
+            {"_id": ObjectId(id)})]
+
+        # only should be one entry
+        assert(len(existing_records) == 1)
+
+        record = existing_records[0]
+        record["data"].append(kwargs)
+
+        self.db.update_one({"_id": ObjectId(id)}, {"$set": {**query, "data": record["data"]}})
+
         # maybe better to have a landing page for this or new profile shown
         return self.index()

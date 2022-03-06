@@ -5,7 +5,13 @@
 
 </script>
 {% endblock %}
+
 {% block additionalquestions %}
+
+<div class="form-group" style="display: none;">
+    <label for="id">Database ID:</label>
+    <input type="text" id="id" name="id" value={% if id %}{{id}}{% endif %}>
+</div>
 <div class="form-group">
     <label for="geburtsname">Geburtsname:</label>
     <input type="text" id="geburtsname" name="geburtsname" value={% if geburtsname %}{{geburtsname}}{% endif %}>
