@@ -19,7 +19,7 @@
 </div>
 <div class="form-group">
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="doktortitel" id="doktortitel">
+        <input class="form-check-input" type="checkbox" value="true" id="doktortitel" name="doktortitel" {% if doktortitel is sameas true %}checked{% endif %}>
         <label for="doktortitel">Doktortitel</label>
     </div>
 </div>
@@ -116,7 +116,7 @@
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="todedatum_vermutet" id="geburtsdatum_vermutet">
+        <input class="form-check-input" type="checkbox" value="true" id="geburtsdatum_vermutet" {% if geburtsdatum_vermutet is sameas true %}checked{% endif %}>
         <label for="geburtsdatum_vermutet">nur vermutet</label>
     </div>
 
@@ -126,7 +126,7 @@
     </label>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="geburtsort_vermutet" id="geburtsort_vermutet">
+        <input class="form-check-input" type="checkbox" value="true" id="geburtsort_vermutet" {% if geburtsort_vermutet is sameas true %}checked{% endif %}>
         <label for="geburtsort_vermutet">nur vermutet</label>
     </div>
 </div>
@@ -147,7 +147,7 @@
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="todedatum_vermutet" id="todedatum_vermutet">
+        <input class="form-check-input" type="checkbox" value="true" id="todedatum_vermutet" {% if todedatum_vermutet is sameas true %}checked{% endif %}>
         <label for="todedatum_vermutet">nur vermutet</label>
     </div>
 
@@ -157,13 +157,13 @@
     </label>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="todesort_vermutet" id="todesort_vermutet">
+        <input class="form-check-input" type="checkbox" value="true" id="todesort_vermutet" {% if todesort_vermutet is sameas true %}checked{% endif %}>
         <label for="todesort_vermutet">nur vermutet</label>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="todesort_haft" id="todesort_haft">
-        <label for="tod_in_haft">in Haft</label>
+        <input class="form-check-input" type="checkbox" value="true" id="todesort_haft" {% if todesort_haft is sameas true %}checked{% endif %}>
+        <label for="todesort_haft">in Haft</label>
     </div>
     <div class="form-group" id="stationen">
         <label>Stationen:
