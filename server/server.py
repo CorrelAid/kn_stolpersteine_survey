@@ -5,6 +5,8 @@ import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
 
+from cherrypy.lib.static import serve_file
+
 import pickle
 
 
@@ -65,6 +67,17 @@ class AppServer:
         with open(out_file, "rb") as f:
             entries = pickle.load(f)
         self.db.insert_many(entries)
+
+    @cherrypy.expose
+    def download(self):
+        all_data = [entry for entry in self.db.find({})]
+        print(all_data)
+        save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
+
+        with open(save_file, "wb") as f:
+            pickle.dump(all_data, f)
+
+        return serve_file(save_file, "application/x-download", "attachment")
 
     @cherrypy.expose
     def survey(self, vorname, nachname, url):
