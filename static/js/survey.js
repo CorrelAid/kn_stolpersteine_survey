@@ -44,7 +44,8 @@ $(document).ready(function () {
     }
 
     $("#add_familie").click(function() {
-        $("#familie").append(`<label>Familie</label>
+        $("#familie").append(`
+            <div>
             <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
             <div class="form-group-member">
                 <input type="text" placeholder="Nachname, Vorname" name="familienmitglied">
@@ -55,6 +56,8 @@ $(document).ready(function () {
                     <select class="verwandtschaftsgrad">
                         <option value="">--</option>
                     </select>
+                 </div>
+                <a href="#" class="delete">Delete</a>
                 </div>`)
         let selectFamilyMember = $(".verwandtschaftsgrad:last");
         for (var i = 0; i < family_members.length; i++) {
@@ -64,5 +67,10 @@ $(document).ready(function () {
             familyMemberElem.textContent = family_members[i];
             selectFamilyMember.append(familyMemberElem);
         }
+    })
+
+    $("#familie").on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
     })
 });
