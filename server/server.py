@@ -92,10 +92,15 @@ class AppServer:
         query = {"vorname": vorname, "nachname": nachname, "url": url}
         existing_records = [entry for entry in self.db.find(query)]
 
+        # only should be one entry
+        assert(len(existing_records) == 1)
+
+        record = existing_records[0]
+        id = record['_id']
+
         # if existing data, take most up-to-date copy
-        if len(existing_records[0]["data"]) > 0:
-            current_data = existing_records[0]["data"][-1]
-            id = existing_records[0]['_id']
+        if len(record["data"]) > 0:
+            current_data = record["data"][-1]
         else:
             current_data = {}
 
