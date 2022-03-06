@@ -36,44 +36,44 @@
 <div class="form-group">
     <label>Opfergruppe:</label>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="juedisch" id="juedisch" , name="opfergruppen">
+        <input class="form-check-input" type="checkbox" value="juedisch" id="juedisch" , name="opfergruppen"  {% if 'juedisch' in opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="juedisch">
             Juden und Jüdinnen
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="politisch" id="politisch" , name="opfergruppen">
+        <input class="form-check-input" type="checkbox" value="politisch" id="politisch" , name="opfergruppen" {% if 'politisch' in opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="politisch">
             Politisch Verfolgte
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="euthanasie" id="euthanasie" , name="opfergruppen">
+        <input class="form-check-input" type="checkbox" value="euthanasie" id="euthanasie" , name="opfergruppen" {% if 'euthanasie' in opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="euthanasie">
             "Euthanasie"
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="religioes" id="religioes" , name="opfergruppen">
-        <label class="form-check-label" for="religioes">
+        <input class="form-check-input" type="checkbox" value="religioes" id="religioes" , name="opfergruppen" for="religioes" {% if 'religioes' in opfergruppen %}checked{% endif %}>
+        <label class="form-check-label">
             Religiös Verfolgte
         </label>
     </div>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="sinti_und_roma" id="sinti_und_roma" ,
-               name="opfergruppen">
+               name="opfergruppen" {% if 'sinti_und_roma' in opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="sinti_und_roma">
             Sinti und Roma
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="homosexuelle" id="homosexuelle" , name="opfergruppen">
+        <input class="form-check-input" type="checkbox" value="homosexuelle" id="homosexuelle" , name="opfergruppen" {% if 'homosexuelle' in opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="homosexuelle">
             Homosexuelle
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value=deserteure"" id="deserteure" , name="opfergruppen">
+        <input class="form-check-input" type="checkbox" value="deserteure" id="deserteure" , name="opfergruppen" {% if 'deserteure' in opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="deserteure">
             Deserteure
         </label>
