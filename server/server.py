@@ -47,8 +47,8 @@ class AppServer:
 
         :return:
         """
-        data = self.db.find({})
-        return self._render_template('index.html', params={'title': "Index Page", "data": data})
+        all_data = self.db.find({})
+        return self._render_template('index.html', params={'title': "Index Page", "data": all_data})
 
     @cherrypy.expose
     def upload(self):
@@ -75,9 +75,8 @@ class AppServer:
         :param url:
         :return:
         """
-        identifying_info = {"vorname": vorname,
-                            "nachname": nachname, "url": url}
-        res = [entry for entry in self.db.find(identifying_info)]
+        query = {"vorname": vorname, "nachname": nachname, "url": url}
+        res = [entry for entry in self.db.find(query)]
 
         # if existing data, take most up-to-date copy
         if len(res[0]["data"]) > 0:
@@ -85,7 +84,7 @@ class AppServer:
         else:
             current_data = {}
 
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", **identifying_info,
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", **query,
                                                             **current_data})
 
     @cherrypy.expose
