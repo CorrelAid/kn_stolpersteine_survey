@@ -135,16 +135,17 @@ class AppServer:
 
         :return:
         """
+        query = {"nachname": nachname, "vorname": vorname, "url": url}
         res = [entry for entry in self.db.find(
-            {"nachname": nachname, "vorname": vorname, "url": url})]
+            query)]
         if len(res) > 0:
             res = res[0]
             res["data"].append(kwargs)
-            self.db.update(res)
+            self.db.update_one(query, {"$set": {**query, "data": [kwargs]}})
         else:
             # this should only happen if incorrect identifying info
             # might be better to handle this by getting identifying info before POST and comparing
             self.db.insert_one(
-                {"nachname": nachname, "vorname": vorname, "url": url, "data": [kwargs]})
+                {**query, "data": [kwargs]})
         # maybe better to have a landing page for this or new profile shown
         return self.index()
