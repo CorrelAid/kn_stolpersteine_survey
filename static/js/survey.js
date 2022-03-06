@@ -43,4 +43,26 @@ $(document).ready(function () {
         selectYear.append(yearElement);
     }
 
+    $("#add_familie").click(function() {
+        $("#familie").append(`<label>Familie</label>
+            <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
+            <div class="form-group-member">
+                <input type="text" placeholder="Nachname, Vorname" name="familienmitglied">
+                <div class="dropdown">
+                    <label>
+                        Verwandtschaftsgrad:
+                    </label>
+                    <select class="verwandtschaftsgrad">
+                        <option value="">--</option>
+                    </select>
+                </div>`)
+        let selectFamilyMember = $(".verwandtschaftsgrad:last");
+        for (var i = 0; i < family_members.length; i++) {
+            let familyMemberElem = document.createElement("option");
+
+            familyMemberElem.value = family_members[i];
+            familyMemberElem.textContent = family_members[i];
+            selectFamilyMember.append(familyMemberElem);
+        }
+    })
 });
