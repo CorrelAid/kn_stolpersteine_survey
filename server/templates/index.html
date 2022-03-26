@@ -17,7 +17,7 @@
 {% block content %}
 <div class="list-group">
     {% for item in data %}
-    <a href="survey?url={{item['url']}}&nachname={{item['nachname']}}&vorname={{item['vorname']}}" class="list-group-item">{{item['nachname']}}, {{item['vorname']}}</a>
+    <a href="survey?url={{item['URL']}}&nachname={{item['Nachname']}}&vorname={{item['Vorname']}}" class="list-group-item">{{item['Nachname']}}, {{item['Vorname']}}</a>
     {% endfor %}
 </div>
 <div>
