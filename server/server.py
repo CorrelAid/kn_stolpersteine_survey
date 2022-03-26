@@ -57,6 +57,8 @@ class AppServer:
     def upload(self):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
             return self._render_template("upload.html")
+        else:
+            return self._render_template("index.html")
 
     @cherrypy.expose
     def upload_file(self, starting_data):
