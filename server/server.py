@@ -55,30 +55,33 @@ class AppServer:
 
     @cherrypy.expose
     def upload(self):
-        return self._render_template("upload.html")
+        if "LOCAL" in os.environ and os.environ["LOCAL"]:
+            return self._render_template("upload.html")
 
     @cherrypy.expose
     def upload_file(self, starting_data):
-        out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.pickle")
+        if "LOCAL" in os.environ and os.environ["LOCAL"]:
+            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.pickle")
 
-        with open(out_file, "wb") as f:
-            data = starting_data.file.read()
-            f.write(data)
+            with open(out_file, "wb") as f:
+                data = starting_data.file.read()
+                f.write(data)
 
-        with open(out_file, "rb") as f:
-            entries = pickle.load(f)
-        self.db.insert_many(entries)
+            with open(out_file, "rb") as f:
+                entries = pickle.load(f)
+            self.db.insert_many(entries)
 
     @cherrypy.expose
     def download(self):
-        all_data = [entry for entry in self.db.find({})]
-        print(all_data)
-        save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
+        if "LOCAL" in os.environ and os.environ["LOCAL"]:
+            all_data = [entry for entry in self.db.find({})]
+            print(all_data)
+            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
 
-        with open(save_file, "wb") as f:
-            pickle.dump(all_data, f)
+            with open(save_file, "wb") as f:
+                pickle.dump(all_data, f)
 
-        return serve_file(save_file, "application/x-download", "attachment")
+            return serve_file(save_file, "application/x-download", "attachment")
 
     @cherrypy.expose
     def survey(self, vorname, nachname, url):

@@ -14,6 +14,7 @@ You can run this locally, setting up the database the first time is the hardest 
     touch .env
     echo "MONGODB_URI=localhost:27017" > .env
     echo "PORT=8080" >> .env
+    echo "LOCAL=True" >> .env
     ```
 4. Install the python requirements (best to do in a virtual environment):
     ```
