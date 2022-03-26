@@ -13,135 +13,135 @@
     <input type="text" id="id" name="id" value={% if id %}{{id}}{% endif %}>
 </div>
 <div class="form-group">
-    <label for="geburtsname">Geburtsname:</label>
-    <input type="text" id="geburtsname" name="geburtsname" value={% if geburtsname %}{{geburtsname}}{% endif %}>
+    <label for="Geburtsname">Geburtsname:</label>
+    <input type="text" id="Geburtsname" name="Geburtsname" value={% if Geburtsname %}{{Geburtsname}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="How to deal with married names, see Nachname">help</span>
 </div>
 <div class="form-group">
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="doktortitel" name="doktortitel" {% if doktortitel is sameas true %}checked{% endif %}>
-        <label for="doktortitel">Doktortitel</label>
+        <input class="form-check-input" type="checkbox" value="true" id="Doktortitel" name="Doktortitel" {% if Doktortitel is sameas true %}checked{% endif %}>
+        <label for="Doktortitel">Doktortitel</label>
     </div>
 </div>
 <div class="form-group">
-    <label for="anderenamen">Andere Namen:</label>
-    <input type="text" id="anderenamen" name="anderenamen" value={% if anderenamen %}{{anderenamen}}{% endif %}>
+    <label for="Anderenamen">Andere Namen:</label>
+    <input type="text" id="Anderenamen" name="Anderenamen" value={% if Anderenamen %}{{Anderenamen}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="Would be nice to have examples here">help</span>
 </div>
 <div class="form-group">
-    <label for="adresse">Adresse des Stolpersteins:</label>
-    <input type="text" id="adresse" name="adresse" value={% if adresse %}{{adresse}}{% endif %}>
+    <label for="Adresse">Adresse des Stolpersteins:</label>
+    <input type="text" id="Adresse" name="Adresse" value={% if Adresse %}{{Adresse}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="Straße Hausnummer, aktueller Standort">help</span>
 </div>
 <div class="form-group">
     <label>Opfergruppe:</label>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="juedisch" id="juedisch" , name="opfergruppen"  {% if 'juedisch' in opfergruppen %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="juedisch" id="juedisch" , name="Opfergruppen"  {% if 'juedisch' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="juedisch">
             Juden und Jüdinnen
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="politisch" id="politisch" , name="opfergruppen" {% if 'politisch' in opfergruppen %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="politisch" id="politisch" , name="Opfergruppen" {% if 'politisch' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="politisch">
             Politisch Verfolgte
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="euthanasie" id="euthanasie" , name="opfergruppen" {% if 'euthanasie' in opfergruppen %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="euthanasie" id="euthanasie" , name="Opfergruppen" {% if 'euthanasie' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="euthanasie">
             "Euthanasie"
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="religioes" id="religioes" , name="opfergruppen" for="religioes" {% if 'religioes' in opfergruppen %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="religioes" id="religioes" , name="Opfergruppen" for="religioes" {% if 'religioes' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label">
             Religiös Verfolgte
         </label>
     </div>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="sinti_und_roma" id="sinti_und_roma" ,
-               name="opfergruppen" {% if 'sinti_und_roma' in opfergruppen %}checked{% endif %}>
+               name="Opfergruppen" {% if 'sinti_und_roma' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="sinti_und_roma">
             Sinti und Roma
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="homosexuelle" id="homosexuelle" , name="opfergruppen" {% if 'homosexuelle' in opfergruppen %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="homosexuelle" id="homosexuelle" , name="Opfergruppen" {% if 'homosexuelle' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="homosexuelle">
             Homosexuelle
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="deserteure" id="deserteure" , name="opfergruppen" {% if 'deserteure' in opfergruppen %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="deserteure" id="deserteure" , name="Opfergruppen" {% if 'deserteure' in Opfergruppen %}checked{% endif %}>
         <label class="form-check-label" for="deserteure">
             Deserteure
         </label>
     </div>
 </div>
 <div class="form-group">
-    <label for="weitere_opfergruppen">zusätzliche Opferuppen:</label>
-    <input type="text" id="weitere_opfergruppen" name="weitere_opfergruppen" value={% if weitere_opfergruppen %}{{weitere_opfergruppen}}{% endif %}>
+    <label for="weitere_Opfergruppen">zusätzliche Opferuppen:</label>
+    <input type="text" id="weitere_Opfergruppen" name="weitere_Opfergruppen" value={% if weitere_Opfergruppen %}{{weitere_Opfergruppen}}{% endif %}>
 </div>
-<div class="form-group" id="familie">
+<div class="form-group" id="Familie">
     <label>Familie</label>
     <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
     <div class="form-group-member">
-        <input type="text" placeholder="Nachname, Vorname" name="familienmitglied" value={% if familienmitglied %}{{familienmitglied}}{% endif %}>
+        <input type="text" placeholder="Nachname, Vorname" name="Familienmitglied" value={% if Familienmitglied %}{{Familienmitglied}}{% endif %}>
         <div class="dropdown">
             <label>
-                Verwandtschaftsgrad:
+                Verwandschaftsbeziehung:
             </label>
-            <select class="verwandtschaftsgrad">
+            <select class="Verwandschaftsbeziehung">
                 <option value="">--</option>
             </select>
         </div>
     </div>
 </div>
-<button type="button" id="add_familie" class="btn btn-primary">weitere Familienangehörige</button>
+<button type="button" id="add_Familie" class="btn btn-primary">weitere Familienangehörige</button>
 <div class="form-group">
     <label>Geburtsdaten</label>
 
-    <label for="todesdatum">Geburtsdatum:</label>
+    <label for="Todesdatum">Geburtsdatum:</label>
     <div class="form_date">
-        <select class="jahr" id="geburtsjahr" name="geburtsjahr">
+        <select class="jahr" id="Geburtsjahr" name="Geburtsjahr">
             <option value="">--</option>
         </select>
-        <select class="monat" id="geburtsmonat" name="geburtsmonat">
+        <select class="monat" id="Geburtsmonat" name="Geburtsmonat">
             <option value="">--</option>
         </select>
-        <select class="datum" id="geburtsdatum" pname="geburtsdatum">
+        <select class="datum" id="Geburtsdatum" pname="Geburtsdatum">
             <option value="">--</option>
         </select>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="geburtsdatum_vermutet" {% if geburtsdatum_vermutet is sameas true %}checked{% endif %}>
-        <label for="geburtsdatum_vermutet">nur vermutet</label>
+        <input class="form-check-input" type="checkbox" value="true" id="Geburtsdatum_vermutet" {% if Geburtsdatum_vermutet is sameas true %}checked{% endif %}>
+        <label for="Geburtsdatum_vermutet">nur vermutet</label>
     </div>
 
-    <label for="geburtsort">Geburtsort:
-        <input type="text" id="geburtsort" name="geburtsort" value={% if geburtsort %}{{geburtsort}}{% endif %}>
+    <label for="Geburtsort">Geburtsort:
+        <input type="text" id="Geburtsort" name="Geburtsort" value={% if Geburtsort %}{{Geburtsort}}{% endif %}>
         <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
     </label>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="geburtsort_vermutet" {% if geburtsort_vermutet is sameas true %}checked{% endif %}>
-        <label for="geburtsort_vermutet">nur vermutet</label>
+        <input class="form-check-input" type="checkbox" value="true" id="Geburtsort_vermutet" {% if Geburtsort_vermutet is sameas true %}checked{% endif %}>
+        <label for="Geburtsort_vermutet">nur vermutet</label>
     </div>
 </div>
 <div class="form-group">
     <label>Todesdaten</label>
 
-    <label for="todesdatum">Todesdatum:</label>
+    <label for="Todesdatum">Todesdatum:</label>
     <div class="form_date">
-        <select class="jahr" id="todesjahr" name="todesjahr">
+        <select class="jahr" id="Todesjahr" name="Todesjahr">
             <option value="">--</option>
         </select>
-        <select class="monat" id="todesmonat" name="todesmonat">
+        <select class="monat" id="Todesmonat" name="Todesmonat">
             <option value="">--</option>
         </select>
-        <select class="datum" id="todesdatum" pname="todesdatum">
+        <select class="datum" id="Todesdatum" pname="Todesdatum">
             <option value="">--</option>
         </select>
     </div>
@@ -151,50 +151,50 @@
         <label for="todedatum_vermutet">nur vermutet</label>
     </div>
 
-    <label for="todesort">Todesort:
-        <input type="text" id="todesort" name="todesort" value={% if todesort %}{{todesort}}{% endif %}>
+    <label for="Todesort">Todesort:
+        <input type="text" id="Todesort" name="Todesort" value={% if Todesort %}{{Todesort}}{% endif %}>
         <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
     </label>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="todesort_vermutet" {% if todesort_vermutet is sameas true %}checked{% endif %}>
-        <label for="todesort_vermutet">nur vermutet</label>
+        <input class="form-check-input" type="checkbox" value="true" id="Todesort_vermutet" {% if Todesort_vermutet is sameas true %}checked{% endif %}>
+        <label for="Todesort_vermutet">nur vermutet</label>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="todesort_haft" {% if todesort_haft is sameas true %}checked{% endif %}>
-        <label for="todesort_haft">in Haft</label>
+        <input class="form-check-input" type="checkbox" value="true" id="Todesort_haft" {% if Todesort_haft is sameas true %}checked{% endif %}>
+        <label for="Todesort_haft">in Haft</label>
     </div>
-    <div class="form-group" id="stationen">
+    <div class="form-group" id="Stationen">
         <label>Stationen:
             <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
         </label>
         <div>
-            <input type="text" placeholder="Haftort" name="haftorte" value={% if haftorte %}{{haftorte}}{% endif %}>
+            <input type="text" placeholder="Ort" name="Ort" value={% if Ort %}{{Ort}}{% endif %}>
             <span class="material-icons" data-toggle="tooltip"
                   title="What abbreviations should be used? KZ, one for jails?">help</span>
         </div>
         <label>Anfangsdatum:</label>
         <div class="form_date">
-            <select class="jahr" name="stationen_af_jahr">
+            <select class="jahr" name="Stationen_af_jahr">
                 <option value="">--</option>
             </select>
-            <select class="monat" name="stationen_af_monat">
+            <select class="monat" name="Stationen_af_monat">
                 <option value="">--</option>
             </select>
-            <select class="datum" pname="stationen_af_datum">
+            <select class="datum" pname="Stationen_af_datum">
                 <option value="">--</option>
             </select>
         </div>
         <label>Enddatum:</label>
         <div class="form_date">
-            <select class="jahr" name="stationen_ed_jahr">
+            <select class="jahr" name="Stationen_ed_jahr">
                 <option value="">--</option>
             </select>
-            <select class="monat" name="stationen_ed_monat">
+            <select class="monat" name="Stationen_ed_monat">
                 <option value="">--</option>
             </select>
-            <select class="datum" pname="stationen_ed_datum">
+            <select class="datum" pname="Stationen_ed_datum">
                 <option value="">--</option>
             </select>
         </div>
@@ -205,20 +205,20 @@
             Überlebt?
         </label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="ueberlebt" id="ueberlebt_ja" value="ja">
-            <label class="form-check-label" for="ueberlebt_ja">
+            <input class="form-check-input" type="radio" name="Ueberlebt" id="Ueberlebt_ja" value="ja">
+            <label class="form-check-label" for="Ueberlebt_ja">
                 Ja
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="ueberlebt" id="ueberlebt_nein" value="nein">
-            <label class="form-check-label" for="ueberlebt_nein">
+            <input class="form-check-input" type="radio" name="Ueberlebt" id="Ueberlebt_nein" value="nein">
+            <label class="form-check-label" for="Ueberlebt_nein">
                 Nein
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="ueberlebt" id="ueberlebt_unklar" value="unklar" }>
-            <label class="form-check-label" for="ueberlebt_unklar">
+            <input class="form-check-input" type="radio" name="Ueberlebt" id="Ueberlebt_unklar" value="unklar" }>
+            <label class="form-check-label" for="Ueberlebt_unklar">
                 Unklar
             </label>
         </div>

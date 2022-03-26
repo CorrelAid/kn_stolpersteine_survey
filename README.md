@@ -20,7 +20,7 @@ You can run this locally, setting up the database the first time is the hardest 
     pip install -r requirements.txt
     ```
 5. Run main.py (`python main.py` on the command line)
-6. Open up [0.0.0.0:8000](0.0.0.0:8080) your web browser
+6. Open up [0.0.0.0:8000](0.0.0.0:8080) in your web browser
 
 # How is the data saved?
 
@@ -29,52 +29,50 @@ The rest of the data is saved in the 'data' field.
 
 Example (null, True/False might be slightly inaccurate, will have to check):
 
-   - vorname: Jane
-   - nachname: Doe
-   - url: doe_family.html
-   - data:
-       * geburtsname: Brown
-       * doktortitel: false
-       * anderenamen: null
-       * adresse: Example Street 2
-       * opfergruppen: ["juedisch", "politisch"]
-       * geburtsjahr: 1910
-       * familie
+   - Vorname: Jane
+   - Nachname: Doe
+   - URL: doe_family.html
+   - Data:
+       * Geburtsname: Brown
+       * Doktortitel: false
+       * Anderenamen: null
+       * Adresse: Example Street 2
+       * Opfergruppen: ["juedisch", "politisch"] 
+       * Familie
            * 0
-              * familienmitglied: Doe, John
-               * verwandtschaftsgrad: Mann
-       * geburtsjahr: 1910
-       * geburtsmonate: 8
-       * geburtsdatum: null
-       * geburtsdatum_vermutet: false
-       * geburtsort: Ulm
-       * geburtsort_vermutet: false
-       * todesjahr: 1942
-       * todesmonat: 2
-       * todesdatum: null
-       * todedatum_vermutet: true
-       * todesort: KZ Example 2
-       * todesort_vermutet: false
-       * tod_in_haft: true
-       * stationen
+              * Familienmitglied: Doe, John
+              * Verwandschaftsbeziehung: Mann
+       * Geburtsjahr: 1910
+       * Geburtsmonat: 8
+       * Geburtsdatum: null
+       * Geburtsdatum_vermutet: false
+       * Geburtsort: Ulm
+       * Geburtsort_vermutet: false
+       * Todesjahr: 1942
+       * Todesmonat: 2
+       * Todesdatum: null
+       * Todedatum_vermutet: true
+       * Todesort: KZ Example 2
+       * Todesort_vermutet: false
+       * Tod_in_haft: true
+       * Stationen
             * 0
-                * haftorte: KZ Example 1
-                * stationen_af_jahr: 
-                * stationen_af_monat: 
-                * stationen_af_datum: 
-                * stationen_ed_jahr: 1941
-                * stationen_ed_monat: 
-                * stationen_ed_datum: 
+                * Ort: KZ Example 1
+                * Stationen_af_jahr: 
+                * Stationen_af_monat: 
+                * Stationen_af_datum: 
+                * Stationen_ed_jahr: 1941
+                * Stationen_ed_monat: 
+                * Stationen_ed_datum: 
             * 1
-                * haftorte: KZ Example 2
-                * haftorte: KZ Example 1
-                * stationen_af_jahr: 1941
-                * stationen_af_monat: 
-                * stationen_af_datum: 
-                * stationen_ed_jahr: 
-                * stationen_ed_monat: 
-                * stationen_ed_datum: 
-       * ueberlebt: nein
+                * Ort: KZ Example 2
+                * Stationen_af_jahr: 1941
+                * Stationen_af_monat: 
+                * Stationen_af_datum: 
+                * Stationen_ed_jahr: 
+                * Stationen_ed_monat: 
+                * Stationen_ed_datum: 
+       * Ueberlebt: nein
        
        
    
