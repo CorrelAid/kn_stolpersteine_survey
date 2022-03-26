@@ -35,7 +35,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - URL: doe_family.html
    - data:
        * 0 [an entry for each coding, first entry should be from scraping]
-           * Gender: Frau
+           * Gender: weiblich
            * Geburtsname: Brown
            * Doktortitel: false
            * Anderenamen: null

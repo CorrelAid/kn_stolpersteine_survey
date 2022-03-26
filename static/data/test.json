@@ -20,7 +20,7 @@
                "Verwandschaftsbeziehung":"Kind"
             }
          ],
-         "Gender":"female"
+         "Gender":"weiblich"
       }]
    },
    {
@@ -40,7 +40,7 @@
                "Verwandschaftsbeziehung":"Elternteil"
             }
          ],
-         "Gender":"female"
+         "Gender":"weiblich"
       }]
    },
    {
@@ -60,7 +60,7 @@
                "Verwandschaftsbeziehung":"EhepartnerIn"
             }
          ],
-         "Gender":"male"
+         "Gender":"mannlich"
       }]
    },
    {
@@ -80,7 +80,7 @@
                "Verwandschaftsbeziehung":"Elternteil"
             }
          ],
-         "Gender":"female"
+         "Gender":"weiblich"
       }]
    },
    {
@@ -95,7 +95,7 @@
          "Todesjahr":"1940",
          "Geburtsort":"Konstanz",
          "Familie":"",
-         "Gender":"male"
+         "Gender":"mannlich"
       }]
    },
    {
@@ -110,7 +110,7 @@
          "Todesjahr":"2010",
          "Geburtsort":"",
          "Familie":"",
-         "Gender":"female"
+         "Gender":"weiblich"
       }]
    },
    {
@@ -125,7 +125,7 @@
          "Todesjahr":"1958",
          "Geburtsort":"",
          "Familie":"",
-         "Gender":"female"
+         "Gender":"weiblich"
       }]
    },
    {
@@ -140,7 +140,7 @@
          "Todesjahr":"2001",
          "Geburtsort":"",
          "Familie":"",
-         "Gender":"female"
+         "Gender":"weiblich"
       }]
    },
    {
@@ -155,7 +155,7 @@
          "Todesjahr":"1958",
          "Geburtsort":"",
          "Familie":"",
-         "Gender":"male"
+         "Gender":"mannlich"
       }]
    },
    {
@@ -170,7 +170,7 @@
          "Todesjahr":"1988",
          "Geburtsort":"",
          "Familie":"",
-         "Gender":"male"
+         "Gender":"mannlich"
       }]
    },
    {
@@ -205,7 +205,7 @@
                "Verwandschaftsbeziehung":"Geschwister"
             }
          ],
-         "Gender":"male"
+         "Gender":"mannlich"
       }]
    }
 ]
