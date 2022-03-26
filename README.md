@@ -33,6 +33,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - Nachname: Doe
    - URL: doe_family.html
    - Data:
+       * Gender: Frau
        * Geburtsname: Brown
        * Doktortitel: false
        * Anderenamen: null
