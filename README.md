@@ -33,7 +33,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - Vorname: Jane
    - Nachname: Doe
    - URL: doe_family.html
-   - Data:
+   - data:
        * 0 [an entry for each coding, first entry should be from scraping]
            * Gender: Frau
            * Geburtsname: Brown
