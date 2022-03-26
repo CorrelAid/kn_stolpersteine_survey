@@ -8,8 +8,8 @@ from pymongo import MongoClient
 
 from cherrypy.lib.static import serve_file
 
+import json
 import pickle
-
 
 class AppServer:
     """
@@ -63,14 +63,14 @@ class AppServer:
     @cherrypy.expose
     def upload_file(self, starting_data):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.pickle")
+            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
 
             with open(out_file, "wb") as f:
                 data = starting_data.file.read()
                 f.write(data)
 
             with open(out_file, "rb") as f:
-                entries = pickle.load(f)
+                entries = json.load(f)
             self.db.insert_many(entries)
 
     @cherrypy.expose
