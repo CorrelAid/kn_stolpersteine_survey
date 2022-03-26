@@ -34,47 +34,48 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - Nachname: Doe
    - URL: doe_family.html
    - Data:
-       * Gender: Frau
-       * Geburtsname: Brown
-       * Doktortitel: false
-       * Anderenamen: null
-       * Adresse: Example Street 2
-       * Opfergruppen: ["juedisch", "politisch"] 
-       * Familie
-           * 0
-              * Familienmitglied: Doe, John
-              * Verwandschaftsbeziehung: Mann
-       * Geburtsjahr: 1910
-       * Geburtsmonat: 8
-       * Geburtsdatum: null
-       * Geburtsdatum_vermutet: false
-       * Geburtsort: Ulm
-       * Geburtsort_vermutet: false
-       * Todesjahr: 1942
-       * Todesmonat: 2
-       * Todesdatum: null
-       * Todedatum_vermutet: true
-       * Todesort: KZ Example 2
-       * Todesort_vermutet: false
-       * Tod_in_haft: true
-       * Stationen
-            * 0
-                * Ort: KZ Example 1
-                * Stationen_af_jahr: 
-                * Stationen_af_monat: 
-                * Stationen_af_datum: 
-                * Stationen_ed_jahr: 1941
-                * Stationen_ed_monat: 
-                * Stationen_ed_datum: 
-            * 1
-                * Ort: KZ Example 2
-                * Stationen_af_jahr: 1941
-                * Stationen_af_monat: 
-                * Stationen_af_datum: 
-                * Stationen_ed_jahr: 
-                * Stationen_ed_monat: 
-                * Stationen_ed_datum: 
-       * Ueberlebt: nein
+       * 0 [an entry for each coding, first entry should be from scraping]
+           * Gender: Frau
+           * Geburtsname: Brown
+           * Doktortitel: false
+           * Anderenamen: null
+           * Adresse: Example Street 2
+           * Opfergruppen: ["juedisch", "politisch"] 
+           * Familie
+               * 0
+                  * Familienmitglied: Doe, John
+                  * Verwandschaftsbeziehung: Mann
+           * Geburtsjahr: 1910
+           * Geburtsmonat: 8
+           * Geburtsdatum: null
+           * Geburtsdatum_vermutet: false
+           * Geburtsort: Ulm
+           * Geburtsort_vermutet: false
+           * Todesjahr: 1942
+           * Todesmonat: 2
+           * Todesdatum: null
+           * Todedatum_vermutet: true
+           * Todesort: KZ Example 2
+           * Todesort_vermutet: false
+           * Tod_in_haft: true
+           * Stationen
+                * 0
+                    * Ort: KZ Example 1
+                    * Stationen_af_jahr: 
+                    * Stationen_af_monat: 
+                    * Stationen_af_datum: 
+                    * Stationen_ed_jahr: 1941
+                    * Stationen_ed_monat: 
+                    * Stationen_ed_datum: 
+                * 1
+                    * Ort: KZ Example 2
+                    * Stationen_af_jahr: 1941
+                    * Stationen_af_monat: 
+                    * Stationen_af_datum: 
+                    * Stationen_ed_jahr: 
+                    * Stationen_ed_monat: 
+                    * Stationen_ed_datum: 
+           * Ueberlebt: nein
        
        
    
