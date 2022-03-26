@@ -94,7 +94,7 @@ class AppServer:
         :param url:
         :return:
         """
-        query = {"vorname": vorname, "nachname": nachname, "url": url}
+        query = {"Vorname": vorname, "Nachname": nachname, "URL": url}
         existing_records = [entry for entry in self.db.find(query)]
 
         # only should be one entry
@@ -162,7 +162,7 @@ class AppServer:
 
         :return:
         """
-        query = {"nachname": nachname, "vorname": vorname, "url": url}
+        query = {"Nachname": nachname, "Vorname": vorname, "URL": url}
         existing_records = [entry for entry in self.db.find(
             {"_id": ObjectId(id)})]
 
