@@ -3,7 +3,7 @@
 $(document).ready(function () {
     // add family members
     let family_members = ["Vater", "Mutter", "Sohn", "Tochter", "Bruder", "Schwester", "Großmutter", "Großvater", "Enkelsohn", "Enkeltochter", "Onkel", "Tante", "Cousin", "Cousine", "Neffe", "Nichte", "Verlobte", "Ehefrau", "Ehemann", "Schwiegervater", "Schwiegermutter", "Schwiegersohn", "Schwiegertochter", "Schwager", "Schwägerin"];
-    let selectFamilyMember = $(".verwandtschaftsgrad");
+    let selectFamilyMember = $(".Verwandschaftsbeziehung");
     for (var i = 0; i < family_members.length; i++) {
         let familyMemberElem = document.createElement("option");
 
@@ -50,9 +50,9 @@ $(document).ready(function () {
                 <input type="text" placeholder="Nachname, Vorname" name="familienmitglied">
                 <div class="dropdown">
                     <label>
-                        Verwandtschaftsgrad:
+                        Verwandschaftsbeziehung:
                     </label>
-                    <select class="verwandtschaftsgrad">
+                    <select class="verwandschaftsbeziehung">
                         <option value="">--</option>
                     </select>
                  </div>

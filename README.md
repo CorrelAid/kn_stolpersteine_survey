@@ -43,6 +43,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
            * Strassennummer: 24
            * PLZ: 88662
            * Opfergruppen: ["juedisch", "politisch"] 
+           * Beruf: Bäckerin
            * Familie
                * 0
                   * Familienmitglied: Doe, John
@@ -60,6 +61,18 @@ Example (null, True/False might be slightly inaccurate, will have to check):
            * Todesort: KZ Example 2
            * Todesort_vermutet: false
            * Tod_in_haft: true
+           * Flucht
+                * 0
+                    * Zielort: USA
+                    * Durchort:
+                        * 0: Frankreich
+                    * Erfolg: Nein
+                    * Flucht_af_jahr: 1937
+                    * Flucht_af_monat: 
+                    * Flucht_af_datum: 
+                    * Flucht_ed_jahr: 
+                    * Flucht_ed_monat: 
+                    * Flucht_ed_datum: 
            * Stationen
                 * 0
                     * Ort: KZ Example 1

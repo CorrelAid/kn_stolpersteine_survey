@@ -96,6 +96,12 @@
     <label for="weitere_Opfergruppen">zusätzliche Opferuppen:</label>
     <input type="text" id="weitere_Opfergruppen" name="weitere_Opfergruppen" value={% if weitere_Opfergruppen %}{{weitere_Opfergruppen}}{% endif %}>
 </div>
+<div class="form-group">
+    <label for="Beruf">Beruf:
+        <input type="text" id="Beruf" name="Beruf" value={% if Beruf %}{{Beruf}}{% endif %}>
+        <span class="material-icons" data-toggle="tooltip" title="vor der NS-Zeit">help</span>
+    </label>
+   </div>
 <div class="form-group" id="Familie">
     <label>Familie</label>
     <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
@@ -213,28 +219,59 @@
         </div>
         <button type="button" class="btn btn-primary">weitere Stationen</button>
     </div>
+    <div class="form-group" id="Stationen">
+        <label>Stationen:
+            <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
+        </label>
+        <div>
+            <input type="text" placeholder="Zielort" name="Zielort" value={% if Zielort %}{{Zielort}}{% endif %}>
+            <span class="material-icons" data-toggle="tooltip"
+                  title="Example....">help</span>
+        </div>
+        <input type="text" placeholder="Durchort" name="Durchort" value={% if Durchort %}{{Durchort}}{% endif %}>
+        <label>Anfangsdatum:</label>
+        <div class="form_date">
+            <select class="jahr" name="Flucht_af_jahr">
+                <option value="">--</option>
+            </select>
+            <select class="monat" name="Flucht_af_monat">
+                <option value="">--</option>
+            </select>
+            <select class="datum" name="Flucht_af_datum">
+                <option value="">--</option>
+            </select>
+        </div>
+        <label>Enddatum:</label>
+        <div class="form_date">
+            <select class="jahr" name="Flucht_ed_jahr">
+                <option value="">--</option>
+            </select>
+            <select class="monat" name="Flucht_ed_monat">
+                <option value="">--</option>
+            </select>
+            <select class="datum" pname="Flucht_ed_datum">
+                <option value="">--</option>
+            </select>
+        </div>
+        <label>
+            Erfolg?
+        </label>
+        <select name="Ueberlebt">
+            <option value="">Ja</option>
+            <option value="">Nein</option>
+            <option value="">Unklar</option>
+        </select>
+        <button type="button" class="btn btn-primary">weitere Fluchtversuchen</button>
+    </div>
     <div class="form-group">
         <label>
             Überlebt?
         </label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="Ueberlebt" id="Ueberlebt_ja" value="ja">
-            <label class="form-check-label" for="Ueberlebt_ja">
-                Ja
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="Ueberlebt" id="Ueberlebt_nein" value="nein">
-            <label class="form-check-label" for="Ueberlebt_nein">
-                Nein
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="Ueberlebt" id="Ueberlebt_unklar" value="unklar" }>
-            <label class="form-check-label" for="Ueberlebt_unklar">
-                Unklar
-            </label>
-        </div>
+        <select name="Ueberlebt">
+            <option value="">Ja</option>
+            <option value="">Nein</option>
+            <option value="">Unklar</option>
+        </select>
     </div>
     {% endblock%}
 
