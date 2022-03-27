@@ -1,6 +1,10 @@
-{% extends "split_survey.html" %}
+{% extends "template_survey.html" %}
 {% block form %}
 <form action="/{{post_route}}">
+    {% if URL %}
+    LINK:  <a href="https://www.stolpersteine-konstanz.de/{{URL}}.html">https://www.stolpersteine-konstanz.de/{{URL}}.html</a>
+    {% endif %}
+
     <div class="form-group">
         <label for="vorname">Vorname(n):</label>
         <input type="text" id="Vorname" name="Vorname" value={% if Vorname %}{{Vorname}}{% endif %}>
