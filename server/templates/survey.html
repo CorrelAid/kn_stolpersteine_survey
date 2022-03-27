@@ -37,9 +37,14 @@
     </select>
 </div>
 <div class="form-group">
-    <label for="Adresse">Adresse des Stolpersteins:</label>
-    <input type="text" id="Adresse" name="Adresse" value={% if Adresse %}{{Adresse}}{% endif %}>
-    <span class="material-icons" data-toggle="tooltip" title="Straße Hausnummer, aktueller Standort">help</span>
+    Aktueller Standort der Stolpersteine:
+    <label for="Strasse">Straße:</label>
+    <input type="text" id="Strasse" name="Strasse" value={% if Strasse %}{{Strasse}}{% endif %}>
+    <span class="material-icons" data-toggle="tooltip" title="bitte nicht kürzen: Strasse statt Str.">help</span>
+    <label for="Strassennummer">Straßennummer:</label>
+    <input type="text" id="Strassennummer" name="Strassennummer" value={% if Strassennummer %}{{Strassennummer}}{% endif %}>
+    <label for="PLZ">PLZ:</label>
+    <input type="text" id="PLZ" name="PLZ" value={% if PLZ %}{{PLZ}}{% endif %}>
 </div>
 <div class="form-group">
     <label>Opfergruppe:</label>

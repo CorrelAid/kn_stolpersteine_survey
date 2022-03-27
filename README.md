@@ -39,7 +39,9 @@ Example (null, True/False might be slightly inaccurate, will have to check):
            * Geburtsname: Brown
            * Doktortitel: false
            * Anderenamen: null
-           * Adresse: Example Street 2
+           * Strasse: Fakestrasse
+           * Strassennummer: 24
+           * PLZ: 88662
            * Opfergruppen: ["juedisch", "politisch"] 
            * Familie
                * 0
