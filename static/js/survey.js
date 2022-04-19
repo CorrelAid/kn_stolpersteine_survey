@@ -1,7 +1,7 @@
 // TODO: function to add more elements in jquery (Stationen, family members)
 $(document).ready(function () {
     // add family members
-    let family_members = ["Vater", "Mutter", "Sohn", "Tochter", "Bruder", "Schwester", "Großmutter", "Großvater", "Enkelsohn", "Enkeltochter", "Onkel", "Tante", "Cousin", "Cousine", "Neffe", "Nichte", "Verlobte", "Ehefrau", "Ehemann", "Schwiegervater", "Schwiegermutter", "Schwiegersohn", "Schwiegertochter", "Schwager", "Schwägerin"];
+    let family_members = ["Elternteil", "Kind", "EhegattIn", "Geschwister", "Großelternteil", "EnkelIn", "Onkel/Tante", "Cousin/Cousine", "NeffIn", "Verlobte/r", "Schwiegerelternteil", "Schwiegerkind", "SchwägerIn"];
     let selectFamilyMember = $(".Verwandschaftsbeziehung");
     for (var i = 0; i < family_members.length; i++) {
         let familyMemberElem = document.createElement("option");
