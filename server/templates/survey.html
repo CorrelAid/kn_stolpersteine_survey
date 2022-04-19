@@ -40,7 +40,10 @@
     <input type="text" id="Strassennummer" name="Strassennummer" value={% if Strassennummer %}{{Strassennummer}}{% endif %}>
     <br>
     <label for="PLZ">PLZ:</label>
-    <input type="text" id="PLZ" name="PLZ" value={% if PLZ %}{{PLZ}}{% endif %}>
+    <input type="text" id="PLZ" name="PLZ" data-parsley-maxlength="6" value='{% if PLZ %}{{PLZ}}{% endif %}' required>
+    <div class="invalid-feedback">
+      Please enter a message in the textarea.
+    </div>
 </div>
 <div class="form-group">
     <label>Opfergruppe:</label>
@@ -102,7 +105,6 @@
     <label>Familie</label>
     <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
     <div class="form-group-member">
-<!--        <input type="text" placeholder="Nachname, Vorname" name="Familienmitglied" value={% if Familienmitglied %}{{Familienmitglied}}{% endif %}>-->
          <div style="display: flex; justify-content: space-around">
             <div>
                 <div class="dropdown">
@@ -199,83 +201,102 @@
         <label for="Todesort_haft">in Haft</label>
     </div>
     <div class="form-group" id="Stationen">
-        <label>Stationen:
-            <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
-        </label>
-        <div>
-            <input type="text" placeholder="Ort" name="Ort" value={% if Ort %}{{Ort}}{% endif %}>
-            <span class="material-icons" data-toggle="tooltip"
-                  title="What abbreviations should be used? KZ, one for jails?">help</span>
+        <div class="form-group-member">
+            <div style="display: flex; justify-content: space-around">
+                <div>
+                    <label>Stationen:
+                        <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
+                    </label>
+
+                    <div>
+                        <input type="text" placeholder="Ort" name="Ort" value={% if Ort %}{{Ort}}{% endif %}>
+                        <span class="material-icons" data-toggle="tooltip"
+                              title="What abbreviations should be used? KZ, one for jails?">help</span>
+                    </div>
+                    <label>Anfangsdatum:</label>
+                    <div class="form_date">
+                        <select class="jahr" name="Stationen_af_jahr">
+                            <option value="">--</option>
+                        </select>
+                        <select class="monat" name="Stationen_af_monat">
+                            <option value="">--</option>
+                        </select>
+                        <select class="datum" pname="Stationen_af_datum">
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <label>Enddatum:</label>
+                    <div class="form_date">
+                        <select class="jahr" name="Stationen_ed_jahr">
+                            <option value="">--</option>
+                        </select>
+                        <select class="monat" name="Stationen_ed_monat">
+                            <option value="">--</option>
+                        </select>
+                        <select class="datum" pname="Stationen_ed_datum">
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" id="delete_Stationen" class="btn btn-primary btn-right">löschen</button>
+                </div>
+            </div>
         </div>
-        <label>Anfangsdatum:</label>
-        <div class="form_date">
-            <select class="jahr" name="Stationen_af_jahr">
-                <option value="">--</option>
-            </select>
-            <select class="monat" name="Stationen_af_monat">
-                <option value="">--</option>
-            </select>
-            <select class="datum" pname="Stationen_af_datum">
-                <option value="">--</option>
-            </select>
-        </div>
-        <label>Enddatum:</label>
-        <div class="form_date">
-            <select class="jahr" name="Stationen_ed_jahr">
-                <option value="">--</option>
-            </select>
-            <select class="monat" name="Stationen_ed_monat">
-                <option value="">--</option>
-            </select>
-            <select class="datum" pname="Stationen_ed_datum">
-                <option value="">--</option>
-            </select>
-        </div>
-        <button type="button" class="btn btn-primary">weitere Stationen</button>
+    <button type="button" id="add_Stationen" class="btn btn-primary">weitere Stationen</button>
     </div>
     <div class="form-group" id="Flucht">
-        <label>Flucht:
-            <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
-        </label>
-        <div>
-            <input type="text" placeholder="Zielort" name="Zielort" value={% if Zielort %}{{Zielort}}{% endif %}>
-            <span class="material-icons" data-toggle="tooltip"
-                  title="Example....">help</span>
+        <div class="form-group-member">
+            <div style="display: flex; justify-content: space-around">
+                <div>
+                    <label>Flucht:
+                        <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
+                    </label>
+                    <div>
+                        <input type="text" placeholder="Zielort" name="Zielort" value={% if Zielort %}{{Zielort}}{% endif %}>
+                        <span class="material-icons" data-toggle="tooltip"
+                              title="Example....">help</span>
+                    </div>
+                    <input type="text" placeholder="Durchort" name="Durchort" value={% if Durchort %}{{Durchort}}{% endif %}>
+                    <label>Anfangsdatum:</label>
+                    <div class="form_date">
+                        <select class="jahr" name="Flucht_af_jahr">
+                            <option value="">--</option>
+                        </select>
+                        <select class="monat" name="Flucht_af_monat">
+                            <option value="">--</option>
+                        </select>
+                        <select class="datum" name="Flucht_af_datum">
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <label>Enddatum:</label>
+                    <div class="form_date">
+                        <select class="jahr" name="Flucht_ed_jahr">
+                            <option value="">--</option>
+                        </select>
+                        <select class="monat" name="Flucht_ed_monat">
+                            <option value="">--</option>
+                        </select>
+                        <select class="datum" pname="Flucht_ed_datum">
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <label>
+                        Erfolg?
+                    </label>
+                    <select name="Ueberlebt">
+                        <option value="">Ja</option>
+                        <option value="">Nein</option>
+                        <option value="">Unklar</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="button" id="delete_Flucht" class="btn btn-primary btn-right">löschen</button>
+                </div>
+            </div>
         </div>
-        <input type="text" placeholder="Durchort" name="Durchort" value={% if Durchort %}{{Durchort}}{% endif %}>
-        <label>Anfangsdatum:</label>
-        <div class="form_date">
-            <select class="jahr" name="Flucht_af_jahr">
-                <option value="">--</option>
-            </select>
-            <select class="monat" name="Flucht_af_monat">
-                <option value="">--</option>
-            </select>
-            <select class="datum" name="Flucht_af_datum">
-                <option value="">--</option>
-            </select>
-        </div>
-        <label>Enddatum:</label>
-        <div class="form_date">
-            <select class="jahr" name="Flucht_ed_jahr">
-                <option value="">--</option>
-            </select>
-            <select class="monat" name="Flucht_ed_monat">
-                <option value="">--</option>
-            </select>
-            <select class="datum" pname="Flucht_ed_datum">
-                <option value="">--</option>
-            </select>
-        </div>
-        <label>
-            Erfolg?
-        </label>
-        <select name="Ueberlebt">
-            <option value="">Ja</option>
-            <option value="">Nein</option>
-            <option value="">Unklar</option>
-        </select>
-        <button type="button" class="btn btn-primary">weitere Fluchtversuchen</button>
+        <button type="button" id="add_Flucht" class="btn btn-primary">weitere Fluchtversuchen</button>
     </div>
     <div class="form-group">
         <label>
@@ -288,6 +309,7 @@
         </select>
     </div>
     {% endblock%}
+
 
 
 
