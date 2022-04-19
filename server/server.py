@@ -86,7 +86,7 @@ class AppServer:
             return serve_file(save_file, "application/x-download", "attachment")
 
     @cherrypy.expose
-    def survey(self, vorname, nachname, url):
+    def survey(self, id):
         """
 
         :param vorname:
@@ -94,14 +94,13 @@ class AppServer:
         :param url:
         :return:
         """
-        query = {"Vorname": vorname, "Nachname": nachname, "URL": url}
+        query = {"_id": ObjectId(id)}
         existing_records = [entry for entry in self.db.find(query)]
 
         # only should be one entry
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        id = record['_id']
 
         # if existing data, take most up-to-date copy
         if len(record["data"]) > 0:
@@ -109,8 +108,10 @@ class AppServer:
         else:
             current_data = {}
 
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id, **query,
-                                                            **current_data})
+        all_data = self.db.find({})
+
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id, "data": all_data,
+                                                            **query, **current_data})
 
     @cherrypy.expose
     def add(self):

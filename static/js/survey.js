@@ -1,5 +1,4 @@
 // TODO: function to add more elements in jquery (Stationen, family members)
-
 $(document).ready(function () {
     // add family members
     let family_members = ["Vater", "Mutter", "Sohn", "Tochter", "Bruder", "Schwester", "Großmutter", "Großvater", "Enkelsohn", "Enkeltochter", "Onkel", "Tante", "Cousin", "Cousine", "Neffe", "Nichte", "Verlobte", "Ehefrau", "Ehemann", "Schwiegervater", "Schwiegermutter", "Schwiegersohn", "Schwiegertochter", "Schwager", "Schwägerin"];
@@ -43,33 +42,26 @@ $(document).ready(function () {
         selectYear.append(yearElement);
     }
 
-    $("#add_familie").click(function() {
-        $("#familie").append(`
-            <div class="form-group-member">
-            <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>        
-                <input type="text" placeholder="Nachname, Vorname" name="familienmitglied">
-                <div class="dropdown">
-                    <label>
-                        Verwandschaftsbeziehung:
-                    </label>
-                    <select class="verwandschaftsbeziehung">
-                        <option value="">--</option>
-                    </select>
-                 </div>
-                <a href="#" class="delete">Delete</a>
-                </div>`)
-        let selectFamilyMember = $(".verwandtschaftsgrad:last");
-        for (var i = 0; i < family_members.length; i++) {
-            let familyMemberElem = document.createElement("option");
 
-            familyMemberElem.value = family_members[i];
-            familyMemberElem.textContent = family_members[i];
-            selectFamilyMember.append(familyMemberElem);
+    $("#add_Familie").on('click', function() {
+        if (($('.form-group-member').length == 1) && $('.form-group-member').is(":hidden")){
+            $('.form-group-member:last').show()
+            $('.form-group-member:last').attr('hidden',false);
+        } else {
+        $('.form-group-member:last').clone().insertAfter('.form-group-member:last')
         }
     })
 
-    $("#familie").on("click", ".delete", function(e) {
+    $("#Familie").on('click', "#delete_Familie", function(e) {
         e.preventDefault();
-        $(this).parent('div').remove();
+        if ($('.form-group-member').length == 1){
+            $(this).closest('.form-group-member').hide();
+            $(this).closest('.form-group-member').attr('hidden',true);
+        } else {
+            $(this).closest('.form-group-member').remove();
+        }
     })
+
+
 });
+

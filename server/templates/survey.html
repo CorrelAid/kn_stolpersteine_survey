@@ -1,10 +1,4 @@
 {% extends "add.html" %}
-{% block jslibs %}
-<script src="static/js/survey.js"></script>
-<script>
-
-</script>
-{% endblock %}
 
 {% block additionalquestions %}
 
@@ -42,7 +36,9 @@
     <input type="text" id="Strasse" name="Strasse" value={% if Strasse %}{{Strasse}}{% endif %}>
     <span class="material-icons" data-toggle="tooltip" title="bitte nicht kürzen: Strasse statt Str.">help</span>
     <label for="Strassennummer">Straßennummer:</label>
+    <br>
     <input type="text" id="Strassennummer" name="Strassennummer" value={% if Strassennummer %}{{Strassennummer}}{% endif %}>
+    <br>
     <label for="PLZ">PLZ:</label>
     <input type="text" id="PLZ" name="PLZ" value={% if PLZ %}{{PLZ}}{% endif %}>
 </div>
@@ -106,18 +102,36 @@
     <label>Familie</label>
     <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
     <div class="form-group-member">
-        <input type="text" placeholder="Nachname, Vorname" name="Familienmitglied" value={% if Familienmitglied %}{{Familienmitglied}}{% endif %}>
-        <div class="dropdown">
-            <label>
-                Verwandschaftsbeziehung:
-            </label>
-            <select class="Verwandschaftsbeziehung">
-                <option value="">--</option>
-            </select>
+<!--        <input type="text" placeholder="Nachname, Vorname" name="Familienmitglied" value={% if Familienmitglied %}{{Familienmitglied}}{% endif %}>-->
+         <div style="display: flex; justify-content: space-around">
+            <div>
+                <div class="dropdown">
+                    <label>
+                        Familienmitglied:
+                    </label>
+                    <select class="Familienmitglied">
+                        {% for item in data %}
+                        <option value={{item['id']}}>{{item['Nachname']}}, {{item['Vorname']}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="dropdown">
+                    <label>
+                        Verwandschaftsbeziehung:
+                    </label>
+                    <select class="Verwandschaftsbeziehung">
+                    </select>
+                </div>
+            </div>
+
+            <div>
+            <button type="button" id="delete_Familie" class="btn btn-primary btn-right">löschen</button>
+            </div>
+
         </div>
     </div>
-</div>
 <button type="button" id="add_Familie" class="btn btn-primary">weitere Familienangehörige</button>
+</div>
 <div class="form-group">
     <label>Geburtsdaten</label>
 
@@ -154,19 +168,19 @@
 
     <label for="Todesdatum">Todesdatum:</label>
     <div class="form_date">
-        <select class="jahr" id="Todesjahr" name="Todesjahr">
+        <select class="jahr" name="Todesjahr">
             <option value="">--</option>
         </select>
-        <select class="monat" id="Todesmonat" name="Todesmonat">
+        <select class="monat" name="Todesmonat">
             <option value="">--</option>
         </select>
-        <select class="datum" id="Todesdatum" pname="Todesdatum">
+        <select class="datum" name="Todesdatum">
             <option value="">--</option>
         </select>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="todedatum_vermutet" {% if todedatum_vermutet is sameas true %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="true" name="todedatum_vermutet" {% if todedatum_vermutet is sameas true %}checked{% endif %}>
         <label for="todedatum_vermutet">nur vermutet</label>
     </div>
 
@@ -219,8 +233,8 @@
         </div>
         <button type="button" class="btn btn-primary">weitere Stationen</button>
     </div>
-    <div class="form-group" id="Stationen">
-        <label>Stationen:
+    <div class="form-group" id="Flucht">
+        <label>Flucht:
             <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
         </label>
         <div>
