@@ -50,7 +50,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                   * Verwandschaftsbeziehung: Mann
            * Geburtsjahr: 1910
            * Geburtsmonat: 8
-           * Geburtsdatum: null
+           * Geburtstag: null
            * Geburtsdatum_vermutet: false
            * Geburtsort: Ulm
            * Geburtsort_vermutet: false
