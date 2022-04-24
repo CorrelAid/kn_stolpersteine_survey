@@ -90,7 +90,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                     * Stationen_ED_Jahr: 1942
                     * Stationen_ED_Monat: 2
                     * Stationen_ED_Tag: 21
-           * Ueberlebt: nein
+           * Ueberlebt: False
        
        
    
