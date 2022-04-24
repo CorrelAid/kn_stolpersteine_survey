@@ -66,7 +66,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                     * Zielort: USA
                     * Durchgangsort:
                         * 0: Frankreich
-                    * Erfolg: Nein
+                    * Erfolg: False
                     * Flucht_AF_Jahr: 1937
                     * Flucht_AF_Monat: 
                     * Flucht_Af_Tag: 
