@@ -37,7 +37,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
        * 0 [an entry for each coding, first entry should be from scraping]
            * Geschlecht: weiblich
            * Geburtsname: Brown
-           * Akademischer_Title: Dr.
+           * Akademischer_Titel: Dr.
            * Andere_Namen: null
            * Straße: Fakestrasse
            * Hausnummer: 24
