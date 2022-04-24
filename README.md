@@ -56,7 +56,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
            * Geburtsort_vermutet: false
            * Todesjahr: 1942
            * Todesmonat: 2
-           * Todesdatum: null
+           * Todestag: null
            * Todedatum_vermutet: true
            * Todesort: KZ Example 2
            * Todesort_vermutet: false
