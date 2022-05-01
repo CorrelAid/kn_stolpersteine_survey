@@ -1,6 +1,6 @@
 {% extends "template_survey.html" %}
 {% block form %}
-<form action="/{{post_route}}">
+<form action="/{{post_route}}" on_submit="return removeHidden()">
     {% if URL %}
     LINK:  <a href="https://www.stolpersteine-konstanz.de/{{URL}}.html">https://www.stolpersteine-konstanz.de/{{URL}}.html</a>
     {% endif %}
