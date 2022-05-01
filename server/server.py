@@ -136,7 +136,7 @@ class AppServer:
         :return:
         """
         return self._render_template('success_add.html',
-                                     params={'title': f"Added {info['nachname']}, {info['vorname']}", "info": info})
+                                     params={'title': f"Added {info['Nachname']}, {info['Vorname']}", "info": info})
 
     @cherrypy.expose
     def POST_ADD(self, **kwargs):
@@ -155,7 +155,7 @@ class AppServer:
         else:
             # add data, with empty data entry
             self.db.insert_one({**kwargs, "data": []})
-            return self.success_add(kwargs)
+            return self.success_add(self.db.find_one(kwargs))
 
     @cherrypy.expose
     def POST(self, vorname, nachname, url, id, **kwargs):
