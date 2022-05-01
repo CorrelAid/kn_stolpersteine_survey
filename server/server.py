@@ -25,6 +25,8 @@ class AppServer:
         print(self._tmpl_dir)
         self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
 
+        self.identifying_info = ["Vorname", "Nachname", "URL"]
+
         # possibly init other APIs
         # locally, start mongo first: service mongod start
         # client = MongoClient("localhost", 27010)
@@ -108,10 +110,9 @@ class AppServer:
         else:
             current_data = {}
 
-        all_data = self.db.find({})
-
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id, "data": all_data,
-                                                            **query, **current_data})
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id,
+                                                            **{key : record[key] for key in self.identifying_info},
+                                                            **current_data})
 
     @cherrypy.expose
     def add(self):
@@ -144,7 +145,6 @@ class AppServer:
 
         :return:
         """
-        print(kwargs)
         existing_records = [entry for entry in self.db.find(kwargs)]
         if "" in kwargs.values():
             # TODO could be better to do this in front-end or at least have a landing page
@@ -158,12 +158,12 @@ class AppServer:
             return self.success_add(self.db.find_one(kwargs))
 
     @cherrypy.expose
-    def POST(self, vorname, nachname, url, id, **kwargs):
+    def POST(self, id, **kwargs):
         """
 
         :return:
         """
-        query = {"Nachname": nachname, "Vorname": vorname, "URL": url}
+        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
         existing_records = [entry for entry in self.db.find(
             {"_id": ObjectId(id)})]
 
@@ -171,7 +171,7 @@ class AppServer:
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        record["data"].append(kwargs)
+        record["data"].append({key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
 
         self.db.update_one({"_id": ObjectId(id)}, {"$set": {**query, "data": record["data"]}})
 
