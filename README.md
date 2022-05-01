@@ -38,7 +38,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
        * 0 [an entry for each coding, first entry should be from scraping]
            * Geschlecht: weiblich
            * Geburtsname: Brown
-           * Doktortitel: false
+           * Akademischer_Titel: Dr.
            * Andere_Namen: null
            * Straße: Fakestrasse
            * Hausnummer: 24
@@ -51,14 +51,14 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                   * Verwandschaftsbeziehung: Mann
            * Geburtsjahr: 1910
            * Geburtsmonat: 8
-           * Geburtsdatum: null
+           * Geburtstag: null
            * Geburtsdatum_vermutet: false
            * Geburtsort: Ulm
            * Geburtsort_vermutet: false
            * Todesjahr: 1942
            * Todesmonat: 2
-           * Todesdatum: null
-           * Todedatum_vermutet: true
+           * Todestag: null
+           * Todesdatum_vermutet: true
            * Todesort: KZ Example 2
            * Todesort_vermutet: false
            * Tod_in_Gefangenschaft: true
@@ -67,7 +67,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                     * Zielort: USA
                     * Durchgangsort:
                         * 0: Frankreich
-                    * Erfolg: Nein
+                    * Erfolg: False
                     * Flucht_AF_Jahr: 1937
                     * Flucht_AF_Monat: 
                     * Flucht_Af_Tag: 
@@ -91,7 +91,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                     * Stationen_ED_Jahr: 1942
                     * Stationen_ED_Monat: 2
                     * Stationen_ED_Tag: 21
-           * Ueberlebt: nein
+           * Ueberlebt: False
        
        
    
