@@ -1,8 +1,3 @@
-// TODO: function to add more elements in jquery (Stationen, family members)
-function removeHidden(){
-    $(".form-group-member:hidden").remove()
-}
-
 $(document).ready(function () {
     // add family members
     let family_members = ["Elternteil", "Kind", "EhegattIn", "Geschwister", "Großelternteil", "EnkelIn", "Onkel/Tante", "Cousin/Cousine", "NeffIn", "Verlobte/r", "Schwiegerelternteil", "Schwiegerkind", "SchwägerIn"];
@@ -103,5 +98,10 @@ $(document).ready(function () {
             $(this).closest('#Flucht .form-group-member').remove();
         }
     })
+
+    function removeHidden(){
+        $(".form-group-member:hidden").remove()
+    }
+
 });
 
