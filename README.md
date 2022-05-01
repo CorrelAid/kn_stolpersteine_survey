@@ -30,6 +30,7 @@ The rest of the data is saved in the 'data' field.
 
 Example (null, True/False might be slightly inaccurate, will have to check):
 
+   - Fertig: True or False, whether this entry has been completed and checked centrally
    - Vorname: Jane
    - Nachname: Doe
    - URL: doe_family.html
