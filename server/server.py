@@ -110,7 +110,10 @@ class AppServer:
         else:
             current_data = {}
 
+        data = self.db.find({})
+
         return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id,
+                                                            "data" : data,
                                                             **{key : record[key] for key in self.identifying_info},
                                                             **current_data})
 
