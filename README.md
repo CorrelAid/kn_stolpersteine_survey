@@ -7,9 +7,10 @@ For issues associated with the whole project take a look at [this](https://githu
 You can run this locally, setting up the database the first time is the hardest part:
 
 1. First, if you haven't already, install MongoDB: [https://docs.mongodb.com/manual/administration/install-community/](https://docs.mongodb.com/manual/administration/install-community/)
-2. Start the server / MongoDB shell by running `mongod` on the command line
-    > **_NOTE:_**  MongoDB actually doesn't create the database/document until an entry is inputted. So you don't have to do anything in the shell, although you could run `show dbs` later to verify the database was created.
-3. Create a .env file with the local `MONGODB_URI` in it along with the PORT you want to run the survey on `8080`, e.g.:
+    > **_NOTE:_** For Arch Linux install mongodb-arch from the AUR and see [this](https://askubuntu.com/questions/823288/mongodb-loads-but-breaks-returning-status-14) if you run into an error when executing mongod.
+3. Start the server / MongoDB shell by running `mongod` on the command line
+    > **_NOTE:_**  MongoDB actually doesn't create the database/document until an entry is inputted. So you don't have to do anything in the shell, although you could run `show dbs` later to verify the database was created. 
+4. Create a .env file with the local `MONGODB_URI` in it along with the PORT you want to run the survey on `8080`, e.g.:
     ```
     touch .env
     echo "MONGODB_URI=localhost:27017" > .env
