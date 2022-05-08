@@ -1,15 +1,14 @@
 from pathlib import Path
-
 from bson.objectid import ObjectId
 import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
-
 from cherrypy.lib.static import serve_file
-
 import json
 import pickle
+import authentication_tool
+
 
 class AppServer:
     """
@@ -47,11 +46,13 @@ class AppServer:
         return tmpl.render(**params)
 
     @cherrypy.expose
+    @authentication_tool.require()
     def index(self):
         """
 
         :return:
         """
+        cherrypy.response.cookie["hallo"] = "world"
         all_data = self.db.find({})
         return self._render_template('index.html', params={'title': "Index Page", "data": all_data})
 
@@ -65,7 +66,8 @@ class AppServer:
     @cherrypy.expose
     def upload_file(self, starting_data):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
+            out_file = Path(__file__).resolve().parents[1].joinpath(
+                "static/data/out.json")
 
             with open(out_file, "wb") as f:
                 data = starting_data.file.read()
@@ -80,7 +82,8 @@ class AppServer:
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
             all_data = [entry for entry in self.db.find({})]
             print(all_data)
-            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
+            save_file = Path(__file__).resolve().parents[1].joinpath(
+                "static/data/data.pickle")
 
             with open(save_file, "wb") as f:
                 pickle.dump(all_data, f)
@@ -113,8 +116,8 @@ class AppServer:
         data = self.db.find({})
 
         return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id,
-                                                            "data" : data,
-                                                            **{key : record[key] for key in self.identifying_info},
+                                                            "data": data,
+                                                            **{key: record[key] for key in self.identifying_info},
                                                             **current_data})
 
     @cherrypy.expose
@@ -166,7 +169,8 @@ class AppServer:
 
         :return:
         """
-        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
+        query = {"Nachname": kwargs["Nachname"],
+                 "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
         existing_records = [entry for entry in self.db.find(
             {"_id": ObjectId(id)})]
 
@@ -174,9 +178,11 @@ class AppServer:
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        record["data"].append({key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
+        record["data"].append(
+            {key: kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
 
-        self.db.update_one({"_id": ObjectId(id)}, {"$set": {**query, "data": record["data"]}})
+        self.db.update_one({"_id": ObjectId(id)}, {
+                           "$set": {**query, "data": record["data"]}})
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()
