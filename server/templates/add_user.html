@@ -1,0 +1,26 @@
+{% extends "template_survey.html" %}
+{% block form %}
+<form action="/{{post_route}}" on_submit="return removeHidden()">
+    <div class="dropdown">
+        <label>
+            Realm:
+        </label>
+        <select class="realm">
+            <option value="survey">Survey Respondent</option>
+            <option value="admin">Survey Admin</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+    </div>
+    <div>
+        <label for="password">password:</label>
+        <input type="text" id="password" name="password">
+    </div>
+    <input type="submit" value="Absenden">
+</form>
+</span>
+</div>
+</body>
+{% endblock %}

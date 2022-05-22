@@ -17,18 +17,22 @@ class AuthenticationModule:
         client = MongoClient(os.environ["MONGODB_URI"])
         self.db = client.survey["data"]["authentication"]
 
-        self.db.enter_credentials_in_db()
+        try:
+            self.enter_credentials_in_db("admin", "dev", "dev-password")
+            self.enter_credentials_in_db("survey", "tester", "tester-password")
+        except:
+            pass
 
     def get_hashed_password(self, plain_text_password):
         # Hash a password for the first time
         #   (Using bcrypt, the salt is saved into the hash itself)
         # copied from https://stackoverflow.com/a/23768422
-        return bcrypt.hashpw(self, plain_text_password, bcrypt.gensalt())
+        return bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
 
-    def check_password(plain_text_password, hashed_password):
+    def check_password(self, plain_text_password, hashed_password):
         # Check hashed password. Using bcrypt, the salt is saved into the hash itself
         # copied from https://stackoverflow.com/a/23768422
-        return bcrypt.checkpw(plain_text_password, hashed_password)
+        return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_password)
 
     def enter_credentials_in_db(self, realm, username, password):
         # only store hashed and salted passwords
@@ -42,10 +46,43 @@ class AuthenticationModule:
         # signature as specified in https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.auth_basic.html
         all_matching_data = [entry for entry in self.db.find({"realm":realm, "username":username})]
         if len(all_matching_data) == 1:
-            return self.check_password(plain_text_password, all_matching_data[0]["password"])
+            return self.check_password(password, all_matching_data[0]["password"])
         else:
             return False
 
+class AdminConsole:
+    def __init__(self):
+        """
+        Sets up some basic information, like template path and environment.
+        """
+        self._tmpl_dir = Path(
+            __file__).parents[0].resolve().joinpath('templates')
+        print(self._tmpl_dir)
+        self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
+
+        self.authentication = AuthenticationModule()
+
+
+    def _render_template(self, tmpl_name, params={}):
+        """
+
+        :param tmpl_name:
+        :param params:
+        :return:
+        """
+        tmpl = self._env.get_template(tmpl_name)
+        return tmpl.render(**params)
+
+    @cherrypy.expose
+    def add_user(self):
+        self._render_template('add_user.html')
+
+    def post_user(self, kwargs):
+        self.authentication.enter_credentials_in_db(**kwargs)
+
+    @cherrypy.expose
+    def index(self, **kwargs):
+        return AppServer().index(completion_mode=True)
 
 class AppServer:
     """
@@ -69,8 +106,6 @@ class AppServer:
         print(client.list_database_names())
         # using collections instead of databases here now i think
         self.db = client.survey["data"]["victims"]
-
-        self.authentication = AuthenticationModule()
 
     def _render_template(self, tmpl_name, params={}):
         """
