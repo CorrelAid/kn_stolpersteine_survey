@@ -1,20 +1,56 @@
 from pathlib import Path
+
 from bson.objectid import ObjectId
 import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
+
 from cherrypy.lib.static import serve_file
+import bcrypt
+
 import json
 import pickle
-import authentication_tool
+
+class AuthenticationModule:
+    def __init__(self):
+        client = MongoClient(os.environ["MONGODB_URI"])
+        self.db = client.survey["data"]["authentication"]
+
+        self.db.enter_credentials_in_db()
+
+    def get_hashed_password(self, plain_text_password):
+        # Hash a password for the first time
+        #   (Using bcrypt, the salt is saved into the hash itself)
+        # copied from https://stackoverflow.com/a/23768422
+        return bcrypt.hashpw(self, plain_text_password, bcrypt.gensalt())
+
+    def check_password(plain_text_password, hashed_password):
+        # Check hashed password. Using bcrypt, the salt is saved into the hash itself
+        # copied from https://stackoverflow.com/a/23768422
+        return bcrypt.checkpw(plain_text_password, hashed_password)
+
+    def enter_credentials_in_db(self, realm, username, password):
+        # only store hashed and salted passwords
+        all_matching_data = [entry for entry in self.db.find({"realm":realm, "username":username})]
+        if len(all_matching_data) == 0:
+            self.db.insert_one({"realm":realm, "username":username, "password":self.get_hashed_password(password)})
+        else:
+            raise ValueError("Username already is taken!")
+
+    def check_password_in_db(self, realm, username, password):
+        # signature as specified in https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.auth_basic.html
+        all_matching_data = [entry for entry in self.db.find({"realm":realm, "username":username})]
+        if len(all_matching_data) == 1:
+            return self.check_password(plain_text_password, all_matching_data[0]["password"])
+        else:
+            return False
 
 
 class AppServer:
     """
     Serves pages, deals with any APIs
     """
-
     def __init__(self):
         """
         Sets up some basic information, like template path and environment.
@@ -33,7 +69,8 @@ class AppServer:
         print(client.list_database_names())
         # using collections instead of databases here now i think
         self.db = client.survey["data"]["victims"]
-        # self.db.delete_many({})
+
+        self.authentication = AuthenticationModule()
 
     def _render_template(self, tmpl_name, params={}):
         """
@@ -46,15 +83,19 @@ class AppServer:
         return tmpl.render(**params)
 
     @cherrypy.expose
-    @authentication_tool.require()
-    def index(self):
+    def index(self, **kwargs):
         """
 
         :return:
         """
-        cherrypy.response.cookie["hallo"] = "world"
         all_data = self.db.find({})
-        return self._render_template('index.html', params={'title': "Index Page", "data": all_data})
+
+        if "completion_mode" in kwargs:
+            completion_mode = kwargs["completion_mode"]
+        else:
+            completion_mode = False
+
+        return self._render_template('index.html', params={'title': "Index Page", "data": all_data, "completion_mode": completion_mode})
 
     @cherrypy.expose
     def upload(self):
@@ -66,8 +107,7 @@ class AppServer:
     @cherrypy.expose
     def upload_file(self, starting_data):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            out_file = Path(__file__).resolve().parents[1].joinpath(
-                "static/data/out.json")
+            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
 
             with open(out_file, "wb") as f:
                 data = starting_data.file.read()
@@ -82,8 +122,7 @@ class AppServer:
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
             all_data = [entry for entry in self.db.find({})]
             print(all_data)
-            save_file = Path(__file__).resolve().parents[1].joinpath(
-                "static/data/data.pickle")
+            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
 
             with open(save_file, "wb") as f:
                 pickle.dump(all_data, f)
@@ -116,8 +155,8 @@ class AppServer:
         data = self.db.find({})
 
         return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id,
-                                                            "data": data,
-                                                            **{key: record[key] for key in self.identifying_info},
+                                                            "data" : data,
+                                                            **{key : record[key] for key in self.identifying_info},
                                                             **current_data})
 
     @cherrypy.expose
@@ -169,8 +208,7 @@ class AppServer:
 
         :return:
         """
-        query = {"Nachname": kwargs["Nachname"],
-                 "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
+        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
         existing_records = [entry for entry in self.db.find(
             {"_id": ObjectId(id)})]
 
@@ -178,11 +216,9 @@ class AppServer:
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        record["data"].append(
-            {key: kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
+        record["data"].append({key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
 
-        self.db.update_one({"_id": ObjectId(id)}, {
-                           "$set": {**query, "data": record["data"]}})
+        self.db.update_one({"_id": ObjectId(id)}, {"$set": {**query, "data": record["data"]}})
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()
