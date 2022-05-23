@@ -14,7 +14,7 @@
     div {
         margin-top: 10px;
     }
-    {% if completion_mode %}
+    {% if admin_mode %}
     body {background-color: coral;}
     {% endif %}
 </style>
@@ -49,13 +49,14 @@
 <div>
     <button class="btn btn-primary" onclick="location.href='add';" id="addVictim">Opfer einfügen</button>
 </div>
-{% if completion_mode %}
+{% if admin_mode %}
 <div>
-    <button class="btn btn-primary" onclick="location.href='completion';" id="exitCompletionMode">Fertigstellungsmodus beenden</button>
+    <button class="btn btn-primary" onclick="location.href='add_user';" id="addUSer">User einfügen</button>
+<!--    <button class="btn btn-primary" onclick="location.href='completion';" id="exitCompletionMode">Fertigstellungsmodus beenden</button>-->
 </div>
-{% else %}
-<div>
-    <button class="btn btn-primary" onclick="location.href='completion';" id="enterCompletionMode">Einstieg in den Fertigstellungsmodus</button>
-</div>
+<!--{% else %}-->
+<!--<div>-->
+<!--    <button class="btn btn-primary" onclick="location.href='completion';" id="enterCompletionMode">Einstieg in den Fertigstellungsmodus</button>-->
+<!--</div>-->
 {% endif %}
 {% endblock %}
