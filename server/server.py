@@ -7,16 +7,40 @@ from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
 
 from cherrypy.lib.static import serve_file
+import bcrypt
 
 import json
 import pickle
+
+class AuthenticationModule:
+    def __init__(self):
+        client = MongoClient(os.environ["MONGODB_URI"])
+        self.db = client.survey["data"]["authentication"]
+
+    def get_hashed_password(self, plain_text_password):
+        # Hash a password for the first time
+        #   (Using bcrypt, the salt is saved into the hash itself)
+        # copied from https://stackoverflow.com/a/23768422
+        return bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+
+    def check_password(self, plain_text_password, hashed_password):
+        # Check hashed password. Using bcrypt, the salt is saved into the hash itself
+        # copied from https://stackoverflow.com/a/23768422
+        return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_password)
+
+    def check_password_in_db(self, realm, username, password):
+        # signature as specified in https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.auth_basic.html
+        all_matching_data = [entry for entry in self.db.find({"realm":realm, "username":username})]
+        if len(all_matching_data) == 1:
+            return self.check_password(password, all_matching_data[0]["password"])
+        else:
+            return False
 
 class AppServer:
     """
     Serves pages, deals with any APIs
     """
-
-    def __init__(self):
+    def __init__(self, realm):
         """
         Sets up some basic information, like template path and environment.
         """
@@ -34,7 +58,8 @@ class AppServer:
         print(client.list_database_names())
         # using collections instead of databases here now i think
         self.db = client.survey["data"]["victims"]
-        # self.db.delete_many({})
+
+        self.realm = realm
 
     def _render_template(self, tmpl_name, params={}):
         """
@@ -47,13 +72,19 @@ class AppServer:
         return tmpl.render(**params)
 
     @cherrypy.expose
-    def index(self):
+    def index(self, **kwargs):
         """
 
         :return:
         """
         all_data = self.db.find({})
-        return self._render_template('index.html', params={'title': "Index Page", "data": all_data})
+
+        if "admin_mode" in kwargs:
+            admin_mode = kwargs["admin_mode"]
+        else:
+            admin_mode = False
+
+        return self._render_template('index.html', params={'title': "Index Page", "data": all_data, "admin_mode": admin_mode})
 
     @cherrypy.expose
     def upload(self):
@@ -112,7 +143,7 @@ class AppServer:
 
         data = self.db.find({})
 
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": "POST", "id": id,
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST", "id": id,
                                                             "data" : data,
                                                             **{key : record[key] for key in self.identifying_info},
                                                             **current_data})
@@ -123,7 +154,7 @@ class AppServer:
 
         :return:
         """
-        return self._render_template('add.html', params={'title': "Add Victim", "post_route": "POST_ADD"})
+        return self._render_template('add.html', params={'title': "Add Victim", "post_route": f"{self.realm}/POST_ADD"})
 
     @cherrypy.expose
     def fail_add(self, info):
@@ -180,3 +211,40 @@ class AppServer:
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()
+
+class AdminConsole(AppServer):
+    def __init__(self, realm):
+        """
+        Sets up some basic information, like template path and environment.
+        """
+        super().__init__(realm=realm)
+
+        self.authentication = AuthenticationModule()
+
+        try:
+            self.enter_credentials_in_db("admin", "dev", "dev-password")
+            self.enter_credentials_in_db("survey", "git", "tester-password")
+        except:
+            pass
+
+    @cherrypy.expose
+    def POST_USER(self, **kwargs):
+        self.enter_credentials_in_db(**kwargs)
+        return self.index(admin_mode=True)
+
+    @cherrypy.expose
+    def add_user(self):
+        return self._render_template("add_user.html", params={"post_route": f"{self.realm}/POST_USER"})
+
+    def enter_credentials_in_db(self, realm, username, password):
+        # only store hashed and salted passwords
+        all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
+        if len(all_matching_data) == 0:
+            self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
+        else:
+            raise ValueError("Username already is taken!")
+
+    @cherrypy.expose
+    def index(self, **kwargs):
+        print([entry for entry in self.authentication.db.find({})])
+        return super().index(admin_mode=True)

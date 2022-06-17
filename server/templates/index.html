@@ -14,7 +14,11 @@
     div {
         margin-top: 10px;
     }
+    {% if admin_mode %}
+    body {background-color: coral;}
+    {% endif %}
 </style>
+
 {% endblock %}
 {% block content %}
 <div class="list-group">
@@ -22,7 +26,7 @@
         <thead>
             <tr>
                 <th>Opfer</th>
-                <th>Versionen</th>
+                <th>Version</th>
                 <th>Fertig</th>
             </tr>
         </thead>
@@ -45,4 +49,14 @@
 <div>
     <button class="btn btn-primary" onclick="location.href='add';" id="addVictim">Opfer einfügen</button>
 </div>
+{% if admin_mode %}
+<div>
+    <button class="btn btn-primary" onclick="location.href='add_user';" id="addUSer">User einfügen</button>
+<!--    <button class="btn btn-primary" onclick="location.href='completion';" id="exitCompletionMode">Fertigstellungsmodus beenden</button>-->
+</div>
+<!--{% else %}-->
+<!--<div>-->
+<!--    <button class="btn btn-primary" onclick="location.href='completion';" id="enterCompletionMode">Einstieg in den Fertigstellungsmodus</button>-->
+<!--</div>-->
+{% endif %}
 {% endblock %}

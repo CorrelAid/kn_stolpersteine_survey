@@ -5,3 +5,4 @@ pymongo
 jinja2
 dnspython
 python-dotenv
+bcrypt # not other required dependencies for this on server
