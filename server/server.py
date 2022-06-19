@@ -15,7 +15,7 @@ import pickle
 class AuthenticationModule:
     def __init__(self):
         client = MongoClient(os.environ["MONGODB_URI"])
-        self.db = client.survey["data"]["authentication"]
+        self.db = client.survey_db["data"]["authentication"]
 
     def get_hashed_password(self, plain_text_password):
         # Hash a password for the first time
@@ -56,8 +56,7 @@ class AppServer:
         # client = MongoClient("localhost", 27010)
         client = MongoClient(os.environ["MONGODB_URI"])
         print(client.list_database_names())
-        # using collections instead of databases here now i think
-        self.db = client.survey["data"]["victims"]
+        self.db = client.survey_db["data"]["victims"]
 
         self.realm = realm
 
