@@ -5,7 +5,7 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
     $(document).ready( function () {
-        $('#index_table').DataTable().DataTable();
+        $('#index_table').DataTable();
     });
 </script>
 {% endblock %}
@@ -51,12 +51,6 @@
 </div>
 {% if admin_mode %}
 <div>
-    <button class="btn btn-primary" onclick="location.href='add_user';" id="addUSer">User einfügen</button>
-<!--    <button class="btn btn-primary" onclick="location.href='completion';" id="exitCompletionMode">Fertigstellungsmodus beenden</button>-->
-</div>
-<!--{% else %}-->
-<!--<div>-->
-<!--    <button class="btn btn-primary" onclick="location.href='completion';" id="enterCompletionMode">Einstieg in den Fertigstellungsmodus</button>-->
-<!--</div>-->
+    <button class="btn btn-primary" onclick="location.href='add_user';" id="addUser">User einfügen</button>
 {% endif %}
 {% endblock %}
