@@ -1,3 +1,5 @@
+Current VIP: https://e086aa6.online-server.cloud/
+
 General information about the project to which this repository belongs can be found [here](https://pad.correlaid.org/zHZbVjb4TS6Vntt4XpnrBA?both).
 
 For issues associated with the whole project take a look at [this](https://github.com/orgs/CorrelAid/projects/10)
