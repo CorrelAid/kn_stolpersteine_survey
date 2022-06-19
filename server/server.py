@@ -56,7 +56,7 @@ class AppServer:
         # client = MongoClient("localhost", 27010)
         client = MongoClient(os.environ["MONGODB_URI"])
         print(client.list_database_names())
-        self.db = client.survey_db["data"]["victims"]
+        self.db = client.survey_db["victims"]
 
         self.realm = realm
 
