@@ -39,6 +39,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - URL: doe_family.html
    - data:
        * 0 [an entry for each coding, first entry should be from scraping]
+           * Verlegt: 20.05.2010
            * Geschlecht: weiblich
            * Geburtsname: Brown
            * Akademischer_Titel: Dr.
