@@ -28,9 +28,6 @@ You can run this locally, setting up the database the first time is the hardest 
 
 # How is the data saved?
 
-There are three pieces of information used to uniquely identify victims: first name, last name and url.
-The rest of the data is saved in the 'data' field.
-
 Example (null, True/False might be slightly inaccurate, will have to check):
 
    - Fertig: True or False, whether this entry has been completed and checked centrally
