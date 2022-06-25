@@ -34,9 +34,13 @@ The rest of the data is saved in the 'data' field.
 Example (null, True/False might be slightly inaccurate, will have to check):
 
    - Fertig: True or False, whether this entry has been completed and checked centrally
+   - ID
    - Vorname: Jane
    - Nachname: Doe
    - URL: doe_family.html
+   - Verlegejahr: 2010
+   - Straße: Fakestraße
+   - Hausnummer: 32
    - data:
        * 0 [an entry for each coding, first entry should be from scraping]
            * Verlegt: 20.05.2010
@@ -44,8 +48,6 @@ Example (null, True/False might be slightly inaccurate, will have to check):
            * Geburtsname: Brown
            * Akademischer_Titel: Dr.
            * Andere_Namen: null
-           * Straße: Fakestrasse
-           * Hausnummer: 24
            * PLZ: 88662
            * Opfergruppen: ["juedisch", "politisch"] 
            * Beruf: Bäckerin
