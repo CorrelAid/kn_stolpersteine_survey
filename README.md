@@ -34,7 +34,7 @@ The rest of the data is saved in the 'data' field.
 Example (null, True/False might be slightly inaccurate, will have to check):
 
    - Fertig: True or False, whether this entry has been completed and checked centrally
-   - ID
+   - ID: Jane_Doe_23 23 is random number
    - Vorname: Jane
    - Nachname: Doe
    - URL: doe_family.html
