@@ -34,7 +34,7 @@ The rest of the data is saved in the 'data' field.
 Example (null, True/False might be slightly inaccurate, will have to check):
 
    - Fertig: True or False, whether this entry has been completed and checked centrally
-   - ID: Jane_Doe_23 23 is random number
+   - ID: albert_alexander_ro16 
    - Vorname: Jane
    - Nachname: Doe
    - URL: doe_family.html
@@ -55,6 +55,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                * 0
                   * Familienmitglied: Doe, John
                   * Verwandschaftsbeziehung: Mann
+                  * ID: emma_adler_ne30
            * Geburtsjahr: 1910
            * Geburtsmonat: 8
            * Geburtstag: null
@@ -83,6 +84,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
            * Stationen
                 * 0
                     * Ort: KZ Example 1
+                    * ID:
                     * Stationen_AF_Jahr: 
                     * Stationen_AF_Monat: 
                     * Stationen_AF_Tag: 
@@ -91,6 +93,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
                     * Stationen_ED_Tag: 
                 * 1
                     * Ort: KZ Example 2
+                    * ID:
                     * Stationen_AF_Jahr: 1941
                     * Stationen_AF_Monat: 12
                     * Stationen_AF_Tag: 1
