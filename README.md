@@ -43,7 +43,7 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - Hausnummer: 32
    - data:
        * 0 [an entry for each coding, first entry should be from scraping]
-           * Verlegt: 20.05.2010
+           * Final: False
            * Geschlecht: weiblich
            * Geburtsname: Brown
            * Akademischer_Titel: Dr.
