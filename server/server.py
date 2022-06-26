@@ -244,8 +244,7 @@ class AdminConsole(AppServer):
         # self.authentication.db.delete_many({})
 
         try:
-            self.enter_credentials_in_db("admin", "dev", "dev-password")
-            self.enter_credentials_in_db("survey", "git", "tester-password")
+            self.enter_credentials_in_db("admin", os.environ['USERNAME'], os.environ['PASSWORD'], False)
         except:
             pass
 
