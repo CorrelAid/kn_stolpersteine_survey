@@ -231,6 +231,11 @@ class AppServer:
                                          params={"post_route": f"{self.realm}/POST_USER", "username": username,
                                                  "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
 
+    @cherrypy.expose
+    def logout(self):
+        # TODO: would be nice to put something here but probably just a nice to have
+        raise NotImplementedError
+
 
 class AdminConsole(AppServer):
     def __init__(self, realm):
