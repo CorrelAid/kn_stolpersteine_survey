@@ -18,7 +18,12 @@ if __name__ == '__main__':
 
     cherrypy.config.update({
         'server.socket_host': '0.0.0.0',
-        'server.socket_port': int(os.environ['PORT'])})
+        'server.socket_port': int(os.environ['PORT']),
+        'tools.sessions.on': True,
+        # sessions will be saved in RAM since next two lines are commented out
+        # 'tools.sessions.storage_type': "File",
+        # 'tools.sessions.storage_path': 'sessions',
+        'tools.sessions.timeout': 1})
 
     cherrypy.tree.mount(Root(), '/', config = {'/static': {
             'tools.staticdir.on': True,
