@@ -247,3 +247,7 @@ class AdminConsole(AppServer):
     def index(self, **kwargs):
         print([entry for entry in self.authentication.db.find({})])
         return super().index(admin_mode=True)
+
+    @cherrypy.expose
+    def users(self):
+        return self._render_template('users.html', params={"data":[{"username":entry["username"]} for entry in self.authentication.db.find({})]})
