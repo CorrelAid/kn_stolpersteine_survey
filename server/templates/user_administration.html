@@ -1,0 +1,54 @@
+{% extends "template_survey.html" %}
+{% block form %}
+ <script type="text/javascript">
+     function httpGet(theUrl)
+    { // from https://stackoverflow.com/a/4033310
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+        xmlHttp.send( null );
+        return xmlHttp.responseText;
+    }
+    function getRandomUsername() {
+         url="../admin/random_username"
+        document.getElementById('username').value = httpGet(url);
+    }
+</script>
+<form action="/{{post_route}}">
+    <div class="dropdown" {% if not admin_mode %}readonly="readonly" {% endif %}>
+        <label>
+            Realm:
+        </label>
+        <select class="realm" id="realm" name="realm">
+            <option value="survey">Survey Respondent</option>
+            <option value="admin">Survey Admin</option>
+        </select>
+    </div>
+{% if not admin_mode %}
+<div class = "instructions">
+    Dear user, please DO NOT reuse the same password as you use on other sites. We make every effort to follow best practices, but are also a volunteer team learning as we go. :)
+<div>
+{%  endif %}
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"  value={% if username %}{{username}}{% endif %}    {% if existing %}readonly="readonly" {% endif %}>
+    {% if not existing %}<span class="material-icons" data-toggle="tooltip" title="Refresh username" onclick="getRandomUsername()">refresh</span> {%  endif %}
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password"  value={% if password %}{{password}}{% endif %}>
+    </div>
+    <div>
+        <label for="username">Existing user:</label>
+        <input type="checkbox" id="existing" name="existing" checked={% if existing %}{{existing}}{% endif %}  onclick="return false;">
+    </div>
+    <input type="submit" value="Absenden">
+</form>
+</span>
+</div>
+{% if admin_mode %}
+<div>
+        <button class="btn btn-primary" onclick="location.href='add_user';" id="addUser">User einfügen</button>
+</div>
+{%  endif  %}
+</body>
+{% endblock %}

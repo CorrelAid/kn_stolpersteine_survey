@@ -12,6 +12,8 @@ import bcrypt
 import json
 import pickle
 
+from faker import Faker
+
 class AuthenticationModule:
     def __init__(self):
         client = MongoClient(os.environ["MONGODB_URI"])
@@ -211,6 +213,25 @@ class AppServer:
         # maybe better to have a landing page for this or new profile shown
         return self.index()
 
+    @cherrypy.expose
+    def POST_USER(self, **kwargs):
+        if kwargs["username"] == cherrypy.request.login:
+            self.enter_credentials_in_db(**kwargs)
+            return self.index()
+        else:
+            raise ValueError("You can only modify the password for your own username!")
+
+    @cherrypy.expose
+    def user_administration(self, username=None, admin_mode=False):
+        if username is None:
+            username = self.random_username()
+            return self._render_template("user_administration.html", params={"post_route": f"{self.realm}/POST_USER", "username":username, "password":self.random_password(), "existing": False, "admin_mode":admin_mode})
+        else:
+            return self._render_template("user_administration.html",
+                                         params={"post_route": f"{self.realm}/POST_USER", "username": username,
+                                                 "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
+
+
 class AdminConsole(AppServer):
     def __init__(self, realm):
         """
@@ -218,7 +239,9 @@ class AdminConsole(AppServer):
         """
         super().__init__(realm=realm)
 
+        self.faker = Faker('en_GB')
         self.authentication = AuthenticationModule()
+        # self.authentication.db.delete_many({})
 
         try:
             self.enter_credentials_in_db("admin", "dev", "dev-password")
@@ -227,19 +250,35 @@ class AdminConsole(AppServer):
             pass
 
     @cherrypy.expose
+    def random_username(self):
+        # UK cities to avoid numbering, not use a city where a KZ might be
+        current_users = [entry["username"] for entry in self.authentication.db.find({})]
+        new_user = f"datenerfasser/in_{self.faker.city().replace(' ', '_')}"
+
+        while new_user in current_users:
+            new_user = f"datenerfasser/in_{self.faker.city().replace(' ', '_')}"
+
+        return new_user
+
+    def random_password(self):
+        return self.faker.password(length=12)
+
+    @cherrypy.expose
     def POST_USER(self, **kwargs):
         self.enter_credentials_in_db(**kwargs)
         return self.index(admin_mode=True)
 
     @cherrypy.expose
-    def add_user(self):
-        return self._render_template("add_user.html", params={"post_route": f"{self.realm}/POST_USER"})
+    def user_administration(self, username=None):
+        return super().user_administration(admin_mode=True)
 
-    def enter_credentials_in_db(self, realm, username, password):
+    def enter_credentials_in_db(self, realm, username, password, existing=False):
         # only store hashed and salted passwords
         all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
         if len(all_matching_data) == 0:
             self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
+        elif existing:
+            self.authentication.db.update_one({"username": username}, {"$set": {"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
         else:
             raise ValueError("Username already is taken!")
 

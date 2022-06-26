@@ -51,6 +51,11 @@
 </div>
 {% if admin_mode %}
 <div>
-    <button class="btn btn-primary" onclick="location.href='add_user';" id="addUser">User einfügen</button>
+    <button class="btn btn-primary" onclick="location.href='users';" id="manageUsers">Benutzerverwaltung</button>
+</div>
+{%  else %}
+<div>
+    <button class="btn btn-primary" onclick="location.href='user_administration';" id="addUser">Accounteinstellungen</button>
+</div>
 {% endif %}
 {% endblock %}
