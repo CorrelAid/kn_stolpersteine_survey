@@ -4,8 +4,6 @@ import os
 import cherrypy
 from server import AppServer, AuthenticationModule, AdminConsole
 from dotenv import load_dotenv
-from cherrypy.lib import auth_basic
-
 
 if __name__ == '__main__':
     if "PORT" not in os.environ:
