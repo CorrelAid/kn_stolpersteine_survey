@@ -46,12 +46,14 @@ class AppServer:
         """
         Sets up some basic information, like template path and environment.
         """
+        self.faker = Faker('en_GB')
         self._tmpl_dir = Path(
             __file__).parents[0].resolve().joinpath('templates')
         print(self._tmpl_dir)
         self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
 
         self.identifying_info = ["Vorname", "Nachname", "URL"]
+        self.authentication = AuthenticationModule()
 
         # possibly init other APIs
         # locally, start mongo first: service mongod start
@@ -221,14 +223,13 @@ class AppServer:
         else:
             raise ValueError("You can only modify the password for your own username!")
 
+    def random_password(self):
+        return self.faker.password(length=12)
+
     @cherrypy.expose
     def user_administration(self, username=None, admin_mode=False):
-        if username is None:
-            username = self.random_username()
-            return self._render_template("user_administration.html", params={"post_route": f"{self.realm}/POST_USER", "username":username, "password":self.random_password(), "existing": False, "admin_mode":admin_mode})
-        else:
-            return self._render_template("user_administration.html",
-                                         params={"post_route": f"{self.realm}/POST_USER", "username": username,
+        return self._render_template("user_administration.html",
+                                         params={"post_route": f"{self.realm}/POST_USER", "username": cherrypy.request.login,
                                                  "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
 
     @cherrypy.expose
@@ -237,6 +238,16 @@ class AppServer:
         raise NotImplementedError
 
 
+    def enter_credentials_in_db(self, realm, username, password, existing=False):
+        # only store hashed and salted passwords
+        all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
+        if len(all_matching_data) == 0:
+            self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
+        elif existing:
+            self.authentication.db.update_one({"username": username}, {"$set": {"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
+        else:
+            raise ValueError("Username already is taken!")
+
 class AdminConsole(AppServer):
     def __init__(self, realm):
         """
@@ -244,14 +255,18 @@ class AdminConsole(AppServer):
         """
         super().__init__(realm=realm)
 
-        self.faker = Faker('en_GB')
-        self.authentication = AuthenticationModule()
         # self.authentication.db.delete_many({})
 
         try:
             self.enter_credentials_in_db("admin", os.environ['USERNAME'], os.environ['PASSWORD'], False)
         except:
             pass
+
+
+    @cherrypy.expose
+    def POST_USER(self, **kwargs):
+        self.enter_credentials_in_db(**kwargs)
+        return self.users()
 
     @cherrypy.expose
     def random_username(self):
@@ -264,31 +279,20 @@ class AdminConsole(AppServer):
 
         return new_user
 
-    def random_password(self):
-        return self.faker.password(length=12)
-
     @cherrypy.expose
-    def POST_USER(self, **kwargs):
-        self.enter_credentials_in_db(**kwargs)
-        return self.index(admin_mode=True)
-
-    @cherrypy.expose
-    def user_administration(self, username=None):
-        return super().user_administration(admin_mode=True)
-
-    def enter_credentials_in_db(self, realm, username, password, existing=False):
-        # only store hashed and salted passwords
-        all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
-        if len(all_matching_data) == 0:
-            self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
-        elif existing:
-            self.authentication.db.update_one({"username": username}, {"$set": {"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
+    def user_administration(self, username=None, admin_mode=True):
+        if username is None:
+            username = self.random_username()
+            return self._render_template("user_administration.html",
+                                         params={"post_route": f"{self.realm}/POST_USER", "username": username,
+                                                     "password": self.random_password(), "existing": False,
+                                                     "admin_mode": admin_mode})
         else:
-            raise ValueError("Username already is taken!")
+            return super().user_administration(username=username, admin_mode=admin_mode)
+
 
     @cherrypy.expose
     def index(self, **kwargs):
-        print([entry for entry in self.authentication.db.find({})])
         return super().index(admin_mode=True)
 
     @cherrypy.expose

@@ -30,7 +30,7 @@
 {%  endif %}
     <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username"  value={% if username %}{{username}}{% endif %}    {% if existing %}readonly="readonly" {% endif %}>
+        <input type="text" id="username" name="username"  value={% if username %}{{username}}{% endif %}    {% if existing %}readonly{% endif %}>
     {% if not existing %}<span class="material-icons" data-toggle="tooltip" title="Refresh username" onclick="getRandomUsername()">refresh</span> {%  endif %}
     </div>
     <div>
@@ -38,17 +38,11 @@
         <input type="text" id="password" name="password"  value={% if password %}{{password}}{% endif %}>
     </div>
     <div>
-        <label for="username">Existing user:</label>
-        <input type="checkbox" id="existing" name="existing" checked={% if existing %}{{existing}}{% endif %}  onclick="return false;">
+        <input type="checkbox" id="existing" name="existing" {% if existing %}checked{% endif %}  onclick="return false;">
     </div>
     <input type="submit" value="Absenden">
 </form>
 </span>
 </div>
-{% if admin_mode %}
-<div>
-        <button class="btn btn-primary" onclick="location.href='add_user';" id="addUser">User einfügen</button>
-</div>
-{%  endif  %}
 </body>
 {% endblock %}
