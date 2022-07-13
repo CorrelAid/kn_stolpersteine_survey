@@ -9,7 +9,12 @@
 <div class="form-group">
     <label for="Geburtsname">Geburtsname:</label>
     <input type="text" id="Geburtsname" name="Geburtsname" value={% if Geburtsname %}{{Geburtsname}}{% endif %}>
-    <span class="material-icons" data-toggle="tooltip" title="How to deal with married names, see Nachname">help</span>
+    <span class="material-icons" data-toggle="tooltip" title="Bitte geben Sie den Geburtsnamen an, falls das Opfer einen Ehenamen während der NS-Zeit hatte.">help</span>
+</div>
+<div class="form-group">
+    <label for="Ehename">Ehename:</label>
+    <input type="text" id="Ehename" name="Ehename" value={% if Ehename %}{{Ehename}}{% endif %}>
+    <span class="material-icons" data-toggle="tooltip" title="Bitte geben Sie den Ehenamen an, falls das Opfer einen Ehenamen nur nach der NS-Zeit hatte.">help</span>
 </div>
 <div class="form-group">
     <div class="form-check">
@@ -20,7 +25,7 @@
 <div class="form-group">
     <label for="Anderenamen">Andere Namen:</label>
     <input type="text" id="Anderenamen" name="Anderenamen" value={% if Anderenamen %}{{Anderenamen}}{% endif %}>
-    <span class="material-icons" data-toggle="tooltip" title="Would be nice to have examples here">help</span>
+    <span class="material-icons" data-toggle="tooltip" title="z.B. Spitzname, weitere Ehenamen">help</span>
 <div class="dropdown">
     <label>
         Gender (soziales Geschlecht):
@@ -34,7 +39,7 @@
     Aktueller Standort der Stolpersteine:
     <label for="Strasse">Straße:</label>
     <input type="text" id="Strasse" name="Strasse" value={% if Strasse %}{{Strasse}}{% endif %}>
-    <span class="material-icons" data-toggle="tooltip" title="bitte nicht kürzen: Strasse statt Str.">help</span>
+    <span class="material-icons" data-toggle="tooltip" title="Bitte kürzen, z.B. Str. statt Strasse.">help</span>
     <label for="Strassennummer">Straßennummer:</label>
     <br>
     <input type="text" id="Strassennummer" name="Strassennummer" value={% if Strassennummer %}{{Strassennummer}}{% endif %}>
@@ -103,7 +108,7 @@
    </div>
 <div class="form-group" id="Familie">
     <label>Familie</label>
-    <span class="material-icons" data-toggle="tooltip" title="Bitte Geburtsnamen angeben.">help</span>
+    <span class="material-icons" data-toggle="tooltip" title="Bitte nur Familienangehörige mit Stolpersteinen eingeben.">help</span>
     <div class="form-group-member">
          <div style="display: flex; justify-content: space-around">
             <div>
@@ -157,7 +162,7 @@
 
     <label for="Geburtsort">Geburtsort:
         <input type="text" id="Geburtsort" name="Geburtsort" value={% if Geburtsort %}{{Geburtsort}}{% endif %}>
-        <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
+        <span class="material-icons" data-toggle="tooltip" title="Stadt, Land oder nur Land, falls Stadt nicht angegeben ist">help</span>
     </label>
 
     <div class="form-check">
@@ -188,7 +193,7 @@
 
     <label for="Todesort">Todesort:
         <input type="text" id="Todesort" name="Todesort" value={% if Todesort %}{{Todesort}}{% endif %}>
-        <span class="material-icons" data-toggle="tooltip" title="Stadt, Land">help</span>
+        <span class="material-icons" data-toggle="tooltip" title="Stadt, Land oder nur Land, falls Stadt nicht angegeben ist">help</span>
     </label>
 
     <div class="form-check">
@@ -205,13 +210,11 @@
             <div style="display: flex; justify-content: space-around">
                 <div>
                     <label>Stationen:
-                        <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
+                        <span class="material-icons" data-toggle="tooltip" title="Bitte beachten Sie, dass dies nur Stationen der Viktimisierung sind (z. B. Konzentrationslager, Gefängnis usw.)">help</span>
                     </label>
 
                     <div>
                         <input type="text" placeholder="Ort" name="Ort" value={% if Ort %}{{Ort}}{% endif %}>
-                        <span class="material-icons" data-toggle="tooltip"
-                              title="What abbreviations should be used? KZ, one for jails?">help</span>
                     </div>
                     <label>Anfangsdatum:</label>
                     <div class="form_date">
@@ -250,12 +253,10 @@
             <div style="display: flex; justify-content: space-around">
                 <div>
                     <label>Flucht:
-                        <span class="material-icons" data-toggle="tooltip" title="Explanation">help</span>
+                        <span class="material-icons" data-toggle="tooltip" title="Bitte geben Sie alle Fluchtversuche ein, ob erfolgreich oder nicht.">help</span>
                     </label>
                     <div>
                         <input type="text" placeholder="Zielort" name="Zielort" value={% if Zielort %}{{Zielort}}{% endif %}>
-                        <span class="material-icons" data-toggle="tooltip"
-                              title="Example....">help</span>
                     </div>
                     <input type="text" placeholder="Durchort" name="Durchort" value={% if Durchort %}{{Durchort}}{% endif %}>
                     <label>Anfangsdatum:</label>
