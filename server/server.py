@@ -229,7 +229,8 @@ class AppServer:
     @cherrypy.expose
     def user_administration(self, username=None, admin_mode=False):
         return self._render_template("user_administration.html",
-                                         params={"post_route": f"{self.realm}/POST_USER", "username": cherrypy.request.login,
+                                         params={"post_route": f"{self.realm}/POST_USER",
+                                                 "username": username if username else cherrypy.request.login,
                                                  "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
 
     @cherrypy.expose

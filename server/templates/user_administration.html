@@ -38,6 +38,7 @@
         <input type="text" id="password" name="password"  value={% if password %}{{password}}{% endif %}>
     </div>
     <div>
+        <label for="existing">Existing user:</label>
         <input type="checkbox" id="existing" name="existing" {% if existing %}checked{% endif %}  onclick="return false;">
     </div>
     <input type="submit" value="Absenden">
