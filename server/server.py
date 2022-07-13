@@ -90,38 +90,6 @@ class AppServer:
         return self._render_template('index.html', params={'title': "Index Page", "data": all_data, "admin_mode": admin_mode})
 
     @cherrypy.expose
-    def upload(self):
-        if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            return self._render_template("upload.html")
-        else:
-            return self._render_template("index.html")
-
-    @cherrypy.expose
-    def upload_file(self, starting_data):
-        if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
-
-            with open(out_file, "wb") as f:
-                data = starting_data.file.read()
-                f.write(data)
-
-            with open(out_file, "rb") as f:
-                entries = json.load(f)
-            self.db.insert_many(entries)
-
-    @cherrypy.expose
-    def download(self):
-        if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            all_data = [entry for entry in self.db.find({})]
-            print(all_data)
-            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
-
-            with open(save_file, "wb") as f:
-                pickle.dump(all_data, f)
-
-            return serve_file(save_file, "application/x-download", "attachment")
-
-    @cherrypy.expose
     def survey(self, id):
         """
 
@@ -299,3 +267,36 @@ class AdminConsole(AppServer):
     @cherrypy.expose
     def users(self):
         return self._render_template('users.html', params={"data":[{"username":entry["username"]} for entry in self.authentication.db.find({})]})
+
+    @cherrypy.expose
+    def upload(self):
+        if "LOCAL" in os.environ and os.environ["LOCAL"]:
+            return self._render_template("upload.html")
+        else:
+            return self._render_template("index.html")
+
+    @cherrypy.expose
+    def upload_file(self, starting_data):
+        if "LOCAL" in os.environ and os.environ["LOCAL"]:
+            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
+
+            with open(out_file, "wb") as f:
+                data = starting_data.file.read()
+                f.write(data)
+
+            with open(out_file, "rb") as f:
+                entries = json.load(f)
+            self.db.insert_many(entries["data"])
+
+    @cherrypy.expose
+    def download(self):
+        if "LOCAL" in os.environ and os.environ["LOCAL"]:
+            all_data = [entry for entry in self.db.find({})]
+            print(all_data)
+            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
+
+            # https://stackoverflow.com/q/3503102
+            with open(save_file, "w") as f:
+                json.dump({'data':all_data}, f)
+
+            return serve_file(save_file, "application/x-download", "attachment")
