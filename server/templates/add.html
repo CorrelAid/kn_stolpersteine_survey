@@ -13,13 +13,13 @@
         <label for="Nachname">Nachname:</label>
         <input type="text" id="Nachname" name="Nachname" value={% if Nachname %}{{Nachname}}{% endif %}>
         <span class="material-icons" data-toggle="tooltip"
-              title="How to deal with married names, Geburtsname asked later">help</span>
+              title="Bitte geben Sie den Nachnamen während der Nazi-Zeit an.">help</span>
     </div>
     <div>
         <label for="URL">Ende der URL:</label>
         <input type="text" id="URL" name="URL" value={% if URL %}{{URL}}{% endif %}>
         <span class="material-icons" data-toggle="tooltip"
-              title="The end of the website, not including html, usually nachname_vorname">help</span>
+              title="Bitte geben Sie den letzten Teil der URL ein, ohne ".html".">help</span>
     </div>
     {% block additionalquestions %}
 
