@@ -18,7 +18,7 @@
 </div>
 <div class="form-group">
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="Doktortitel" name="Doktortitel" {% if Doktortitel is sameas true %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="true" id="Doktortitel" name="Doktortitel" {% if Doktortitel %}checked{% endif %}>
         <label for="Doktortitel">Doktortitel</label>
     </div>
 </div>
@@ -104,54 +104,106 @@
 <div class="form-group" id="Familie">
     <label>Familie</label>
     <span class="material-icons" data-toggle="tooltip" title="Bitte nur Familienangehörige mit Stolpersteinen eingeben.">help</span>
-    <div class="form-group-member">
-         <div style="display: flex; justify-content: space-around">
-            <div>
-                <div class="dropdown">
-                    <label>
-                        Familienmitglied:
-                    </label>
-                    <select class="Familienmitglied">
-                        {% for item in data %}
-                        <option value={{item['id']}}>{{item['Nachname']}}, {{item['Vorname']}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="dropdown">
-                    <label>
-                        Verwandschaftsbeziehung:
-                    </label>
-                    <select class="Verwandschaftsbeziehung">
-                    </select>
-                </div>
-            </div>
+    {% if Familienmitglied %}
+        {% for curr_Familienmitglied, curr_Verwandschaftsbeziehung in zip(Familienmitglied, Verwandschaftsbeziehung) %}
+            <div class="form-group-member">
+                     <div style="display: flex; justify-content: space-around">
+                        <div>
+                            <div class="dropdown">
+                                <label>
+                                    Familienmitglied:
+                                </label>
+                                <select class="Familienmitglied" name="Familienmitglied">
+                                    <option value="">--</option>
+                                    {% for item in data %}
+                                    <option value={{item['id']}}>{{item['Nachname']}}, {{item['Vorname']}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="dropdown">
+                                <label>
+                                    Verwandschaftsbeziehung:
+                                </label>
+                                <select class="Verwandschaftsbeziehung" name="Verwandschaftsbeziehung">
+                                    <option value="">--</option>
+                                    {%  for family_member_option in ["Elternteil", "Kind", "EhegattIn", "Geschwister", "Großelternteil", "EnkelIn", "Onkel/Tante", "Cousin/Cousine", "NeffIn", "Verlobte/r", "Schwiegerelternteil", "Schwiegerkind", "SchwägerIn"] %}
+                                        <option value={{ family_member_option }}>{{ family_member_option }}</option>
+                                    {%  endfor %}
+                                </select>
+                            </div>
+                        </div>
 
-            <div>
-            <button type="button" id="delete_Familie" class="btn btn-primary btn-right">löschen</button>
-            </div>
+                        <div>
+                        <button type="button" id="delete_Familie" class="btn btn-primary btn-right">löschen</button>
+                        </div>
 
-        </div>
-    </div>
+                    </div>
+            </div>
+        {%  endfor %}
+    {% else %}
+        <div class="form-group-member">
+                     <div style="display: flex; justify-content: space-around">
+                        <div>
+                            <div class="dropdown">
+                                <label>
+                                    Familienmitglied:
+                                </label>
+                                <select class="Familienmitglied" name="Familienmitglied">
+                                    <option value="">--</option>
+                                    {% for item in data %}
+                                    <option value={{item['id']}}>{{item['Nachname']}}, {{item['Vorname']}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="dropdown">
+                                <label>
+                                    Verwandschaftsbeziehung:
+                                </label>
+                                <select class="Verwandschaftsbeziehung" name="Verwandschaftsbeziehung">
+                                    <option value="">--</option>
+                                    {%  for family_member_option in ["Elternteil", "Kind", "EhegattIn", "Geschwister", "Großelternteil", "EnkelIn", "Onkel/Tante", "Cousin/Cousine", "NeffIn", "Verlobte/r", "Schwiegerelternteil", "Schwiegerkind", "SchwägerIn"] %}
+                                        <option value={{ family_member_option }}>{{ family_member_option }}</option>
+                                    {%  endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                        <button type="button" id="delete_Familie" class="btn btn-primary btn-right">löschen</button>
+                        </div>
+
+                    </div>
+            </div>
+    {% endif %}
 <button type="button" id="add_Familie" class="btn btn-primary">weitere Familienangehörige</button>
 </div>
 <div class="form-group">
     <label>Geburtsdaten</label>
-
-    <label for="Todesdatum">Geburtsdatum:</label>
+    <br>
+    <label for="Geburtsdatum">Geburtsdatum:</label>
     <div class="form_date">
         <select class="jahr" id="Geburtsjahr" name="Geburtsjahr">
             <option value="">--</option>
+            {% for year in range(1800,2001) %}
+                <option {% if Geburtsjahr and (Geburtsjahr|int() == year) %}selected="selected"{% endif %} value={{ year }}>{{ year }}</option>
+            {% endfor %}
         </select>
         <select class="monat" id="Geburtsmonat" name="Geburtsmonat">
             <option value="">--</option>
+            {% for month in ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"] %}
+                <option {% if Geburtsmonat and (Geburtsmonat == month) %}selected="selected"{% endif %} value={{ month }}>{{ month }}</option>
+            {% endfor %}
         </select>
-        <select class="datum" id="Geburtsdatum" pname="Geburtsdatum">
+        <select class="datum" id="Geburtsdatum" name="Geburtsdatum">
             <option value="">--</option>
+            {% for date in range(1,32) %}
+                <option {% if Geburtsdatum and (Geburtsdatum|int() == date) %}selected="selected"{% endif %} value={{ date }}>{{ date }}</option>
+            {% endfor %}
         </select>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="Geburtsdatum_vermutet" {% if Geburtsdatum_vermutet is sameas true %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="true" name="Geburtsdatum_vermutet" {% if Geburtsdatum_vermutet %}checked{% endif %}>
         <label for="Geburtsdatum_vermutet">nur vermutet</label>
     </div>
 
@@ -161,29 +213,38 @@
     </label>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="Geburtsort_vermutet" {% if Geburtsort_vermutet is sameas true %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="true" name="Geburtsort_vermutet" {% if Geburtsort_vermutet %}checked{% endif %}>
         <label for="Geburtsort_vermutet">nur vermutet</label>
     </div>
 </div>
 <div class="form-group">
     <label>Todesdaten</label>
-
+    <br>
     <label for="Todesdatum">Todesdatum:</label>
     <div class="form_date">
         <select class="jahr" name="Todesjahr">
             <option value="">--</option>
+            {% for year in range(1800,2001) %}
+                <option {% if Todesjahr and (Todesjahr|int() == year)%}selected="selected"{% endif %} value={{ year }}>{{ year }}</option>
+            {% endfor %}
         </select>
         <select class="monat" name="Todesmonat">
             <option value="">--</option>
+            {% for month in ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"] %}
+                <option {% if Todesmonat and (Todesmonat == month) %}selected="selected"{% endif %} value={{ month }}>{{ month }}</option>
+            {% endfor %}
         </select>
         <select class="datum" name="Todesdatum">
             <option value="">--</option>
+            {% for date in range(1,32) %}
+                <option {% if Todesdatum and (Todesdatum|int() == date) %}selected="selected"{% endif %} value={{ date }}>{{ date }}</option>
+            {% endfor %}
         </select>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" name="todedatum_vermutet" {% if todedatum_vermutet is sameas true %}checked{% endif %}>
-        <label for="todedatum_vermutet">nur vermutet</label>
+        <input class="form-check-input" type="checkbox" value="true" name="Todesdatum_vermutet" {% if Todesdatum_vermutet %}checked{% endif %}>
+        <label for="Todesdatum_vermutet">nur vermutet</label>
     </div>
 
     <label for="Todesort">Todesort:
@@ -192,72 +253,218 @@
     </label>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="Todesort_vermutet" {% if Todesort_vermutet is sameas true %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="true" name="Todesort_vermutet" {% if Todesort_vermutet %}checked{% endif %}>
         <label for="Todesort_vermutet">nur vermutet</label>
     </div>
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="true" id="Todesort_haft" {% if Todesort_haft is sameas true %}checked{% endif %}>
+        <input class="form-check-input" type="checkbox" value="true" name="Todesort_haft" {% if Todesort_haft %}checked{% endif %}>
         <label for="Todesort_haft">in Haft</label>
     </div>
     <div class="form-group" id="Stationen">
-        <div class="form-group-member">
-            <div style="display: flex; justify-content: space-around">
-                <div>
-                    <label>Stationen:
-                        <span class="material-icons" data-toggle="tooltip" title="Bitte beachten Sie, dass dies nur Stationen der Viktimisierung sind (z. B. Konzentrationslager, Gefängnis usw.)">help</span>
-                    </label>
-
+        {% if Ort %}
+            {% for curr_Ort, curr_Stationen_af_jahr, curr_Stationen_af_monat, curr_Stationen_af_datum, curr_Stationen_ed_jahr, curr_Stationen_ed_monat, curr_Stationen_ed_datum in zip(Ort, Stationen_af_jahr, Stationen_af_monat, Stationen_af_datum, Stationen_ed_jahr, Stationen_ed_monat, Stationen_ed_datum) %}
+            <div class="form-group-member">
+                <div style="display: flex; justify-content: space-around">
                     <div>
-                        <input type="text" placeholder="Ort" name="Ort" value={% if Ort %}{{Ort}}{% endif %}>
+                        <label>Stationen:
+                            <span class="material-icons" data-toggle="tooltip" title="Bitte beachten Sie, dass dies nur Stationen der Viktimisierung sind (z. B. Konzentrationslager, Gefängnis usw.)">help</span>
+                        </label>
+
+                        <div>
+                            <input type="text" placeholder="Ort" name="Ort" value={% if curr_Ort %}{{curr_Ort}}{% endif %}>
+                        </div>
+                        <br>
+                        <label>Anfangsdatum:</label>
+                        <div class="form_date">
+                            <select class="jahr" name="Stationen_af_jahr">
+                                <option value="">--</option>
+                                {% for year in range(1800,2001) %}
+                                    <option {% if curr_Stationen_af_jahr|int() == year %}selected="selected"{% endif %} value={{ year }}>{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="monat" name="Stationen_af_monat">
+                                <option value="">--</option>
+                                {% for month in ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"] %}
+                                    <option {% if curr_Stationen_af_monat == month %}selected="selected"{% endif %} value={{ month }}>{{ month }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="datum" pname="Stationen_af_datum">
+                                <option value="">--</option>
+                                {% for date in range(1,32) %}
+                                    <option {% if curr_Stationen_af_datum|int() == date %}selected="selected"{% endif %} value={{ date }}>{{ date }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label>Enddatum:</label>
+                        <div class="form_date">
+                            <select class="jahr" name="Stationen_ed_jahr">
+                                <option value="">--</option>
+                                {% for year in range(1800,2001) %}
+                                    <option {% if curr_Stationen_ed_jahr|int() == year %}selected="selected"{% endif %} value={{ year }}>{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="monat" name="Stationen_ed_monat">
+                                <option value="">--</option>
+                                {% for month in ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"] %}
+                                    <option {% if curr_Stationen_ed_monat == month %}selected="selected"{% endif %} value={{ month }}>{{ month }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="datum" pname="Stationen_ed_datum">
+                                <option value="">--</option>
+                                {% for date in range(1,32) %}
+                                    <option {% if curr_Stationen_ed_datum|int() == date %}selected="selected"{% endif %} value={{ date }}>{{ date }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-                    <label>Anfangsdatum:</label>
-                    <div class="form_date">
-                        <select class="jahr" name="Stationen_af_jahr">
-                            <option value="">--</option>
-                        </select>
-                        <select class="monat" name="Stationen_af_monat">
-                            <option value="">--</option>
-                        </select>
-                        <select class="datum" pname="Stationen_af_datum">
-                            <option value="">--</option>
-                        </select>
+                    <div>
+                        <button type="button" id="delete_Stationen" class="btn btn-primary btn-right">löschen</button>
                     </div>
-                    <label>Enddatum:</label>
-                    <div class="form_date">
-                        <select class="jahr" name="Stationen_ed_jahr">
-                            <option value="">--</option>
-                        </select>
-                        <select class="monat" name="Stationen_ed_monat">
-                            <option value="">--</option>
-                        </select>
-                        <select class="datum" pname="Stationen_ed_datum">
-                            <option value="">--</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <button type="button" id="delete_Stationen" class="btn btn-primary btn-right">löschen</button>
                 </div>
             </div>
-        </div>
+            {% endfor %}
+        {%  else %}
+            <div class="form-group-member">
+                    <div style="display: flex; justify-content: space-around">
+                        <div>
+                            <label>Stationen:
+                                <span class="material-icons" data-toggle="tooltip" title="Bitte beachten Sie, dass dies nur Stationen der Viktimisierung sind (z. B. Konzentrationslager, Gefängnis usw.)">help</span>
+                            </label>
+
+                            <div>
+                                <input type="text" placeholder="Ort" name="Ort">
+                            </div>
+                            <br>
+                            <label>Anfangsdatum:</label>
+                            <div class="form_date">
+                                <select class="jahr" name="Stationen_af_jahr">
+                                    <option value="">--</option>
+                                    {% for year in range(1800,2001) %}
+                                        <option value={{ year }}>{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select class="monat" name="Stationen_af_monat">
+                                    <option value="">--</option>
+                                </select>
+                                <select class="datum" pname="Stationen_af_datum">
+                                    <option value="">--</option>
+                                </select>
+                            </div>
+                            <label>Enddatum:</label>
+                            <div class="form_date">
+                                <select class="jahr" name="Stationen_ed_jahr">
+                                    <option value="">--</option>
+                                    {% for year in range(1800,2001) %}
+                                        <option value={{ year }}>{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select class="monat" name="Stationen_ed_monat">
+                                    <option value="">--</option>
+                                </select>
+                                <select class="datum" pname="Stationen_ed_datum">
+                                    <option value="">--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" id="delete_Stationen" class="btn btn-primary btn-right">löschen</button>
+                        </div>
+                    </div>
+                </div>
+        {%  endif %}
     <button type="button" id="add_Stationen" class="btn btn-primary">weitere Stationen</button>
     </div>
     <div class="form-group" id="Flucht">
-        <div class="form-group-member">
+        {% if Zielort %}
+            {% for curr_Zielort, curr_Durchort, curr_Flucht_af_jahr, curr_Flucht_af_monat, curr_Flucht_af_datum, curr_Flucht_ed_jahr, curr_Flucht_ed_monat, curr_Flucht_ed_datum, curr_Erfolg in zip(Zielort, Durchort, Flucht_af_jahr, Flucht_af_monat, Flucht_af_datum, Flucht_ed_jahr, Flucht_ed_monat, Flucht_ed_datum, Erfolg) %}
+                <div class="form-group-member">
+                    <div style="display: flex; justify-content: space-around">
+                        <div>
+                            <label>Flucht:
+                                <span class="material-icons" data-toggle="tooltip" title="Bitte geben Sie alle Fluchtversuche ein, ob erfolgreich oder nicht.">help</span>
+                            </label>
+                            <div>
+                                <input type="text" placeholder="Zielort" name="Zielort" value={% if curr_Zielort %}{{curr_Zielort}}{% endif %}>
+                            </div>
+                            <input type="text" placeholder="Durchort" name="Durchort" value={% if curr_Durchort %}{{curr_Durchort}}{% endif %}>
+                            <br>
+                            <label>Anfangsdatum:</label>
+                            <div class="form_date">
+                                <select class="jahr" name="Flucht_af_jahr">
+                                    <option value="">--</option>
+                                    {% for year in range(1800,2001) %}
+                                        <option {% if curr_Flucht_af_jahr|int() == year %}selected="selected"{% endif %} value={{ year }}>{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select class="monat" name="Flucht_af_monat">
+                                    <option value="">--</option>
+                                    {% for month in ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"] %}
+                                        <option {% if curr_Flucht_af_monat == month %}selected="selected"{% endif %} value={{ month }}>{{ month }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select class="datum" name="Flucht_af_datum">
+                                    <option value="">--</option>
+                                    {% for date in range(1,32) %}
+                                        <option {% if curr_Flucht_af_datum|int() == date %}selected="selected"{% endif %} value={{ date }}>{{ date }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <label>Enddatum:</label>
+                            <div class="form_date">
+                                <select class="jahr" name="Flucht_ed_jahr">
+                                    <option value="">--</option>
+                                    {% for year in range(1800,2001) %}
+                                        <option {% if curr_Flucht_ed_jahr|int() == year %}selected="selected"{% endif %} value={{ year }}>{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select class="monat" name="Flucht_ed_monat">
+                                    <option value="">--</option>
+                                    {% for month in ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"] %}
+                                        <option {% if curr_Flucht_ed_monat == month %}selected="selected"{% endif %} value={{ month }}>{{ month }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select class="datum" pname="Flucht_ed_datum">
+                                    <option value="">--</option>
+                                    {% for date in range(1,32) %}
+                                        <option {% if curr_Flucht_ed_datum|int() == date %}selected="selected"{% endif %} value={{ date }}>{{ date }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <label>
+                                Erfolg?
+                            </label>
+                            <select name="Erfolg">
+                                {% for erfolg_status in ["Ja", "Nein", "Unklar"] %}
+                                    <option value={{ erfolg_status }} {% if curr_Erfolg == erfolg_status %}selected="selected"{%  endif %}>{{ erfolg_status }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <button type="button" id="delete_Flucht" class="btn btn-primary btn-right">löschen</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {%  else  %}
+            <div class="form-group-member">
             <div style="display: flex; justify-content: space-around">
                 <div>
                     <label>Flucht:
                         <span class="material-icons" data-toggle="tooltip" title="Bitte geben Sie alle Fluchtversuche ein, ob erfolgreich oder nicht.">help</span>
                     </label>
                     <div>
-                        <input type="text" placeholder="Zielort" name="Zielort" value={% if Zielort %}{{Zielort}}{% endif %}>
+                        <input type="text" placeholder="Zielort" name="Zielort">
                     </div>
-                    <input type="text" placeholder="Durchort" name="Durchort" value={% if Durchort %}{{Durchort}}{% endif %}>
+                    <input type="text" placeholder="Durchort" name="Durchort">
+                    <br>
                     <label>Anfangsdatum:</label>
                     <div class="form_date">
                         <select class="jahr" name="Flucht_af_jahr">
                             <option value="">--</option>
+                            {% for year in range(1800,2001) %}
+                                <option value={{ year }}>{{ year }}</option>
+                            {% endfor %}
                         </select>
                         <select class="monat" name="Flucht_af_monat">
                             <option value="">--</option>
@@ -270,6 +477,9 @@
                     <div class="form_date">
                         <select class="jahr" name="Flucht_ed_jahr">
                             <option value="">--</option>
+                            {% for year in range(1800,2001) %}
+                                <option value={{ year }}>{{ year }}</option>
+                            {% endfor %}
                         </select>
                         <select class="monat" name="Flucht_ed_monat">
                             <option value="">--</option>
@@ -281,10 +491,10 @@
                     <label>
                         Erfolg?
                     </label>
-                    <select name="Ueberlebt">
-                        <option value="">Ja</option>
-                        <option value="">Nein</option>
-                        <option value="">Unklar</option>
+                    <select name="Erfolg">
+                        {% for erfolg_status in ["Ja", "Nein", "Unklar"] %}
+                            <option value={{ erfolg_status }}>{{ erfolg_status }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div>
@@ -292,6 +502,7 @@
                 </div>
             </div>
         </div>
+        {%  endif  %}
         <button type="button" id="add_Flucht" class="btn btn-primary">weitere Fluchtversuchen</button>
     </div>
     <div class="form-group">
@@ -299,9 +510,9 @@
             Überlebt?
         </label>
         <select name="Ueberlebt">
-            <option value="">Ja</option>
-            <option value="">Nein</option>
-            <option value="">Unklar</option>
+            {% for ueberlebt_status in ["Ja", "Nein", "Unklar"] %}
+                <option value={{ ueberlebt_status }} {% if Ueberlebt == ueberlebt_status %}selected="selected"{%  endif %}>{{ ueberlebt_status }}</option>
+            {% endfor %}
         </select>
     </div>
     {% endblock%}
