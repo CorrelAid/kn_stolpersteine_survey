@@ -111,7 +111,7 @@ class AppServer:
 
         record = existing_records[0]
 
-        data = self.db.find({})
+        data = list(self.db.find({}))
 
         questions = []
         for question_file in ["add", "survey"]:
@@ -128,7 +128,7 @@ class AppServer:
                 current_data = {}
             current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
 
-            html = SurveyObject(questions, current_data, list(data)).construct_survey(questions, current_data)
+            html = SurveyObject(questions, current_data, data).construct_survey(questions, current_data)
 
             if "URL" in current_data:
                 html = f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + html
@@ -137,10 +137,10 @@ class AppServer:
                 raise ValueError("Need at least three user codings")
             else:
                 html = []
-                for current_data in record["data"][-3:]:
+                for name_append, current_data in zip(["second_to_last","last",""],record["data"][-3:]):
                     current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
 
-                    so = SurveyObject(questions, current_data, list(data))
+                    so = SurveyObject(questions, current_data, data, name_append=name_append)
 
                     if "URL" in current_data:
                         html.append(f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + so.construct_survey(questions, current_data))
@@ -330,7 +330,7 @@ class AdminConsole(AppServer):
 
             with open(out_file, "rb") as f:
                 entries = json.load(f)
-            self.db.insert_many(entries["data"])
+            self.db.insert_many(entries)
 
     @cherrypy.expose
     def download(self):
