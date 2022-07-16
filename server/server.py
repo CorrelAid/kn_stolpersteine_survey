@@ -6,6 +6,7 @@ import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
 
+from .surveys import SurveyObject
 from cherrypy.lib.static import serve_file
 import bcrypt
 
@@ -90,7 +91,7 @@ class AppServer:
         return self._render_template('index.html', params={'title': "Index Page", "data": all_data, "admin_mode": admin_mode})
 
     @cherrypy.expose
-    def survey(self, id):
+    def survey(self, id, admin_mode=False):
         """
 
         :param vorname:
@@ -111,13 +112,23 @@ class AppServer:
             current_data = record["data"][-1]
         else:
             current_data = {}
+        current_data = {**current_data, **{key:val for key, val in record.items() if key != "data"}}
 
         data = self.db.find({})
 
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST", "id": id,
-                                                            "data" : data,
-                                                            **{key : record[key] for key in self.identifying_info},
-                                                            **current_data})
+        questions = []
+        for question_file in ["add", "survey"]:
+            curr_question_file = Path(__file__).resolve().parents[1].joinpath(f"static/data/{question_file}.json")
+            with open(curr_question_file, "rb") as f:
+                questions.extend(json.load(f))
+
+        html = SurveyObject(questions, current_data, list(data)).construct_survey(questions, current_data)
+
+        if "URL" in current_data:
+            html = f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + html
+
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST",
+                                                            "html" : html, "admin_mode":admin_mode})
 
     @cherrypy.expose
     def add(self):
@@ -125,11 +136,14 @@ class AppServer:
 
         :return:
         """
-        question_file = Path(__file__).resolve().parents[1].joinpath("static/data/questions.json")
+        question_file = Path(__file__).resolve().parents[1].joinpath("static/data/add.json")
 
         with open(question_file, "rb") as f:
             questions = json.load(f)
-        return self._render_template('add.html', params={'title': "Add Victim", "questions":questions, "data":{}, "post_route": f"{self.realm}/POST_ADD"})
+
+        html = SurveyObject(questions, {}, {}).construct_survey(questions, {})
+
+        return self._render_template('add.html', params={'title': "Add Victim", "html":html, "post_route": f"{self.realm}/POST_ADD"})
 
     @cherrypy.expose
     def fail_add(self, info):
@@ -167,14 +181,14 @@ class AppServer:
             return self.success_add(self.db.find_one(kwargs))
 
     @cherrypy.expose
-    def POST(self, id, **kwargs):
+    def POST(self, _id, **kwargs):
         """
 
         :return:
         """
         query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
         existing_records = [entry for entry in self.db.find(
-            {"_id": ObjectId(id)})]
+            {"_id": ObjectId(_id)})]
 
         # only should be one entry
         assert(len(existing_records) == 1)
@@ -182,7 +196,7 @@ class AppServer:
         record = existing_records[0]
         record["data"].append({key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
 
-        self.db.update_one({"_id": ObjectId(id)}, {"$set": {**query, "data": record["data"]}})
+        self.db.update_one({"_id": ObjectId(_id)}, {"$set": {**query, "fertig":True, "data": record["data"]}})
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()

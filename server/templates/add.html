@@ -1,28 +1,8 @@
 {% extends "template_survey.html" %}
 {% block form %}
 <form action="/{{post_route}}" on_submit="return removeHidden()" data-parsley-validate data-parsley-trigger="keyup">
-    {% if data["URL"] %}
-    LINK:  <a href="https://www.stolpersteine-konstanz.de/{{ data["URL"] }}.html">https://www.stolpersteine-konstanz.de/{{data["URL"]}}.html</a>
-    {% endif %}
 
-    {% for question in questions %}
-        <div>
-            <label for={{ question["name"] }}>{% if "label" in question %}{{ question["label"] }}{%  else %}{{ question["name"] }}{%  endif %}
-                {%  if 'tooltip' in question %}
-                    <span class="material-icons" data-toggle="tooltip" title="{{ question['tooltip']['text'] }}">{{ question['tooltip']['icon'] }}</span>
-                {%  endif  %}
-            </label>
-            {% if question["type"] == "text" %}
-                <input type="text" name={{ question["name"] }} {% if 'parsley-validator' in question %} {{  question['parsley-validator'] }} {% endif %} value={% if data[question["name"]] %}{{ data[question["name"]] }}{% endif %}>
-            {%  endif  %}
-        </div>
-    {% endfor %}
-
-    {% block additionalquestions %}
-    {% endblock%}
+    {{ html }}
+    <br>
     <input type="submit" value="Absenden">
-</form>
-</span>
-</div>
-</body>
 {% endblock %}
