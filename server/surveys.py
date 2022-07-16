@@ -182,7 +182,7 @@ class SurveyObject:
             label_list=option_list
 
         return f"<option value=''>--</option>\n" \
-               + '\n'.join([f"<option selected='selected' value={curr_option}>{curr_option}</option>" \
+               + '\n'.join([f"<option selected='selected' value={curr_option}>{curr_label}</option>" \
                                 if name in data and data[name] == str(curr_option) else \
                                 f"<option value={curr_option}>{curr_label}</option>" \
                             for curr_option, curr_label in zip(option_list,label_list)]) + "\n"
