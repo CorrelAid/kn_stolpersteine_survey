@@ -194,7 +194,7 @@ class AppServer:
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        record["data"].append({key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
+        record["data"].append({**{key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info}, "user":cherrypy.request.login})
 
         self.db.update_one({"_id": ObjectId(_id)}, {"$set": {**query, "fertig":True, "data": record["data"]}})
 
@@ -281,6 +281,10 @@ class AdminConsole(AppServer):
     @cherrypy.expose
     def index(self, **kwargs):
         return super().index(admin_mode=True)
+
+    @cherrypy.expose
+    def survey(self, id):
+        return super().survey(id, admin_mode=True)
 
     @cherrypy.expose
     def users(self):
