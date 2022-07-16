@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from bson.objectid import ObjectId
 import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
@@ -104,7 +103,7 @@ class AppServer:
         :param url:
         :return:
         """
-        query = {"_id": ObjectId(id)}
+        query = {"_id": id}
         existing_records = [entry for entry in self.db.find(query)]
 
         # only should be one entry
@@ -187,6 +186,10 @@ class AppServer:
 
         :return:
         """
+        def create_id(Vorname, Nachname, Strasse, Strassennummer, URL):
+            special_char_map = {ord('ä'):'ae', ord('ü'):'ue', ord('ö'):'oe'}
+            return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Strassennummer}".lower().replace("-", "_")
+
         existing_records = [entry for entry in self.db.find(kwargs)]
         if "" in kwargs.values():
             # TODO could be better to do this in front-end or at least have a landing page
@@ -196,7 +199,7 @@ class AppServer:
             return self.fail_add(kwargs)
         else:
             # add data, with empty data entry
-            self.db.insert_one({**kwargs, "data": []})
+            self.db.insert_one({**kwargs, "_id": create_id(**kwargs), "data": []})
             return self.success_add(self.db.find_one(kwargs))
 
     @cherrypy.expose
@@ -207,7 +210,7 @@ class AppServer:
         """
         query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
         existing_records = [entry for entry in self.db.find(
-            {"_id": ObjectId(_id)})]
+            {"_id": _id})]
 
         # only should be one entry
         assert(len(existing_records) == 1)
@@ -215,7 +218,7 @@ class AppServer:
         record = existing_records[0]
         record["data"].append({**{key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info}, "user":cherrypy.request.login})
 
-        self.db.update_one({"_id": ObjectId(_id)}, {"$set": {**query, "fertig":True, "data": record["data"]}})
+        self.db.update_one({"_id": _id}, {"$set": {**query, "fertig":True, "data": record["data"]}})
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()

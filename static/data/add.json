@@ -23,5 +23,26 @@
       "icon": "help"
     },
     "parsley_validator": "data-parsley-url"
+  },
+    {
+    "type": "nested-questions",
+    "label": "Aktueller Standort der Stolpersteine",
+    "subquestions": [
+      {
+        "type": "text",
+        "label": "Straße",
+        "name": "Strasse",
+        "tooltip": {
+          "text": "Bitte kürzen, z.B. Str. statt Strasse.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock data-parsley-str"
+      },
+      {
+        "type": "text",
+        "label": "Straßennummer",
+        "name": "Strassennummer"
+      }
+    ]
   }
 ]
