@@ -63,13 +63,13 @@ class SurveyObject:
 
         individual_end = f"</div>\n" \
                   f"<div>\n" \
-                  f"<button type='button' id='delete_{question['label']}' class='btn btn-primary btn-right'>löschen</button> \n" \
+                  f"<button type='button' id='delete_{question['label']}{self.name_append}' class='btn btn-primary btn-right'>löschen</button> \n" \
                   f"</div>\n" \
                   f"</div>\n" \
                   f"<br\n>" \
 
 
-        group_end = f"<button type='button' id='add_{question['label']}' class='btn btn-primary'>weitere {question['label']}</button>\n" \
+        group_end = f"<button type='button' id='add_{question['label']}{self.name_append}' class='btn btn-primary'>weitere {question['label']}</button>\n" \
                     f"</div>\n"
 
         data_fields = []
