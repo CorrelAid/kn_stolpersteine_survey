@@ -52,7 +52,7 @@ class SurveyObject:
         return survey
 
     def construct_dynamic_nested(self, question, data):
-        group_start = f"<div class='form-group' id='{question['label']}'>\n" \
+        group_start = f"<div class='form-group' id='{question['label']}{self.name_append}'>\n" \
                       f"<label>{question['label']}:</label>"
 
         if question["tooltip"]:
