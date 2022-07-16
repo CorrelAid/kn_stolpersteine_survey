@@ -107,13 +107,6 @@ class AppServer:
 
         record = existing_records[0]
 
-        # if existing data, take most up-to-date copy
-        if len(record["data"]) > 0:
-            current_data = record["data"][-1]
-        else:
-            current_data = {}
-        current_data = {**current_data, **{key:val for key, val in record.items() if key != "data"}}
-
         data = self.db.find({})
 
         questions = []
@@ -122,10 +115,31 @@ class AppServer:
             with open(curr_question_file, "rb") as f:
                 questions.extend(json.load(f))
 
-        html = SurveyObject(questions, current_data, list(data)).construct_survey(questions, current_data)
 
-        if "URL" in current_data:
-            html = f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + html
+        if not admin_mode:
+            # if existing data, take most up-to-date copy
+            if len(record["data"]) > 0:
+                current_data = record["data"][-1]
+            else:
+                current_data = {}
+            current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
+
+            html = SurveyObject(questions, current_data, list(data)).construct_survey(questions, current_data)
+
+            if "URL" in current_data:
+                html = f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + html
+        else:
+            if len(record["data"]) < 3:
+                raise ValueError("Need at least three user codings")
+            else:
+                html = []
+                for current_data in record["data"][-3:]:
+                    current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
+
+                    so = SurveyObject(questions, current_data, list(data))
+
+                    if "URL" in current_data:
+                        html.append(f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + so.construct_survey(questions, current_data))
 
         return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST",
                                                             "html" : html, "admin_mode":admin_mode})

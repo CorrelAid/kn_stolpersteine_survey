@@ -9,15 +9,15 @@
     {% if admin_mode %}
             <div class="row">
         <div class="col-sm">
-            <form id="second_last_user">{{ html }}</form>
+            <form id="second_last_user">{{ html[0] }}</form>
         </div>
         <div class="col-sm">
-            <form id="last_user">{{ html }}</form>
+            <form id="last_user">{{ html[1] }}</form>
         </div>
         <div class="col-sm">
             <form action="/{{ post_route }}" on_submit="return removeHidden()" data-parsley-validate
                   data-parsley-trigger="keyup">
-                {{ html }}
+                {{ html[2] }}
                 <input type="submit" value="als finale Kopie markieren">
             </form>
         </div>
