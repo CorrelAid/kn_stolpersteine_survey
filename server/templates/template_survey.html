@@ -1,37 +1,19 @@
 {% extends "layout.html" %}
 {% block jslibs %}
-<script src="static/js/survey.js"></script>
-<script src="static/js/parsley.min.js"></script>
-<script src="static/js/i18n/de.js"></script>
-<script src="static/js/survey-validation.js"></script>
+<script src="../static/js/survey.js"></script>
+<script src="../static/js/parsley.min.js"></script>
+<script src="../static/js/i18n/de.js"></script>
+<script src="../static/js/survey-validation.js"></script>
 {% endblock %}
 {% block styles %}
 <style>
-    .iframe {
-        height: 100%;
-        width: 100%;
-    }
-
-    .container {
-        height: 100%;
-    }
 </style>
 {% endblock %}
 {% block content %}
 <body>
-<div class="container-fluid min-vh-100">
-<!--    <div class="row min-vh-100">-->
-<!--        <div class="col-sm-3 col-md-8">-->
-<!--          <span><iframe class="iframe" id="iframe-target"-->
-<!--                        src="https://www.stolpersteine-konstanz.de/{% if url %}{{url}}.html{% endif %}">-->
-<!--         </iframe></span>-->
-<!--        </div>-->
-<!--        <div class="col-sm-9 col-md-2">-->
+
             {% block form %}
             Hello World!
             {% endblock %}
-<!--        </div>-->
-<!--    </div>-->
-</div>
 </body>
 {% endblock %}
