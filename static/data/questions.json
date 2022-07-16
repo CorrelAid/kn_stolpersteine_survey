@@ -1,0 +1,27 @@
+[
+  {
+    "type": "text",
+    "label": "Vorname(n)",
+    "name": "Vorname",
+    "parsley-validator": "data-parsley-capslock"
+  },
+  {
+    "type": "text",
+    "name": "Nachname",
+    "tooltip": {
+      "text": "Bitte geben Sie den Nachnamen während der NS-Zeit an.",
+      "icon": "help"
+    },
+    "parsley-validator": "data-parsley-capslock"
+  },
+  {
+    "type": "text",
+    "name": "URL",
+    "label": "Ende der URL",
+    "tooltip": {
+      "text": "Bitte geben Sie den letzten Teil der URL ein, ohne '.html'.",
+      "icon": "help"
+    },
+    "parsley-validator": "data-parsley-url"
+  }
+]

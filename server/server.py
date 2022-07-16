@@ -125,7 +125,11 @@ class AppServer:
 
         :return:
         """
-        return self._render_template('add.html', params={'title': "Add Victim", "post_route": f"{self.realm}/POST_ADD"})
+        question_file = Path(__file__).resolve().parents[1].joinpath("static/data/questions.json")
+
+        with open(question_file, "rb") as f:
+            questions = json.load(f)
+        return self._render_template('add.html', params={'title': "Add Victim", "questions":questions, "data":{}, "post_route": f"{self.realm}/POST_ADD"})
 
     @cherrypy.expose
     def fail_add(self, info):

@@ -1,28 +1,24 @@
 {% extends "template_survey.html" %}
 {% block form %}
-<form action="/{{post_route}}" on_submit="return removeHidden()">
-    {% if URL %}
-    LINK:  <a href="https://www.stolpersteine-konstanz.de/{{URL}}.html">https://www.stolpersteine-konstanz.de/{{URL}}.html</a>
+<form action="/{{post_route}}" on_submit="return removeHidden()" data-parsley-validate data-parsley-trigger="keyup">
+    {% if data["URL"] %}
+    LINK:  <a href="https://www.stolpersteine-konstanz.de/{{ data["URL"] }}.html">https://www.stolpersteine-konstanz.de/{{data["URL"]}}.html</a>
     {% endif %}
 
-    <div class="form-group">
-        <label for="Vorname">Vorname(n):</label>
-        <input type="text" id="Vorname" name="Vorname" value={% if Vorname %}{{Vorname}}{% endif %}>
-    </div>
-    <div class="form-group">
-        <label for="Nachname">Nachname:</label>
-        <input type="text" id="Nachname" name="Nachname" value={% if Nachname %}{{Nachname}}{% endif %}>
-        <span class="material-icons" data-toggle="tooltip"
-              title="Bitte geben Sie den Nachnamen während der NS-Zeit an.">help</span>
-    </div>
-    <div>
-        <label for="URL">Ende der URL:</label>
-        <input type="text" id="URL" name="URL" value={% if URL %}{{URL}}{% endif %}>
-        <span class="material-icons" data-toggle="tooltip"
-              title="Bitte geben Sie den letzten Teil der URL ein, ohne '.html'.">help</span>
-    </div>
-    {% block additionalquestions %}
+    {% for question in questions %}
+        <div>
+            <label for={{ question["name"] }}>{% if "label" in question %}{{ question["label"] }}{%  else %}{{ question["name"] }}{%  endif %}
+                {%  if 'tooltip' in question %}
+                    <span class="material-icons" data-toggle="tooltip" title="{{ question['tooltip']['text'] }}">{{ question['tooltip']['icon'] }}</span>
+                {%  endif  %}
+            </label>
+            {% if question["type"] == "text" %}
+                <input type="text" name={{ question["name"] }} {% if 'parsley-validator' in question %} {{  question['parsley-validator'] }} {% endif %} value={% if data[question["name"]] %}{{ data[question["name"]] }}{% endif %}>
+            {%  endif  %}
+        </div>
+    {% endfor %}
 
+    {% block additionalquestions %}
     {% endblock%}
     <input type="submit" value="Absenden">
 </form>
