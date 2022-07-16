@@ -122,7 +122,7 @@ class SurveyObject:
         else:
             tooltip_text = ""
 
-        return f"<label for={name}{self.name_append}>{label if label else name}:\n" \
+        return f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
                f"</label>\n" \
                f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value={data if data else ''}>\n" \
                + tooltip_text + checkbox_text
@@ -181,6 +181,9 @@ class SurveyObject:
         if label_list is None:
             label_list=option_list
 
+        if self.name_append == "":
+            print(option_list)
+            pass
         return f"<option value=''>--</option>\n" \
                + '\n'.join([f"<option selected='selected' value={curr_option}>{curr_label}</option>" \
                                 if name in data and data[name] == str(curr_option) else \
@@ -192,7 +195,7 @@ class SurveyObject:
             raise ValueError("Question must be of type 'dropdown'")
 
         return f"<div class='dropdown'>\n" \
-               f"<label for={name}{self.name_append}>{label if label else name}:\n" \
+               f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
                f"<select name={name}{self.name_append}>\n" \
                + self.construct_options(name, options, label_list=label_list, data=data) + "</select></div>\n"
 
@@ -225,19 +228,4 @@ class SurveyObject:
                f"<select class='datum' name='{name}_datum{self.name_append}'>\n" \
                + self.construct_options(f"{name}_datum", self.possible_dates, data=data) + \
                f"</select>\n </div> \n" + checkbox_text
-
-
-if __name__ == "__main__":
-    import json
-    from pathlib import Path
-
-    question_file = Path(__file__).resolve().parents[1].joinpath("static/data/add.json")
-
-    with open(question_file, "rb") as f:
-        questions = json.load(f)
-
-    data = {"Vorname": "Mary", "Gender": "weiblich", "Doktortitel":"true", "Verwandschaftsbeziehung":["Kind", "Geschwister"], "Familienmitglied": ["1","2"] }
-    so = SurveyObject(questions, data,all_victims_in_database=[{"id":1, "Nachname": "C", "Vorname":"D"},{"id":2, "Nachname": "CC", "Vorname":"DD"},{"id":3, "Nachname": "CCC", "Vorname":"DDD"}])
-    text = so.construct_survey(questions, data)
-    print(text)
 
