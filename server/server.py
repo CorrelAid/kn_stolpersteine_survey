@@ -76,6 +76,11 @@ class AppServer:
         return tmpl.render(**params)
 
     @cherrypy.expose
+    def delete_entries(self):
+        #TODO This is only here for testing, this must be removed just in case!!
+        self.db.delete_many({})
+
+    @cherrypy.expose
     def index(self, **kwargs):
         """
 
@@ -328,11 +333,14 @@ class AdminConsole(AppServer):
     def download(self):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
             all_data = [entry for entry in self.db.find({})]
-            print(all_data)
+
+            # remove object _id since not json serializable
+            all_data = [{key: val for key, val in victim_data.items() if key != "_id"} for victim_data in all_data]
+
             save_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
 
             # https://stackoverflow.com/q/3503102
             with open(save_file, "w") as f:
-                json.dump({'data':all_data}, f)
+                json.dump(all_data, f)
 
             return serve_file(save_file, "application/x-download", "attachment")
