@@ -40,8 +40,8 @@
       },
       {
         "type": "text",
-        "label": "Straßennummer",
-        "name": "Strassennummer"
+        "label": "Hausnummer",
+        "name": "Hausnummer"
       }
     ]
   }
