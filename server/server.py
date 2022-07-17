@@ -208,7 +208,9 @@ class AppServer:
 
         :return:
         """
-        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
+        print(kwargs)
+        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"], \
+                 "Strasse": kwargs["Strasse"], "Hausnummer": kwargs["Hausnummer"]}
         existing_records = [entry for entry in self.db.find(
             {"_id": _id})]
 
