@@ -1,0 +1,246 @@
+[
+  {
+    "type": "nested-questions",
+    "style": "'display: none;'",
+    "subquestions": [
+      {
+        "type": "text",
+        "name": "_id",
+        "label": "Database ID"
+      }
+    ]
+  },
+  {
+    "type": "text",
+    "name": "Geburtsname",
+    "tooltip": {
+      "text": "Bitte geben Sie den Geburtsnamen an, falls das Opfer einen Ehenamen während der NS-Zeit hatte.",
+      "icon": "help"
+    },
+    "parsley_validator": "data-parsley-capslock"
+  },
+  {
+    "type": "text",
+    "name": "Ehename",
+    "tooltip": {
+      "text": "Bitte geben Sie den Ehenamen an, falls das Opfer einen Ehenamen nur nach der NS-Zeit hatte.",
+      "icon": "help"
+    },
+    "parsley_validator": "data-parsley-capslock"
+  },
+  {
+    "type": "checkbox",
+    "name": "Akademischer_Titel"
+  },
+  {
+    "type": "text",
+    "label": "Andere Namen",
+    "name": "Anderenamen",
+    "tooltip": {
+      "text": "z.B. Spitzname, weitere Ehenamen",
+      "icon": "help"
+    },
+    "parsley_validator": "data-parsley-capslock"
+  },
+  {
+    "label": "Gender (soziales Geschlecht)",
+    "name": "Gender",
+    "type": "dropdown",
+    "options": [
+      "weiblich",
+      "mannlich"
+    ]
+  },
+  {
+    "label": "Opfergruppe",
+    "name": "Opfergruppen",
+    "type": "form-check",
+    "options": [
+      "juedisch",
+      "politisch",
+      "euthanasie",
+      "religioes",
+      "sinti_und_roma",
+      "homosexuelle",
+      "deserteure"
+    ],
+    "labels": [
+      "Juden / Jüdinnen",
+      "Politisch / Widerstand",
+      "Aktion T4 / \"Euthanasie\"",
+      "religiöse Verfolgung",
+      "Sinti",
+      "Homosexuelle",
+      "Deserteure"
+    ]
+  },
+  {
+    "type": "text",
+    "label": "zusätzliche Opfergruppen",
+    "name": "weitere_Opfergruppen",
+    "parsley_validator": "data-parsley-capslock"
+  },
+  {
+    "type": "text",
+    "label": "Beruf vor der NS-Zeit",
+    "name": "Beruf",
+    "parsley_validator": "data-parsley-capslock"
+  },
+  {
+    "type": "nested-dynamic",
+    "label": "Familienangehörige",
+    "tooltip": {
+      "text": "Bitte nur Familienangehörige mit Stolpersteinen eingeben.",
+      "icon": "help"
+    },
+    "subquestions": [
+      {
+        "type": "dropdown_victims",
+        "name": "Familienmitglied"
+      },
+      {
+        "type": "dropdown",
+        "name": "Verwandschaftsbeziehung",
+        "options": [
+          "Elternteil",
+          "Kind",
+          "EhegattIn",
+          "Geschwister",
+          "Großelternteil",
+          "EnkelIn",
+          "Onkel/Tante",
+          "Cousin/Cousine",
+          "NeffIn",
+          "Verlobte/r",
+          "Schwiegerelternteil",
+          "Schwiegerkind",
+          "SchwägerIn"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "nested-questions",
+    "label": "Geburtsdaten",
+    "subquestions": [
+      {
+        "type": "date",
+        "vermutet": true,
+        "name": "Geburtsdatum"
+      },
+      {
+        "type": "text",
+        "vermutet": true,
+        "name": "Geburtsort",
+        "tooltip": {
+          "text": "Stadt, Land oder nur Land, falls Stadt nicht angegeben ist.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      }
+    ]
+  },
+  {
+    "type": "nested-questions",
+    "label": "Todesdaten",
+    "subquestions": [
+      {
+        "type": "date",
+        "vermutet": true,
+        "name": "Todesdatum"
+      },
+      {
+        "type": "text",
+        "vermutet": true,
+        "name": "Todesort",
+        "tooltip": {
+          "text": "Stadt, Land oder nur Land, falls Stadt nicht angegeben ist.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "checkbox",
+        "name": "Todesort_haft"
+      }
+    ]
+  },
+  {
+    "type": "nested-dynamic",
+    "label": "Stationen",
+    "tooltip": {
+      "text": "Bitte beachten Sie, dass dies nur Stationen der Viktimisierung sind (z. B. Konzentrationslager, Gefängnis usw.)",
+      "icon": "help"
+    },
+    "subquestions": [
+      {
+        "type": "text",
+        "name": "Ort",
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "date",
+        "vermutet": true,
+        "label": "Anfangsdatum",
+        "name": "Stationen_af"
+      },
+      {
+        "type": "date",
+        "vermutet": true,
+        "label": "Enddatum",
+        "name": "Stationen_ed"
+      }
+    ]
+  },
+  {
+    "type": "nested-dynamic",
+    "label": "Fluchtversuche",
+    "tooltip": {
+      "text": "Bitte geben Sie alle Fluchtversuche ein, ob erfolgreich oder nicht.",
+      "icon": "help"
+    },
+    "subquestions": [
+      {
+        "type": "text",
+        "name": "Zielort",
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "name": "Durchort",
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "date",
+        "vermutet": true,
+        "label": "Anfangsdatum",
+        "name": "Flucht_af"
+      },
+      {
+        "type": "date",
+        "vermutet": true,
+        "label": "Enddatum",
+        "name": "Flucht_ed"
+      },
+      {
+        "name": "Erfolg",
+        "type": "dropdown",
+        "options": [
+          "Ja",
+          "Nein",
+          "Unklar"
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Überlebt",
+    "name": "Ueberlebt",
+    "type": "dropdown",
+    "options": [
+      "Ja",
+      "Nein",
+      "Unklar"
+    ]
+  }
+]

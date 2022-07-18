@@ -1,16 +1,18 @@
 from pathlib import Path
 
-from bson.objectid import ObjectId
 import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
 
+from .surveys import SurveyObject
 from cherrypy.lib.static import serve_file
 import bcrypt
 
 import json
 import pickle
+
+from faker import Faker
 
 class AuthenticationModule:
     def __init__(self):
@@ -44,12 +46,14 @@ class AppServer:
         """
         Sets up some basic information, like template path and environment.
         """
+        self.faker = Faker('en_GB')
         self._tmpl_dir = Path(
             __file__).parents[0].resolve().joinpath('templates')
         print(self._tmpl_dir)
         self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
 
         self.identifying_info = ["Vorname", "Nachname", "URL"]
+        self.authentication = AuthenticationModule()
 
         # possibly init other APIs
         # locally, start mongo first: service mongod start
@@ -71,6 +75,11 @@ class AppServer:
         return tmpl.render(**params)
 
     @cherrypy.expose
+    def delete_entries(self):
+        #TODO This is only here for testing, this must be removed just in case!!
+        self.db.delete_many({})
+
+    @cherrypy.expose
     def index(self, **kwargs):
         """
 
@@ -84,6 +93,226 @@ class AppServer:
             admin_mode = False
 
         return self._render_template('index.html', params={'title': "Index Page", "data": all_data, "admin_mode": admin_mode})
+
+    @cherrypy.expose
+    def survey(self, id, admin_mode=False):
+        """
+
+        :param vorname:
+        :param nachname:
+        :param url:
+        :return:
+        """
+        query = {"_id": id}
+        existing_records = [entry for entry in self.db.find(query)]
+
+        # only should be one entry
+        assert(len(existing_records) == 1)
+
+        record = existing_records[0]
+
+        data = list(self.db.find({}))
+
+        questions = []
+        for question_file in ["add", "survey"]:
+            curr_question_file = Path(__file__).resolve().parents[1].joinpath(f"static/data/{question_file}.json")
+            with open(curr_question_file, "rb") as f:
+                questions.extend(json.load(f))
+
+
+        if not admin_mode:
+            # if existing data, take most up-to-date copy
+            if len(record["data"]) > 0:
+                current_data = record["data"][-1]
+            else:
+                current_data = {}
+            current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
+
+            html = SurveyObject(questions, current_data, data).construct_survey(questions, current_data)
+
+            if "URL" in current_data:
+                html = f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + html
+        else:
+            if len(record["data"]) < 3:
+                raise ValueError("Need at least three user codings")
+            else:
+                html = []
+                for name_append, current_data in zip(["second_to_last","last",""],record["data"][-3:]):
+                    current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
+
+                    so = SurveyObject(questions, current_data, data, name_append=name_append)
+
+                    if "URL" in current_data:
+                        html.append(f"LINK:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a>\n<br>" + so.construct_survey(questions, current_data))
+
+        return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST",
+                                                            "html" : html, "admin_mode":admin_mode})
+
+    @cherrypy.expose
+    def add(self):
+        """
+
+        :return:
+        """
+        question_file = Path(__file__).resolve().parents[1].joinpath("static/data/add.json")
+
+        with open(question_file, "rb") as f:
+            questions = json.load(f)
+
+        html = SurveyObject(questions, {}, {}).construct_survey(questions, {})
+
+        return self._render_template('add.html', params={'title': "Add Victim", "html":html, "post_route": f"{self.realm}/POST_ADD"})
+
+    @cherrypy.expose
+    def fail_add(self, info):
+        """
+
+        :return:
+        """
+        return self._render_template('fail_add.html', params={'title': "Victim Already in Database", "info": info})
+
+    @cherrypy.expose
+    def success_add(self, info):
+        """
+
+        :return:
+        """
+        return self._render_template('success_add.html',
+                                     params={'title': f"Added {info['Nachname']}, {info['Vorname']}", "info": info})
+
+    @cherrypy.expose
+    def POST_ADD(self, **kwargs):
+        """
+
+        :return:
+        """
+        def create_id(Vorname, Nachname, Strasse, Strassennummer, URL):
+            special_char_map = {ord('ä'):'ae', ord('ü'):'ue', ord('ö'):'oe'}
+            return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Strassennummer}".lower().replace("-", "_")
+
+        existing_records = [entry for entry in self.db.find(kwargs)]
+        if "" in kwargs.values():
+            # TODO could be better to do this in front-end or at least have a landing page
+            raise ValueError("All fields must be completed")
+        # already in database
+        elif len(existing_records) >= 1:
+            return self.fail_add(kwargs)
+        else:
+            # add data, with empty data entry
+            self.db.insert_one({**kwargs, "_id": create_id(**kwargs), "data": []})
+            return self.success_add(self.db.find_one(kwargs))
+
+    @cherrypy.expose
+    def POST(self, _id, **kwargs):
+        """
+
+        :return:
+        """
+        print(kwargs)
+        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"], \
+                 "Strasse": kwargs["Strasse"], "Hausnummer": kwargs["Hausnummer"]}
+        existing_records = [entry for entry in self.db.find(
+            {"_id": _id})]
+
+        # only should be one entry
+        assert(len(existing_records) == 1)
+
+        record = existing_records[0]
+        record["data"].append({**{key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info}, "user":cherrypy.request.login})
+
+        self.db.update_one({"_id": _id}, {"$set": {**query, "fertig":True, "data": record["data"]}})
+
+        # maybe better to have a landing page for this or new profile shown
+        return self.index()
+
+    @cherrypy.expose
+    def POST_USER(self, **kwargs):
+        if kwargs["username"] == cherrypy.request.login:
+            self.enter_credentials_in_db(**kwargs)
+            return self.index()
+        else:
+            raise ValueError("You can only modify the password for your own username!")
+
+    def random_password(self):
+        return self.faker.password(length=12)
+
+    @cherrypy.expose
+    def user_administration(self, username=None, admin_mode=False):
+        return self._render_template("user_administration.html",
+                                         params={"post_route": f"{self.realm}/POST_USER",
+                                                 "username": username if username else cherrypy.request.login,
+                                                 "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
+
+    @cherrypy.expose
+    def logout(self):
+        # TODO: would be nice to put something here but probably just a nice to have
+        raise NotImplementedError
+
+
+    def enter_credentials_in_db(self, realm, username, password, existing=False):
+        # only store hashed and salted passwords
+        all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
+        if len(all_matching_data) == 0:
+            self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
+        elif existing:
+            self.authentication.db.update_one({"username": username}, {"$set": {"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
+        else:
+            raise ValueError("Username already is taken!")
+
+class AdminConsole(AppServer):
+    def __init__(self, realm):
+        """
+        Sets up some basic information, like template path and environment.
+        """
+        super().__init__(realm=realm)
+
+        # self.authentication.db.delete_many({})
+
+        try:
+            self.enter_credentials_in_db("admin", os.environ['USERNAME'], os.environ['PASSWORD'], False)
+        except:
+            pass
+
+
+    @cherrypy.expose
+    def POST_USER(self, **kwargs):
+        self.enter_credentials_in_db(**kwargs)
+        return self.users()
+
+    @cherrypy.expose
+    def random_username(self):
+        # UK cities to avoid numbering, not use a city where a KZ might be
+        current_users = [entry["username"] for entry in self.authentication.db.find({})]
+        new_user = f"datenerfasser/in_{self.faker.city().replace(' ', '_')}"
+
+        while new_user in current_users:
+            new_user = f"datenerfasser/in_{self.faker.city().replace(' ', '_')}"
+
+        return new_user
+
+    @cherrypy.expose
+    def user_administration(self, username=None, admin_mode=True):
+        if username is None:
+            username = self.random_username()
+            return self._render_template("user_administration.html",
+                                         params={"post_route": f"{self.realm}/POST_USER", "username": username,
+                                                     "password": self.random_password(), "existing": False,
+                                                     "admin_mode": admin_mode})
+        else:
+            return super().user_administration(username=username, admin_mode=admin_mode)
+
+
+    @cherrypy.expose
+    def index(self, **kwargs):
+        return super().index(admin_mode=True)
+
+    @cherrypy.expose
+    def survey(self, id):
+        return super().survey(id, admin_mode=True)
+
+    @cherrypy.expose
+    def users(self):
+        return self._render_template('users.html', params={"data":[{"username":entry["username"]} for entry in self.authentication.db.find({})]})
 
     @cherrypy.expose
     def upload(self):
@@ -109,141 +338,14 @@ class AppServer:
     def download(self):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
             all_data = [entry for entry in self.db.find({})]
-            print(all_data)
-            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/data.pickle")
 
-            with open(save_file, "wb") as f:
-                pickle.dump(all_data, f)
+            # remove object _id since not json serializable
+            all_data = [{key: val for key, val in victim_data.items() if key != "_id"} for victim_data in all_data]
+
+            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
+
+            # https://stackoverflow.com/q/3503102
+            with open(save_file, "w") as f:
+                json.dump(all_data, f)
 
             return serve_file(save_file, "application/x-download", "attachment")
-
-    @cherrypy.expose
-    def survey(self, id):
-        """
-
-        :param vorname:
-        :param nachname:
-        :param url:
-        :return:
-        """
-        query = {"_id": ObjectId(id)}
-        existing_records = [entry for entry in self.db.find(query)]
-
-        # only should be one entry
-        assert(len(existing_records) == 1)
-
-        record = existing_records[0]
-
-        # if existing data, take most up-to-date copy
-        if len(record["data"]) > 0:
-            current_data = record["data"][-1]
-        else:
-            current_data = {}
-
-        data = self.db.find({})
-
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST", "id": id,
-                                                            "data" : data,
-                                                            **{key : record[key] for key in self.identifying_info},
-                                                            **current_data})
-
-    @cherrypy.expose
-    def add(self):
-        """
-
-        :return:
-        """
-        return self._render_template('add.html', params={'title': "Add Victim", "post_route": f"{self.realm}/POST_ADD"})
-
-    @cherrypy.expose
-    def fail_add(self, info):
-        """
-
-        :return:
-        """
-        return self._render_template('fail_add.html', params={'title': "Victim Already in Database", "info": info})
-
-    @cherrypy.expose
-    def success_add(self, info):
-        """
-
-        :return:
-        """
-        return self._render_template('success_add.html',
-                                     params={'title': f"Added {info['Nachname']}, {info['Vorname']}", "info": info})
-
-    @cherrypy.expose
-    def POST_ADD(self, **kwargs):
-        """
-
-        :return:
-        """
-        existing_records = [entry for entry in self.db.find(kwargs)]
-        if "" in kwargs.values():
-            # TODO could be better to do this in front-end or at least have a landing page
-            raise ValueError("All fields must be completed")
-        # already in database
-        elif len(existing_records) >= 1:
-            return self.fail_add(kwargs)
-        else:
-            # add data, with empty data entry
-            self.db.insert_one({**kwargs, "data": []})
-            return self.success_add(self.db.find_one(kwargs))
-
-    @cherrypy.expose
-    def POST(self, id, **kwargs):
-        """
-
-        :return:
-        """
-        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"]}
-        existing_records = [entry for entry in self.db.find(
-            {"_id": ObjectId(id)})]
-
-        # only should be one entry
-        assert(len(existing_records) == 1)
-
-        record = existing_records[0]
-        record["data"].append({key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info})
-
-        self.db.update_one({"_id": ObjectId(id)}, {"$set": {**query, "data": record["data"]}})
-
-        # maybe better to have a landing page for this or new profile shown
-        return self.index()
-
-class AdminConsole(AppServer):
-    def __init__(self, realm):
-        """
-        Sets up some basic information, like template path and environment.
-        """
-        super().__init__(realm=realm)
-
-        self.authentication = AuthenticationModule()
-
-        try:
-            self.enter_credentials_in_db("admin", "dev", "dev-password")
-            self.enter_credentials_in_db("survey", "git", "tester-password")
-        except:
-            pass
-
-    @cherrypy.expose
-    def POST_USER(self, **kwargs):
-        self.enter_credentials_in_db(**kwargs)
-        return self.index(admin_mode=True)
-
-    @cherrypy.expose
-    def add_user(self):
-        return self._render_template("add_user.html", params={"post_route": f"{self.realm}/POST_USER"})
-
-    def enter_credentials_in_db(self, realm, username, password):
-        # only store hashed and salted passwords
-        all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
-        if len(all_matching_data) == 0:
-            self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
-        else:
-            raise ValueError("Username already is taken!")
-
-    @cherrypy.expose
-    def index(self, **kwargs):
-        print([entry for entry in self.authentication.db.find({})])
-        return super().index(admin_mode=True)

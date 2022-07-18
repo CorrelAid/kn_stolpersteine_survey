@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block jslibs %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('#index_table').DataTable();
+    });
+</script>
+{% endblock %}
+{% block styles %}
+<style>
+    div {
+        margin-top: 10px;
+    }
+    {% if admin_mode %}
+    body {background-color: coral;}
+    {% endif %}
+</style>
+
+{% endblock %}
+{% block content %}
+<div class="list-group">
+    <table id="index_table" class="display">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Number of entries</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                 <td><a href="user_administration?username={{item['username']}}" class="list-group-item">{{item['username']}}</a></td>
+                <td><a class="list-group-item">TBD</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <button class="btn btn-primary" onclick="location.href='user_administration';" id="addUser">User einfügen</button>
+</div>
+{% endblock %}
