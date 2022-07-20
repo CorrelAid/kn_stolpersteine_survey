@@ -259,8 +259,12 @@ class AppServer:
 
     @cherrypy.expose
     def user_administration(self, username=None, admin_mode=False):
+        if username in [entry["username"] for entry in self.authentication.db.find({"realm":"admin"})]:
+            realm = "admin"
+        else:
+            realm = "survey"
         return self._render_template("user_administration.html",
-                                         params={"post_route": f"{self.realm}/POST_USER",
+                                         params={"post_route": f"{self.realm}/POST_USER", "realm" : realm,
                                                  "username": username if username else cherrypy.request.login,
                                                  "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
 
@@ -316,9 +320,9 @@ class AdminConsole(AppServer):
         if username is None:
             username = self.random_username()
             return self._render_template("user_administration.html",
-                                         params={"post_route": f"{self.realm}/POST_USER", "username": username,
-                                                     "password": self.random_password(), "existing": False,
-                                                     "admin_mode": admin_mode})
+                                         params={"post_route": f"{self.realm}/POST_USER", "realm": "survey",
+                                                 "username": username, "password": self.random_password(),
+                                                 "existing": False, "admin_mode": admin_mode})
         else:
             return super().user_administration(username=username, admin_mode=admin_mode)
 
