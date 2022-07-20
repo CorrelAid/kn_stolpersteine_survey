@@ -186,9 +186,9 @@ class AppServer:
 
         :return:
         """
-        def create_id(Vorname, Nachname, Strasse, Strassennummer, URL):
+        def create_id(Vorname, Nachname, Strasse, Hausnummer, URL):
             special_char_map = {ord('ä'):'ae', ord('ü'):'ue', ord('ö'):'oe'}
-            return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Strassennummer}".lower().replace("-", "_")
+            return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Hausnummer}".lower().replace("-", "_")
 
         existing_records = [entry for entry in self.db.find(kwargs)]
         if "" in kwargs.values():
