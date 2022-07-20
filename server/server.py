@@ -77,7 +77,9 @@ class AppServer:
     @cherrypy.expose
     def delete_entries(self):
         #TODO This is only here for testing, this must be removed just in case!!
+        length_all_data = len(list(self.db.find({})))
         self.db.delete_many({})
+        return self.success_delete(length_all_data)
 
     @cherrypy.expose
     def index(self, **kwargs):
@@ -179,6 +181,25 @@ class AppServer:
         """
         return self._render_template('success_add.html',
                                      params={'title': f"Added {info['Nachname']}, {info['Vorname']}", "info": info})
+
+    @cherrypy.expose
+    def success_delete(self, num_entries):
+        """
+
+        :return:
+        """
+        return self._render_template('success_delete.html',
+                                     params={'title': f"Deleted {num_entries} entries", "num_entries": num_entries})
+
+
+    @cherrypy.expose
+    def success_upload(self, num_entries):
+        """
+
+        :return:
+        """
+        return self._render_template('success_upload.html',
+                                     params={'title': f"Uploaded {num_entries} entries", "num_entries": num_entries})
 
     @cherrypy.expose
     def POST_ADD(self, **kwargs):
@@ -333,6 +354,7 @@ class AdminConsole(AppServer):
             with open(out_file, "rb") as f:
                 entries = json.load(f)
             self.db.insert_many(entries)
+            return self.success_upload(len(entries))
 
     @cherrypy.expose
     def download(self):
