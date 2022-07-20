@@ -5,4 +5,5 @@ pymongo
 jinja2
 dnspython
 python-dotenv
+faker
 bcrypt # not other required dependencies for this on server
