@@ -9,16 +9,19 @@
         return xmlHttp.responseText;
     }
     function getRandomUsername() {
-         url="../admin/random_username"
+        url="../admin/random_username"
         document.getElementById('username').value = httpGet(url);
     }
+    function reenableDisabledFields(){
+        $("#realm").prop("disabled", false);
+    };
 </script>
-<form action="/{{post_route}}">
+<form action="/{{post_route}}" on_submit="reenableDisabledFields()">
     <div class="dropdown">
         <label>
             Realm:
         </label>
-        <select class="realm" id="realm" name="realm" {% if not admin_mode %} disabled="true" {% endif %}>>
+        <select class="realm" id="realm" name="realm" {% if not admin_mode %} disabled {% endif %}>>
             <option value="survey">Survey Respondent</option>
             <option value="admin">Survey Admin</option>
         </select>
