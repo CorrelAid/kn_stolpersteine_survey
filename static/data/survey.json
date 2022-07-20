@@ -43,12 +43,12 @@
     "parsley_validator": "data-parsley-capslock"
   },
   {
-    "label": "Gender (soziales Geschlecht)",
+    "label": "Geschlecht",
     "name": "Gender",
     "type": "dropdown",
     "options": [
       "weiblich",
-      "mannlich"
+      "männlich"
     ]
   },
   {
@@ -68,7 +68,7 @@
       "Juden / Jüdinnen",
       "Politisch / Widerstand",
       "Aktion T4 / \"Euthanasie\"",
-      "religiöse Verfolgung",
+      "Religiöse Verfolgung",
       "Sinti",
       "Homosexuelle",
       "Deserteure"
@@ -169,7 +169,7 @@
     "type": "nested-dynamic",
     "label": "Stationen",
     "tooltip": {
-      "text": "Bitte beachten Sie, dass dies nur Stationen der Viktimisierung sind (z. B. Konzentrationslager, Gefängnis usw.)",
+      "text": "Bitte tragen Sie nur Stationen der Art Konzentrationslager, Gefängnis etc. ein.",
       "icon": "help"
     },
     "subquestions": [
@@ -207,7 +207,7 @@
       },
       {
         "type": "text",
-        "name": "Durchort",
+        "name": "Durchgangsort",
         "parsley_validator": "data-parsley-capslock"
       },
       {
