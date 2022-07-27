@@ -29,8 +29,12 @@
     "parsley_validator": "data-parsley-capslock"
   },
   {
-    "type": "checkbox",
-    "name": "Akademischer_Titel"
+    "type": "dropdown",
+    "name": "Akademischer_Titel",
+    "options": [
+      "Dr.",
+      "Prof."
+    ]
   },
   {
     "type": "text",
