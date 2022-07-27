@@ -11,11 +11,11 @@ $(document).ready(function () {
 
     window.Parsley.addValidator('str', {
         validateString: function (value) {
-            return (value.toLowerCase().indexOf("strasse") === -1) &&  (value.toLowerCase().indexOf("straße") === -1);
+            return (value.toLowerCase().indexOf("str.") === -1) &&  (value.toLowerCase().indexOf("str") === -1)  &&  (value.toLowerCase().indexOf("strasse") === -1);
         },
         messages: {
-            en: "Please shorten 'strasse' to 'str.",
-            de: "Bitte kürzen, z.B. Str. statt Strasse."
+            en: "Please write 'str' as 'straße",
+            de: 'Bitte  "straße" statt "str." oder "strasse" schreiben'
         }
     });
 
