@@ -37,6 +37,7 @@ class AuthenticationModule:
             return self.check_password(password, all_matching_data[0]["password"])
         else:
             return False
+        
 
 class AppServer:
     """
@@ -61,6 +62,7 @@ class AppServer:
         self.db = client.survey_db["victims"]
 
         self.realm = realm
+        
 
     def _render_template(self, tmpl_name, params={}):
         """
@@ -71,6 +73,7 @@ class AppServer:
         """
         tmpl = self._env.get_template(tmpl_name)
         return tmpl.render(**params)
+    
 
     @cherrypy.expose
     def delete_entries(self):
@@ -198,6 +201,15 @@ class AppServer:
         """
         return self._render_template('success_upload.html',
                                      params={'title': f"Uploaded {num_entries} entries", "num_entries": num_entries})
+        
+    @cherrypy.expose
+    def unauthorized(self):
+        """
+
+        :return:
+        """
+        return self._render_template('unauthorized.html')
+    
 
     @cherrypy.expose
     def POST_ADD(self, **kwargs):

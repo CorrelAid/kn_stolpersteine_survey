@@ -14,6 +14,13 @@ if __name__ == '__main__':
         @cherrypy.expose
         def index(self):
             return "Hello, world!"
+        
+        
+    def error_page_401(status, message, traceback, version):
+        return "Sie sind nicht berechtigt, auf diese Seit zuzugreifen"
+    
+    cherrypy.config.update({'error_page.401': error_page_401})
+    
 
 
     cherrypy.config.update({
@@ -27,7 +34,7 @@ if __name__ == '__main__':
 
     cherrypy.tree.mount(Root(), '/', config = {'/static': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': Path(__file__).parents[0].resolve().joinpath('static')
+            'tools.staticdir.dir': Path(__file__).parents[0].resolve().joinpath('static')   
         }})
     cherrypy.tree.mount(AppServer("survey"), '/', config =  {'/': {'tools.auth_basic.on': True,
         'tools.auth_basic.realm': 'survey',
