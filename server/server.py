@@ -49,7 +49,6 @@ class AppServer:
         self.faker = Faker('en_GB')
         self._tmpl_dir = Path(
             __file__).parents[0].resolve().joinpath('templates')
-        print(self._tmpl_dir)
         self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
 
         self.identifying_info = ["Vorname", "Nachname", "URL"]
@@ -59,7 +58,6 @@ class AppServer:
         # locally, start mongo first: service mongod start
         # client = MongoClient("localhost", 27010)
         client = MongoClient(os.environ["MONGODB_URI"])
-        print(client.list_database_names())
         self.db = client.survey_db["victims"]
 
         self.realm = realm
@@ -229,7 +227,6 @@ class AppServer:
 
         :return:
         """
-        print(kwargs)
         query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"], \
                  "Strasse": kwargs["Strasse"], "Hausnummer": kwargs["Hausnummer"]}
         existing_records = [entry for entry in self.db.find(

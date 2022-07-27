@@ -182,7 +182,6 @@ class SurveyObject:
             label_list=option_list
 
         if self.name_append == "":
-            print(option_list)
             pass
         return f"<option value=''>--</option>\n" \
                + '\n'.join([f"<option selected='selected' value={curr_option}>{curr_label}</option>" \
