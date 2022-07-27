@@ -212,7 +212,8 @@ class AppServer:
         existing_records = [entry for entry in self.db.find(kwargs)]
         if "" in kwargs.values():
             # TODO could be better to do this in front-end or at least have a landing page
-            raise ValueError("All fields must be completed")
+            #raise ValueError("All fields must be completed")
+            return self._render_template('post_add_completeAllFields.html',params={'title': "All fields must be completed"})
         # already in database
         elif len(existing_records) >= 1:
             return self.fail_add(kwargs)
