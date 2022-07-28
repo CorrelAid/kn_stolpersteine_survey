@@ -14,6 +14,7 @@ import pickle
 
 from faker import Faker
 
+
 class AuthenticationModule:
     def __init__(self):
         client = MongoClient(os.environ["MONGODB_URI"])
@@ -32,17 +33,19 @@ class AuthenticationModule:
 
     def check_password_in_db(self, realm, username, password):
         # signature as specified in https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.auth_basic.html
-        all_matching_data = [entry for entry in self.db.find({"realm":realm, "username":username})]
+        all_matching_data = [entry for entry in self.db.find(
+            {"realm": realm, "username": username})]
         if len(all_matching_data) == 1:
             return self.check_password(password, all_matching_data[0]["password"])
         else:
             return False
-        
+
 
 class AppServer:
     """
     Serves pages, deals with any APIs
     """
+
     def __init__(self, realm):
         """
         Sets up some basic information, like template path and environment.
@@ -62,7 +65,6 @@ class AppServer:
         self.db = client.survey_db["victims"]
 
         self.realm = realm
-        
 
     def _render_template(self, tmpl_name, params={}):
         """
@@ -73,11 +75,10 @@ class AppServer:
         """
         tmpl = self._env.get_template(tmpl_name)
         return tmpl.render(**params)
-    
 
     @cherrypy.expose
     def delete_entries(self):
-        #TODO This is only here for testing, this must be removed just in case!!
+        # TODO This is only here for testing, this must be removed just in case!!
         length_all_data = len(list(self.db.find({})))
         self.db.delete_many({})
         return self.success_delete(length_all_data)
@@ -118,10 +119,10 @@ class AppServer:
 
         questions = []
         for question_file in ["add", "survey"]:
-            curr_question_file = Path(__file__).resolve().parents[1].joinpath(f"static/data/{question_file}.json")
+            curr_question_file = Path(__file__).resolve().parents[1].joinpath(
+                f"static/data/{question_file}.json")
             with open(curr_question_file, "rb") as f:
                 questions.extend(json.load(f))
-
 
         if not admin_mode:
             # if existing data, take most up-to-date copy
@@ -129,9 +130,11 @@ class AppServer:
                 current_data = record["data"][-1]
             else:
                 current_data = {}
-            current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
+            current_data = {**current_data, **{key: val for key,
+                                               val in record.items() if key != "data"}}
 
-            html = SurveyObject(questions, current_data, data).construct_survey(questions, current_data)
+            html = SurveyObject(questions, current_data, data).construct_survey(
+                questions, current_data)
 
             if "URL" in current_data:
                 html = f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + html
@@ -140,16 +143,19 @@ class AppServer:
                 raise ValueError("Need at least three user codings")
             else:
                 html = []
-                for name_append, current_data in zip(["second_to_last","last",""],record["data"][-3:]):
-                    current_data = {**current_data, **{key: val for key, val in record.items() if key != "data"}}
+                for name_append, current_data in zip(["second_to_last", "last", ""], record["data"][-3:]):
+                    current_data = {
+                        **current_data, **{key: val for key, val in record.items() if key != "data"}}
 
-                    so = SurveyObject(questions, current_data, data, name_append=name_append)
+                    so = SurveyObject(questions, current_data,
+                                      data, name_append=name_append)
 
                     if "URL" in current_data:
-                        html.append(f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
+                        html.append(
+                            f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
 
         return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST",
-                                                            "html" : html, "admin_mode":admin_mode})
+                                                            "html": html, "admin_mode": admin_mode})
 
     @cherrypy.expose
     def add(self):
@@ -157,14 +163,15 @@ class AppServer:
 
         :return:
         """
-        question_file = Path(__file__).resolve().parents[1].joinpath("static/data/add.json")
+        question_file = Path(__file__).resolve(
+        ).parents[1].joinpath("static/data/add.json")
 
         with open(question_file, "rb") as f:
             questions = json.load(f)
 
         html = SurveyObject(questions, {}, {}).construct_survey(questions, {})
 
-        return self._render_template('add.html', params={'title': "Add Victim", "html":html, "post_route": f"{self.realm}/POST_ADD"})
+        return self._render_template('add.html', params={'title': "Add Victim", "html": html, "post_route": f"{self.realm}/POST_ADD"})
 
     @cherrypy.expose
     def fail_add(self, info):
@@ -192,7 +199,6 @@ class AppServer:
         return self._render_template('success_delete.html',
                                      params={'title': f"Deleted {num_entries} entries", "num_entries": num_entries})
 
-
     @cherrypy.expose
     def success_upload(self, num_entries):
         """
@@ -201,7 +207,7 @@ class AppServer:
         """
         return self._render_template('success_upload.html',
                                      params={'title': f"Uploaded {num_entries} entries", "num_entries": num_entries})
-        
+
     @cherrypy.expose
     def unauthorized(self):
         """
@@ -209,7 +215,6 @@ class AppServer:
         :return:
         """
         return self._render_template('unauthorized.html')
-    
 
     @cherrypy.expose
     def POST_ADD(self, **kwargs):
@@ -218,21 +223,23 @@ class AppServer:
         :return:
         """
         print(kwargs)
+
         def create_id(Vorname, Nachname, Strasse, Hausnummer, URL):
-            special_char_map = {ord('ä'):'ae', ord('ü'):'ue', ord('ö'):'oe'}
+            special_char_map = {ord('ä'): 'ae', ord('ü'): 'ue', ord('ö'): 'oe'}
             return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Hausnummer}".lower().replace("-", "_")
 
         existing_records = [entry for entry in self.db.find(kwargs)]
         if "" in kwargs.values():
             # TODO could be better to do this in front-end or at least have a landing page
             #raise ValueError("All fields must be completed")
-            return self._render_template('post_add_completeAllFields.html',params={'title': "All fields must be completed"})
+            return self._render_template('post_add_completeAllFields.html', params={'title': "All fields must be completed"})
         # already in database
         elif len(existing_records) >= 1:
             return self.fail_add(kwargs)
         else:
             # add data, with empty data entry
-            self.db.insert_one({**kwargs, "_id": create_id(**kwargs), "data": []})
+            self.db.insert_one(
+                {**kwargs, "_id": create_id(**kwargs), "data": []})
             return self.success_add(self.db.find_one(kwargs))
 
     @cherrypy.expose
@@ -242,7 +249,7 @@ class AppServer:
         :return:
         """
         print(kwargs)
-        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"], \
+        query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"],
                  "Strasse": kwargs["Strasse"], "Hausnummer": kwargs["Hausnummer"]}
         existing_records = [entry for entry in self.db.find(
             {"_id": _id})]
@@ -251,9 +258,11 @@ class AppServer:
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        record["data"].append({**{key : kwargs[key] for key in kwargs.keys() if key not in self.identifying_info}, "user":cherrypy.request.login})
+        record["data"].append({**{key: kwargs[key] for key in kwargs.keys()
+                              if key not in self.identifying_info}, "user": cherrypy.request.login})
 
-        self.db.update_one({"_id": _id}, {"$set": {**query, "fertig":True, "data": record["data"]}})
+        self.db.update_one(
+            {"_id": _id}, {"$set": {**query, "fertig": True, "data": record["data"]}})
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()
@@ -264,37 +273,44 @@ class AppServer:
             self.enter_credentials_in_db(**kwargs)
             return self.index()
         else:
-            raise ValueError("You can only modify the password for your own username!")
+            raise ValueError(
+                "You can only modify the password for your own username!")
 
     def random_password(self):
         return self.faker.password(length=12)
 
     @cherrypy.expose
     def user_administration(self, username=None, admin_mode=False):
-        if username in [entry["username"] for entry in self.authentication.db.find({"realm":"admin"})]:
+        if username in [entry["username"] for entry in self.authentication.db.find({"realm": "admin"})]:
             realm = "admin"
         else:
             realm = "survey"
         return self._render_template("user_administration.html",
-                                         params={"post_route": f"{self.realm}/POST_USER", "realm" : realm,
-                                                 "username": username if username else cherrypy.request.login,
-                                                 "password": self.random_password(), "existing": True, "admin_mode":admin_mode})
+                                     params={"post_route": f"{self.realm}/POST_USER", "realm": realm,
+                                             "username": username if username else cherrypy.request.login,
+                                             "password": self.random_password(), "existing": True, "admin_mode": admin_mode})
 
     @cherrypy.expose
     def logout(self):
         # TODO: would be nice to put something here but probably just a nice to have
-        raise NotImplementedError
-
+        raise cherrypy.HTTPError(
+            401,
+            "test"
+        )
 
     def enter_credentials_in_db(self, realm, username, password, existing=False):
         # only store hashed and salted passwords
-        all_matching_data = [entry for entry in self.authentication.db.find({"username": username})]
+        all_matching_data = [
+            entry for entry in self.authentication.db.find({"username": username})]
         if len(all_matching_data) == 0:
-            self.authentication.db.insert_one({"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
+            self.authentication.db.insert_one(
+                {"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)})
         elif existing:
-            self.authentication.db.update_one({"username": username}, {"$set": {"realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
+            self.authentication.db.update_one({"username": username}, {"$set": {
+                                              "realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
         else:
             raise ValueError("Username already is taken!")
+
 
 class AdminConsole(AppServer):
     def __init__(self, realm):
@@ -306,10 +322,10 @@ class AdminConsole(AppServer):
         # self.authentication.db.delete_many({})
 
         try:
-            self.enter_credentials_in_db("admin", os.environ['USERNAME'], os.environ['PASSWORD'], False)
+            self.enter_credentials_in_db(
+                "admin", os.environ['USERNAME'], os.environ['PASSWORD'], False)
         except:
             pass
-
 
     @cherrypy.expose
     def POST_USER(self, **kwargs):
@@ -319,7 +335,8 @@ class AdminConsole(AppServer):
     @cherrypy.expose
     def random_username(self):
         # UK cities to avoid numbering, not use a city where a KZ might be
-        current_users = [entry["username"] for entry in self.authentication.db.find({})]
+        current_users = [entry["username"]
+                         for entry in self.authentication.db.find({})]
         new_user = f"datenerfasser/in_{self.faker.city().replace(' ', '_')}"
 
         while new_user in current_users:
@@ -338,7 +355,6 @@ class AdminConsole(AppServer):
         else:
             return super().user_administration(username=username, admin_mode=admin_mode)
 
-
     @cherrypy.expose
     def index(self, **kwargs):
         return super().index(admin_mode=True)
@@ -349,7 +365,7 @@ class AdminConsole(AppServer):
 
     @cherrypy.expose
     def users(self):
-        return self._render_template('users.html', params={"data":[{"username":entry["username"]} for entry in self.authentication.db.find({})]})
+        return self._render_template('users.html', params={"data": [{"username": entry["username"]} for entry in self.authentication.db.find({})]})
 
     @cherrypy.expose
     def upload(self):
@@ -361,7 +377,8 @@ class AdminConsole(AppServer):
     @cherrypy.expose
     def upload_file(self, starting_data):
         if "LOCAL" in os.environ and os.environ["LOCAL"]:
-            out_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
+            out_file = Path(__file__).resolve().parents[1].joinpath(
+                "static/data/out.json")
 
             with open(out_file, "wb") as f:
                 data = starting_data.file.read()
@@ -378,9 +395,11 @@ class AdminConsole(AppServer):
             all_data = [entry for entry in self.db.find({})]
 
             # remove object _id since not json serializable
-            all_data = [{key: val for key, val in victim_data.items() if key != "_id"} for victim_data in all_data]
+            all_data = [{key: val for key, val in victim_data.items() if key != "_id"}
+                        for victim_data in all_data]
 
-            save_file = Path(__file__).resolve().parents[1].joinpath("static/data/out.json")
+            save_file = Path(__file__).resolve(
+            ).parents[1].joinpath("static/data/out.json")
 
             # https://stackoverflow.com/q/3503102
             with open(save_file, "w") as f:

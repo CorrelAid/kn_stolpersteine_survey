@@ -53,9 +53,25 @@
                 <a class="nav-link" onclick="location.href='user_administration';">Accounteinstellungen</a>
             </li>
             {% endif %}
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="/admin">Admin-Bereich</a>
+            </li> -->
+            <li class="nav-item">
+                <a class="nav-link"  id="logout">Ausloggen</a>
             </li>
+            <script>
+                var el = document.getElementById('logout');
+                var p = window.location.protocol + '//'
+                
+                el.onclick = logout_func;
+
+                function logout_func() {
+                    window.location = window.location.href.replace(p, p + 'logout:password@')
+                }
+                
+                // current location must return 200 OK for this GET
+                
+            </script>
         </ul>
     </div>
     <style>
