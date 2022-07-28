@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 
 import cherrypy
-from server import AppServer, AuthenticationModule, AdminConsole
+from server import AppServer, AuthenticationModule, AdminConsole, Public
 from dotenv import load_dotenv
 
 if __name__ == '__main__':
@@ -45,6 +45,10 @@ if __name__ == '__main__':
             'tools.auth_basic.realm': 'admin',
             'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db,
             'tools.auth_basic.accept_charset': 'UTF-8'}})
+    
+    cherrypy.tree.mount(Public(), '/public', config={
+       
+        })
 
     cherrypy.engine.start()
     cherrypy.engine.block()

@@ -208,13 +208,13 @@ class AppServer:
         return self._render_template('success_upload.html',
                                      params={'title': f"Uploaded {num_entries} entries", "num_entries": num_entries})
 
-    @cherrypy.expose
-    def unauthorized(self):
-        """
+    # @cherrypy.expose
+    # def unauthorized(self):
+    #     """
 
-        :return:
-        """
-        return self._render_template('unauthorized.html')
+    #     :return:
+    #     """
+    #     return self._render_template('unauthorized.html')
 
     @cherrypy.expose
     def POST_ADD(self, **kwargs):
@@ -290,13 +290,13 @@ class AppServer:
                                              "username": username if username else cherrypy.request.login,
                                              "password": self.random_password(), "existing": True, "admin_mode": admin_mode})
 
-    @cherrypy.expose
-    def logout(self):
-        # TODO: would be nice to put something here but probably just a nice to have
-        raise cherrypy.HTTPError(
-            401,
-            "test"
-        )
+    # @cherrypy.expose
+    # def logout(self):
+    #     # TODO: would be nice to put something here but probably just a nice to have
+    #     raise cherrypy.HTTPError(
+    #         401,
+    #         "test"
+    #     )
 
     def enter_credentials_in_db(self, realm, username, password, existing=False):
         # only store hashed and salted passwords
@@ -406,3 +406,26 @@ class AdminConsole(AppServer):
                 json.dump(all_data, f)
 
             return serve_file(save_file, "application/x-download", "attachment")
+
+class Public:
+    def __init__(self):
+        """
+        Sets up some basic information, like template path and environment.
+        """
+        self._tmpl_dir = Path(
+            __file__).parents[0].resolve().joinpath('templates')
+        self._env = Environment(loader=FileSystemLoader(self._tmpl_dir))
+
+    def _render_template(self, tmpl_name, params={}):
+        """
+
+        :param tmpl_name:
+        :param params:
+        :return:
+        """
+        tmpl = self._env.get_template(tmpl_name)
+        return tmpl.render(**params)
+    
+    @cherrypy.expose
+    def logged_out(self):
+        return self._render_template('logged_out.html', params={'title': "Logged out"})
