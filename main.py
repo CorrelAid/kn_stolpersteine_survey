@@ -9,19 +9,15 @@ if __name__ == '__main__':
     if "PORT" not in os.environ:
         load_dotenv(Path(__file__).resolve().parents[0].joinpath(".env"))
 
+    PATH = os.path.abspath(os.path.dirname(__file__))
 
     class Root:
-        @cherrypy.expose
-        def index(self):
-            return "Hello, world!"
-        
-        
+        pass
+
     def error_page_401(status, message, traceback, version):
         return "Sie sind nicht berechtigt, auf diese Seite zuzugreifen"
-    
-    cherrypy.config.update({'error_page.401': error_page_401})
-    
 
+    cherrypy.config.update({'error_page.401': error_page_401})
 
     cherrypy.config.update({
         'server.socket_host': '0.0.0.0',
@@ -32,17 +28,23 @@ if __name__ == '__main__':
         # 'tools.sessions.storage_path': 'sessions',
         'tools.sessions.timeout': 1})
 
-    cherrypy.tree.mount(Root(), '/', config = {'/static': {
+    cherrypy.tree.mount(AppServer("survey"), '/', config={
+        '/': {
+            'tools.auth_basic.on': True,
+            "tools.staticdir.root": PATH,
+            'tools.auth_basic.realm': 'survey',
+            'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db},
+        '/static': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': Path(__file__).parents[0].resolve().joinpath('static')   
+            'tools.staticdir.dir': "static",
+
         }})
-    cherrypy.tree.mount(AppServer("survey"), '/', config =  {'/': {'tools.auth_basic.on': True,
-        'tools.auth_basic.realm': 'survey',
-        'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db}})
-    cherrypy.tree.mount(AdminConsole("admin"), '/admin',  config =  {'/':{'tools.auth_basic.on': True,
-        'tools.auth_basic.realm': 'admin',
-        'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db,
-        'tools.auth_basic.accept_charset': 'UTF-8'}})
+    cherrypy.tree.mount(AdminConsole("admin"), '/admin',  config={
+        '/': {
+            'tools.auth_basic.on': True,
+            'tools.auth_basic.realm': 'admin',
+            'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db,
+            'tools.auth_basic.accept_charset': 'UTF-8'}})
 
     cherrypy.engine.start()
     cherrypy.engine.block()
