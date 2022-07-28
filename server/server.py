@@ -137,7 +137,7 @@ class AppServer:
                 questions, current_data)
 
             if "URL" in current_data:
-                html = f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + html
+                html = f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + html
         else:
             if len(record["data"]) < 3:
                 raise ValueError("Need at least three user codings")
@@ -152,7 +152,7 @@ class AppServer:
 
                     if "URL" in current_data:
                         html.append(
-                            f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
+                            f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
 
         return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST",
                                                             "html": html, "admin_mode": admin_mode})
