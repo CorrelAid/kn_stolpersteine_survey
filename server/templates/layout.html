@@ -41,9 +41,11 @@
 
     <div class=" footer navbar navbar-expand-sm navbar-light bg-light justify-content-center">
         <ul class="navbar-nav">
+            {% if admin_mode %}
             <li class="nav-item">
                 <a class="nav-link" onclick="location.href='add';">Stolperstein einfügen</a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 {% if admin_mode %}
                 <a class="nav-link" onclick="location.href='users';">Benutzerverwaltung</a>
