@@ -15,7 +15,7 @@ $(document).ready(function () {
         },
         messages: {
             en: "Please write 'str' as 'straße",
-            de: 'Bitte  "straße" statt "str." oder "strasse" schreiben'
+            de: 'Bitte nicht kürzen. Bitte ..straße statt ..strasse oder ..str. verwenden.'
         }
     });
 

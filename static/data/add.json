@@ -33,7 +33,7 @@
         "label": "Straße",
         "name": "Strasse",
         "tooltip": {
-          "text": "Bitte kürzen, z.B. Str. statt Strasse.",
+          "text": "Bitte nicht kürzen. Bitte ..straße statt ..strasse oder ..str. verwenden.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock data-parsley-str"
