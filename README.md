@@ -1,4 +1,4 @@
-Current VIP: https://e086aa6.online-server.cloud/
+Current VIP: stolper.jstet.net
 
 General information about the project to which this repository belongs can be found [here](https://pad.correlaid.org/zHZbVjb4TS6Vntt4XpnrBA?both).
 

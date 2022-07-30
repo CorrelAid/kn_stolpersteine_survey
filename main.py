@@ -19,6 +19,14 @@ if __name__ == '__main__':
 
     cherrypy.config.update({'error_page.401': error_page_401})
 
+    LOCAL = os.environ.get("LOCAL")
+
+    # if LOCAL:
+    #     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
+    # else:
+    #     cherrypy.config.update({'server.socket_host': ''})
+        
+        
     cherrypy.config.update({
         'server.socket_host': '0.0.0.0',
         'server.socket_port': int(os.environ['PORT']),
