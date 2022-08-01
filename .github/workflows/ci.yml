@@ -1,0 +1,30 @@
+name: CI
+
+on: 
+  push:
+    branches:    
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Executing remote command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: | 
+          cd app
+          git reset --hard 
+          git pull origin main 
+          cp ../.env .env
+          docker build -t app --no-cache .
+          cd ../compose_app
+          docker stack deploy -c docker-compose.yml app
+
+    
