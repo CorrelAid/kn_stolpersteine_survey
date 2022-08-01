@@ -25,8 +25,7 @@ if __name__ == '__main__':
     #     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
     # else:
     #     cherrypy.config.update({'server.socket_host': ''})
-        
-        
+
     cherrypy.config.update({
         'server.socket_host': '0.0.0.0',
         'server.socket_port': int(os.environ['PORT']),
@@ -36,27 +35,27 @@ if __name__ == '__main__':
         # 'tools.sessions.storage_path': 'sessions',
         'tools.sessions.timeout': 1})
 
-    cherrypy.tree.mount(AppServer("survey"), '/', config={
+    cherrypy.tree.mount(AppServer("survey"), '/survey', config={
         '/': {
             'tools.auth_basic.on': True,
-            "tools.staticdir.root": PATH,
             'tools.auth_basic.realm': 'survey',
-            'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db},
-        '/static': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': "static",
+            'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db}})
 
-        }})
     cherrypy.tree.mount(AdminConsole("admin"), '/admin',  config={
         '/': {
             'tools.auth_basic.on': True,
             'tools.auth_basic.realm': 'admin',
             'tools.auth_basic.checkpassword': AuthenticationModule().check_password_in_db,
             'tools.auth_basic.accept_charset': 'UTF-8'}})
-    
-    cherrypy.tree.mount(Public(), '/public', config={
-       
-        })
+
+    cherrypy.tree.mount(Public(), '/', config={
+        "/":{
+            "tools.staticdir.root": PATH,},
+        '/static': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': "static",
+
+        }})
 
     cherrypy.engine.start()
     cherrypy.engine.block()

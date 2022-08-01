@@ -96,7 +96,7 @@ class AppServer:
         else:
             admin_mode = False
 
-        return self._render_template('index.html', params={'title': "Index Page", "data": all_data, "admin_mode": admin_mode})
+        return self._render_template('survey_index.html', params={'title': "Survey Index Page", "data": all_data, "admin_mode": admin_mode})
 
     @cherrypy.expose
     def survey(self, id, admin_mode=False):
@@ -429,3 +429,13 @@ class Public:
     @cherrypy.expose
     def logged_out(self):
         return self._render_template('logged_out.html', params={'title': "Logged out"})
+    
+    @cherrypy.expose
+    def index(self):
+        return self._render_template('index.html', params={'title': "Index"})
+    
+    @cherrypy.expose
+    def Impressum(self):
+        return self._render_template('impressum.html', params={'title': "Index"})
+    
+    
