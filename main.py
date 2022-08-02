@@ -15,7 +15,7 @@ if __name__ == '__main__':
         pass
 
     def error_page_401(status, message, traceback, version):
-        return "Sie sind nicht berechtigt, auf diese Seite zuzugreifen"
+        return "Sie sind nicht berechtigt, auf diese Seite zuzugreifen."
 
     cherrypy.config.update({'error_page.401': error_page_401})
 

@@ -151,21 +151,25 @@ class AppServer:
         return self._render_template('fail_admin_overview.html', params={'title': "Noch nicht genügend Einträge, um diese zu vergleichen"})
     
     @cherrypy.expose
-    def add(self):
+    def add(self, admin_mode=False):
         """
 
         :return:
         """
-        question_file = Path(__file__).resolve(
-        ).parents[1].joinpath("static/data/add.json")
+        if admin_mode:
+            question_file = Path(__file__).resolve(
+            ).parents[1].joinpath("static/data/add.json")
 
-        with open(question_file, "rb") as f:
-            questions = json.load(f)
+            with open(question_file, "rb") as f:
+                questions = json.load(f)
 
-        html = SurveyObject(questions, {}, {}).construct_survey(questions, {})
+            html = SurveyObject(questions, {}, {}).construct_survey(questions, {})
 
-        return self._render_template('add.html', params={'title': "Stolperstein einfügen", "html": html, "post_route": f"{self.realm}/POST_ADD"})
-
+            return self._render_template('add.html', params={'title': "Stolperstein einfügen", "html": html, "post_route": f"{self.realm}/POST_ADD"})
+        else:
+            return self.index()
+        
+# This can be called also if not admin till now right?
     @cherrypy.expose
     def POST_ADD(self, **kwargs):
         """
@@ -350,6 +354,10 @@ class AdminConsole(AppServer):
     @cherrypy.expose
     def survey(self, id):
         return super().survey(id, admin_mode=True)
+
+    @cherrypy.expose
+    def add(self):
+        return super().add(admin_mode=True)
 
     @cherrypy.expose
     def users(self):
