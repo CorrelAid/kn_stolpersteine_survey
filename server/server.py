@@ -1,17 +1,13 @@
 from pathlib import Path
-
 import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from pymongo import MongoClient
-
 from .surveys import SurveyObject
 from cherrypy.lib.static import serve_file
 import bcrypt
-
 import json
 import pickle
-
 from faker import Faker
 
 
@@ -77,13 +73,6 @@ class AppServer:
         return tmpl.render(**params)
 
     @cherrypy.expose
-    def delete_entries(self):
-        # TODO This is only here for testing, this must be removed just in case!!
-        length_all_data = len(list(self.db.find({})))
-        self.db.delete_many({})
-        return self.success_delete(length_all_data)
-
-    @cherrypy.expose
     def index(self, **kwargs):
         """
 
@@ -96,7 +85,7 @@ class AppServer:
         else:
             admin_mode = False
 
-        return self._render_template('survey_index.html', params={'title': "Survey Index Page", "data": all_data, "admin_mode": admin_mode})
+        return self._render_template('survey_index.html', params={'title': "Übersicht", "data": all_data, "admin_mode": admin_mode})
 
     @cherrypy.expose
     def survey(self, id, admin_mode=False):
@@ -140,7 +129,7 @@ class AppServer:
                 html = f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + html
         else:
             if len(record["data"]) < 3:
-                raise ValueError("Need at least three user codings")
+                 return self.fail_admin_overview()
             else:
                 html = []
                 for name_append, current_data in zip(["second_to_last", "last", ""], record["data"][-3:]):
@@ -154,9 +143,13 @@ class AppServer:
                         html.append(
                             f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
 
-        return self._render_template('survey.html', params={'title': "Survey", "post_route": f"{self.realm}/POST",
+        return self._render_template('survey.html', params={'title': "Datenerfassung", "post_route": f"{self.realm}/POST",
                                                             "html": html, "admin_mode": admin_mode})
-
+    
+    @cherrypy.expose
+    def fail_admin_overview(self):
+        return self._render_template('fail_admin_overview.html', params={'title': "Noch nicht genügend Einträge, um diese zu vergleichen"})
+    
     @cherrypy.expose
     def add(self):
         """
@@ -171,50 +164,7 @@ class AppServer:
 
         html = SurveyObject(questions, {}, {}).construct_survey(questions, {})
 
-        return self._render_template('add.html', params={'title': "Add Victim", "html": html, "post_route": f"{self.realm}/POST_ADD"})
-
-    @cherrypy.expose
-    def fail_add(self, info):
-        """
-
-        :return:
-        """
-        return self._render_template('fail_add.html', params={'title': "Victim Already in Database", "info": info})
-
-    @cherrypy.expose
-    def success_add(self, info):
-        """
-
-        :return:
-        """
-        return self._render_template('success_add.html',
-                                     params={'title': f"Added {info['Nachname']}, {info['Vorname']}", "info": info})
-
-    @cherrypy.expose
-    def success_delete(self, num_entries):
-        """
-
-        :return:
-        """
-        return self._render_template('success_delete.html',
-                                     params={'title': f"Deleted {num_entries} entries", "num_entries": num_entries})
-
-    @cherrypy.expose
-    def success_upload(self, num_entries):
-        """
-
-        :return:
-        """
-        return self._render_template('success_upload.html',
-                                     params={'title': f"Uploaded {num_entries} entries", "num_entries": num_entries})
-
-    # @cherrypy.expose
-    # def unauthorized(self):
-    #     """
-
-    #     :return:
-    #     """
-    #     return self._render_template('unauthorized.html')
+        return self._render_template('add.html', params={'title': "Stolperstein einfügen", "html": html, "post_route": f"{self.realm}/POST_ADD"})
 
     @cherrypy.expose
     def POST_ADD(self, **kwargs):
@@ -232,7 +182,7 @@ class AppServer:
         if "" in kwargs.values():
             # TODO could be better to do this in front-end or at least have a landing page
             #raise ValueError("All fields must be completed")
-            return self._render_template('post_add_completeAllFields.html', params={'title': "All fields must be completed"})
+            return self._render_template('post_add_completeAllFields.html', params={'title': "Alle Felder müssen ausgefüllt werden."})
         # already in database
         elif len(existing_records) >= 1:
             return self.fail_add(kwargs)
@@ -270,7 +220,7 @@ class AppServer:
     @cherrypy.expose
     def POST_USER(self, **kwargs):
         if kwargs["username"] == cherrypy.request.login:
-            self.enter_credentials_in_db(**kwargs)
+            self.enter_credentials_in_db("survey", **kwargs)
             return self.index()
         else:
             raise ValueError(
@@ -288,15 +238,7 @@ class AppServer:
         return self._render_template("user_administration.html",
                                      params={"post_route": f"{self.realm}/POST_USER", "realm": realm,
                                              "username": username if username else cherrypy.request.login,
-                                             "password": self.random_password(), "existing": True, "admin_mode": admin_mode})
-
-    # @cherrypy.expose
-    # def logout(self):
-    #     # TODO: would be nice to put something here but probably just a nice to have
-    #     raise cherrypy.HTTPError(
-    #         401,
-    #         "test"
-    #     )
+                                             "password": self.random_password(), "existing": True, "admin_mode": admin_mode, "title": "Accounteinstellungen"})
 
     def enter_credentials_in_db(self, realm, username, password, existing=False):
         # only store hashed and salted passwords
@@ -310,6 +252,52 @@ class AppServer:
                                               "realm": realm, "username": username, "password": self.authentication.get_hashed_password(password)}})
         else:
             raise ValueError("Username already is taken!")
+        
+    
+    @cherrypy.expose
+    def delete_entries(self):
+        # TODO This is only here for testing, this must be removed just in case!!
+        length_all_data = len(list(self.db.find({})))
+        self.db.delete_many({})
+        return self.success_delete(length_all_data)
+    
+    ### custom error messages ###########################
+    #####################################################
+    
+    @cherrypy.expose
+    def fail_add(self, info):
+        """
+
+        :return:
+        """
+        return self._render_template('fail_add.html', params={'title': "Stolperstein schon in der Datenbank.", "info": info})
+
+    @cherrypy.expose
+    def success_add(self, info):
+        """
+
+        :return:
+        """
+        return self._render_template('success_add.html',
+                                     params={'title': f" {info['Nachname']}, {info['Vorname']} hinzugefügt.", "info": info})
+
+    @cherrypy.expose
+    def success_delete(self, num_entries):
+        """
+
+        :return:
+        """
+        return self._render_template('success_delete.html',
+                                     params={'title': f"{num_entries} Einträge gelöscht.", "num_entries": num_entries})
+
+    @cherrypy.expose
+    def success_upload(self, num_entries):
+        """
+
+        :return:
+        """
+        return self._render_template('success_upload.html',
+                                     params={'title': f"{num_entries} Einträge hochgeladen.", "num_entries": num_entries})
 
 
 class AdminConsole(AppServer):
@@ -351,7 +339,7 @@ class AdminConsole(AppServer):
             return self._render_template("user_administration.html",
                                          params={"post_route": f"{self.realm}/POST_USER", "realm": "survey",
                                                  "username": username, "password": self.random_password(),
-                                                 "existing": False, "admin_mode": admin_mode})
+                                                 "existing": False, "admin_mode": admin_mode, "title": "Accounteinstellungen"})
         else:
             return super().user_administration(username=username, admin_mode=admin_mode)
 
@@ -407,6 +395,8 @@ class AdminConsole(AppServer):
 
             return serve_file(save_file, "application/x-download", "attachment")
 
+    
+
 class Public:
     def __init__(self):
         """
@@ -428,7 +418,7 @@ class Public:
     
     @cherrypy.expose
     def logged_out(self):
-        return self._render_template('logged_out.html', params={'title': "Logged out"})
+        return self._render_template('logged_out.html', params={'title': "Ausgeloggt"})
     
     @cherrypy.expose
     def index(self):
@@ -436,6 +426,6 @@ class Public:
     
     @cherrypy.expose
     def Impressum(self):
-        return self._render_template('impressum.html', params={'title': "Index"})
+        return self._render_template('impressum.html', params={'title': "Impressum"})
     
     

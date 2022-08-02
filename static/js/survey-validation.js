@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     window.Parsley.addValidator('str', {
         validateString: function (value) {
-            return (value.toLowerCase().indexOf("str.") === -1) &&  (value.toLowerCase().indexOf("str") === -1)  &&  (value.toLowerCase().indexOf("strasse") === -1);
+            return ("str." in value.toLowerCase() &  "strasse" in value.toLowerCase());
         },
         messages: {
             en: "Please write 'str' as 'straße",

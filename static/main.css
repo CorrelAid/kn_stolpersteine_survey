@@ -1,14 +1,11 @@
-.navbar .navbar-nav {
-    display: inline-block;
-    float: none;
-    vertical-align: top;
-  }
-  
-  .navbar .navbar-collapse {
-    text-align: center;
-  }
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
 
-
-a{
-   display: none;
+.nav-link:hover {
+  cursor: pointer;
 }
