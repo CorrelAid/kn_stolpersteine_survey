@@ -19,13 +19,7 @@ jobs:
         remote_host: ${{ secrets.HOST }}
         remote_user: ${{ secrets.USERNAME }}
         remote_key: ${{ secrets.SSHKEY }}
-        rsh: | 
-          cd app
-          cp ../.env .env
-          docker build --no-cache -t localhost:5000/cherrypy:latest 
-          docker push localhost:5000/cherrypy:latest 
-          cd ../compose_app
-          docker stack deploy -c docker-compose.yml app
+        
 
 
     
