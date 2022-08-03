@@ -176,8 +176,6 @@ class AppServer:
 
         :return:
         """
-        print(kwargs)
-
         def create_id(Vorname, Nachname, Strasse, Hausnummer, URL):
             special_char_map = {ord('ä'): 'ae', ord('ü'): 'ue', ord('ö'): 'oe'}
             return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Hausnummer}".lower().replace("-", "_")
@@ -202,7 +200,6 @@ class AppServer:
 
         :return:
         """
-        print(kwargs)
         query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"],
                  "Strasse": kwargs["Strasse"], "Hausnummer": kwargs["Hausnummer"]}
         existing_records = [entry for entry in self.db.find(
