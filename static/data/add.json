@@ -19,7 +19,7 @@
     "name": "URL",
     "label": "Ende der URL",
     "tooltip": {
-      "text": "Bitte geben Sie den letzten Teil der URL ein, ohne '.html'. Beispiel: adler_emma",
+      "text": "Bitte geben Sie den letzten Teil der URL ein (ohne .html). Beispiel: adler_emma",
       "icon": "help"
     },
     "parsley_validator": "data-parsley-url"
