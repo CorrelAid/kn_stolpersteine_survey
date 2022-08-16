@@ -176,8 +176,6 @@ class AppServer:
 
         :return:
         """
-        print(kwargs)
-
         def create_id(Vorname, Nachname, Strasse, Hausnummer, URL):
             special_char_map = {ord('ä'): 'ae', ord('ü'): 'ue', ord('ö'): 'oe'}
             return f"{Vorname.replace(' ', '_').translate(special_char_map)}_{Nachname.translate(special_char_map)}_{Strasse[:2].translate(special_char_map)}{Hausnummer}".lower().replace("-", "_")
@@ -202,7 +200,11 @@ class AppServer:
 
         :return:
         """
-        print(kwargs)
+        if "admin_mode" in kwargs:
+            admin_mode = kwargs["admin_mode"]
+        else:
+            admin_mode = False
+
         query = {"Nachname": kwargs["Nachname"], "Vorname": kwargs["Vorname"], "URL": kwargs["URL"],
                  "Strasse": kwargs["Strasse"], "Hausnummer": kwargs["Hausnummer"]}
         existing_records = [entry for entry in self.db.find(
@@ -216,7 +218,7 @@ class AppServer:
                               if key not in self.identifying_info}, "user": cherrypy.request.login})
 
         self.db.update_one(
-            {"_id": _id}, {"$set": {**query, "fertig": True, "data": record["data"]}})
+            {"_id": _id}, {"$set": {**query, "fertig": admin_mode, "data": record["data"]}})
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()
@@ -384,6 +386,10 @@ class AdminConsole(AppServer):
                 entries = json.load(f)
             self.db.insert_many(entries)
             return self.success_upload(len(entries))
+
+    @cherrypy.expose
+    def POST(self, _id, **kwargs):
+        return super().POST(_id, admin_mode=True, **kwargs)
 
     @cherrypy.expose
     def download(self):

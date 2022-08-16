@@ -47,7 +47,11 @@ class SurveyObject:
                 survey +=  self.construct_dynamic_nested(question, data)
             else:
                 raise ValueError(f"{question['type']}")
-            survey += f"<br>\n"
+
+            if (question["type"] == "nested-dynamic") or (question["type"] == "nested-questions"):
+                survey += f"\n"
+            else:
+                survey += f"<br>\n"
 
         return survey
 
