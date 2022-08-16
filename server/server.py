@@ -431,8 +431,9 @@ class Public:
         return tmpl.render(**params)
     
     @cherrypy.expose
-    def index(self, **kwargs):
+    def instructions(self, **kwargs):
         return self._render_template('instructions.html', params={'title': "Anleitung"})
+    
         
     @cherrypy.expose
     def logged_out(self):
