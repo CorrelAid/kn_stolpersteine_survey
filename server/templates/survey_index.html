@@ -9,7 +9,6 @@
         $('#hide_fertig').on('click', function () {
             if (this.checked){
                 $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-                    console.log(data)
                     return data[2] === "No";
                 });
             }
@@ -18,6 +17,10 @@
             }
             table.draw();
         });
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            return data[2] === "No";
+        });
+        table.draw();
     });
 </script>
 {% endblock %}
@@ -35,7 +38,7 @@
 {% block content %}
 <div class="list-group">
     <div>
-        <input type="checkbox" id="hide_fertig" name="hide_fertig">
+        <input type="checkbox" id="hide_fertig" name="hide_fertig" checked>
         <label for="hide_fertig">Erledigte Einträge ausblenden</label>
     </div>
     <table id="index_table" class="display">
