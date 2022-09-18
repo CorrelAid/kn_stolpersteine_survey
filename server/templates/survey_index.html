@@ -5,7 +5,11 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
     $(document).ready( function () {
-        var table = $('#index_table').DataTable();
+        var table = $('#index_table').DataTable( {
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+        }
+        });
         $('#hide_fertig').on('click', function () {
             if (this.checked){
                 $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
