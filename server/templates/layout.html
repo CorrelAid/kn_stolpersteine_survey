@@ -21,7 +21,7 @@
     {% block styles %}
     {% endblock %}
     <title>{% if title %}{{title}}{% else %}Stolpersteine Konstanz - Datenerfassung{% endif %}</title>
-    <link rel="icon" type="image/png" href="/static/stolperstein.png">
+    <link rel="icon" type="image/png" href="/static/img/stolperstein.png">
 </head>
 
 <body>
@@ -30,6 +30,9 @@
     <nav class="navbar  fixed-top navbar-light bg-light navbar-expand-lg justify-content-center">
         <a class="navbar-brand" href="/">Stolpersteine Konstanz - Datenerfassung</a>
         <ul class="navbar-nav ml-5">
+            <li class="nav-item">
+                <a class="nav-link active" href="/instructions">Anleitung</a>
+            </li>
             <li class="nav-item">
                 {% if admin_mode %}
                 <a class="nav-link active" href="/survey">Normale Übersicht</a>
@@ -58,6 +61,12 @@
             {% if admin_mode %}
             <li class="nav-item">
                 <a class="nav-link" onclick="location.href='add';">Stolperstein einfügen</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/upload">Datei hochladen</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/download">Daten als csv runterladen</a>
             </li>
             {% endif %}
             <li class="nav-item">
