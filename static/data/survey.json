@@ -108,17 +108,17 @@
         "options": [
           "Elternteil",
           "Kind",
-          "EhegattIn",
+          "Verheiratet",
           "Geschwister",
           "Großelternteil",
-          "EnkelIn",
+          "Enkelkind",
           "Onkel/Tante",
           "Cousin/Cousine",
-          "NeffIn",
-          "Verlobte/r",
+          "Neffe/Neffin",
+          "Verlobt",
           "Schwiegerelternteil",
           "Schwiegerkind",
-          "SchwägerIn"
+          "Schwäger/Schwägerin"
         ]
       }
     ]
