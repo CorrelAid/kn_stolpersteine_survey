@@ -104,6 +104,11 @@ class AppServer:
 
         record = existing_records[0]
 
+        if "fertig" in record:
+            fertig = record["fertig"]
+        else:
+            fertig=False
+
         data = list(self.db.find({}))
 
         questions = []
@@ -144,7 +149,7 @@ class AppServer:
                             f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
 
         return self._render_template('survey.html', params={'title': "Datenerfassung", "post_route": f"{self.realm}/POST",
-                                                            "html": html, "admin_mode": admin_mode})
+                                                            "html": html, "admin_mode": admin_mode, "fertig":fertig})
     
     @cherrypy.expose
     def fail_admin_overview(self):

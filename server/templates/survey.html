@@ -2,6 +2,9 @@
 {% block form %}
     <script>
         $(document).ready(function () {
+            {% if fertig and not admin_mode %}
+                $("form :input").prop('disabled', true);
+            {% endif  %}
             $('#last_user :input').prop('disabled', true);
             $('#second_last_user :input').prop('disabled', true);
         });
@@ -26,6 +29,9 @@
         <form action="/{{ post_route }}" on_submit="return removeHidden()" data-parsley-validate
                   data-parsley-trigger="keyup">
         {{ html }}
-        <input type="submit" value="Absenden">
+        {% if fertig == true %}
+        {%  else  %}
+            <input type="submit" value="Absenden">
+        {% endif %}
     {% endif %}
 {% endblock %}
