@@ -61,20 +61,22 @@
     "type": "form-check",
     "options": [
       "juedisch",
-      "politisch",
-      "euthanasie",
       "religioes",
-      "sinti_und_roma",
-      "homosexuelle",
-      "deserteure"
+      "politisch",
+      "widerstand",
+      "t4",
+      "sinti_u_roma",
+      "queer",
+      "deserteur"
     ],
     "labels": [
-      "Juden / Jüdinnen",
-      "Politisch / Widerstand",
-      "Aktion T4 / \"Euthanasie\"",
-      "Religiöse Verfolgung",
-      "Sinti",
-      "Homosexuelle",
+      "Angehörige des Judentums",
+      "Politische Verfolgte",
+      "Menschen im Widerstand",
+      "Opfer der Aktion T4/\"Euthanasie\"",
+      "Religiös Verfolgte",
+      "Sinti und Roma",
+      "Queere Menschen/Homosexuelle",
       "Deserteure"
     ]
   },
@@ -137,7 +139,7 @@
         "vermutet": true,
         "name": "Geburtsort",
         "tooltip": {
-          "text": "Stadt, Land oder nur Land, falls Stadt nicht angegeben ist.",
+          "text": "'Stadt, Land' oder nur Land, falls Stadt nicht angegeben ist.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -158,7 +160,7 @@
         "vermutet": true,
         "name": "Todesort",
         "tooltip": {
-          "text": "Stadt, Land oder nur Land, falls Stadt nicht angegeben ist.",
+          "text": "'Stadt, Land' oder nur Land, falls Stadt nicht angegeben ist.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -200,7 +202,7 @@
     "type": "nested-dynamic",
     "label": "Fluchtversuche",
     "tooltip": {
-      "text": "Bitte geben Sie alle Fluchtversuche ein, ob erfolgreich oder nicht.",
+      "text": "Bitte geben Sie alle Fluchtversuche ein; sowohl erfolgreich als auch nicht erfolgreich",
       "icon": "help"
     },
     "subquestions": [
