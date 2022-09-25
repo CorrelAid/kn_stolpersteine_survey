@@ -38,17 +38,14 @@ Example (null, True/False might be slightly inaccurate, will have to check):
    - Vorname: Jane
    - Nachname: Doe
    - URL: doe_family.html
-   - Verlegejahr: 2010
-   - Straße: Fakestraße
-   - Hausnummer: 32
    - data:
        * 0 [an entry for each coding, first entry should be from scraping]
-           * Final: False
+           * Straße: Fakestraße
+           * Hausnummer: 32
            * Geschlecht: weiblich
            * Geburtsname: Brown
            * Akademischer_Titel: Dr.
            * Andere_Namen: null
-           * PLZ: 88662
            * Opfergruppen: ["juedisch", "politisch"] 
            * Beruf: Bäckerin
            * Familie
