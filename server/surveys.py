@@ -56,7 +56,7 @@ class SurveyObject:
         return survey
 
     def construct_dynamic_nested(self, question, data):
-        group_start = f"<div class='form-group' id='{question['label']}{self.name_append}'>\n" \
+        group_start = f"<div class='form-group {question['label']}{self.name_append}'>\n" \
                       f"<label>{question['label']}:</label>"
 
         if question["tooltip"]:
@@ -67,25 +67,29 @@ class SurveyObject:
 
         individual_end = f"</div>\n" \
                   f"<div>\n" \
-                  f"<button type='button' id='delete_{question['label']}{self.name_append}' class='btn btn-primary btn-right'>löschen</button> \n" \
+                  f"<button type='button' class='delete_FormElement btn btn-primary btn-right'>löschen</button> \n" \
                   f"</div>\n" \
                   f"</div>\n" \
                   f"<br\n>" \
 
 
-        group_end = f"<button type='button' id='add_{question['label']}{self.name_append}' class='btn btn-primary'>weitere {question['label']}</button>\n" \
+        group_end = f"<button type='button' class='add_FormElement btn btn-primary'>weitere {question['label']}</button>\n" \
                     f"</div>\n"
 
         data_fields = []
         for subquestion in question["subquestions"]:
-            if subquestion["type"] != "date":
+            if subquestion["type"] == "nested-dynamic":
+                #TODO: definitely better way to architect this, but here allowing only one level of nesting
+                #e.g. multiple Durchgangsörter in one Fluchtversuch
+                data_fields.extend([subsubquestion["name"] for subsubquestion in subquestion["subquestions"]])
+            elif subquestion["type"] != "date":
                 data_fields.append(subquestion["name"])
             else:
                 data_fields.extend([f"{subquestion['name']}_{time_field}" for time_field in ["jahr", "monat", "datum"]])
 
         if all(data_field not in data for data_field in data_fields) or all(data[data_field]=="" for data_field in data_fields):
             return group_start + individual_start + \
-                   self.construct_nested_questions(**{key: val for key, val in question.items() if key not in ["tooltip", "type", "label"]},
+                   self.construct_nested_questions(**{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]},
                                                       type="nested-questions") \
                    + individual_end + group_end
         # handle all entries lists

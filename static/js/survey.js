@@ -1,60 +1,34 @@
 $(document).ready(function () {
-    $("#add_Familienangehörige").on('click', function() {
-        if (($('#Familienangehörige .form-group-member').length == 1) && $('#Familienangehörige .form-group-member').is(":hidden")){
-            $('#Familienangehörige .form-group-member').show()
-            $('#Familienangehörige .form-group-member').attr('hidden',false);
-        } else {
-        $('#Familienangehörige .form-group-member:last').clone().insertAfter('#Familienangehörige .form-group-member:last')
-        }
-    })
+    function bindDelete(selector) {
+        selector.on('click', function(e) {
+            e.preventDefault();
+            console.log("delete")
+            if ($(this).parent().parent().parent().children('.form-group-member').length == 1){
+                $(this).parent().parent().parent().children('.form-group-member').first().hide();
+                $(this).parent().parent().parent().children('.form-group-member').first().attr('hidden',true);
+            } else {
+                $(this).parent().parent().remove();
+            }
+        });
+    }
 
-    $("#Familienangehörige").on('click', "#delete_Familienangehörige", function(e) {
-        e.preventDefault();
-        if ($('#Familienangehörige .form-group-member').length == 1){
-            $(this).closest('#Familienangehörige .form-group-member').hide();
-            $(this).closest('#Familienangehörige .form-group-member').attr('hidden',true);
-        } else {
-            $(this).closest('#Familienangehörige .form-group-member').remove();
-        }
-    })
+    function bindAdd(selector) {
+        selector.on('click', function (e) {
+            e.preventDefault();
+            if (($(this).parent().children('.form-group-member').length == 1) && $(this).parent().children('.form-group-member').first().is(":hidden")) {
+                $(this).parent().children('.form-group-member').first().show()
+                $(this).parent().children('.form-group-member').first().attr('hidden', false);
+            } else {
+                $(this).parent().children('.form-group-member').last().clone().insertAfter($(this).parent().children('.form-group-member').last());
+                bindDelete($(this).parent().children('.form-group-member').last().find(".delete_FormElement"));
+                bindAdd($(this).parent().children('.form-group-member').last().find(".add_FormElement"));
+            }
+        });
+    }
 
-    $("#add_Stationen").on('click', function() {
-        if (($('#Stationen  .form-group-member').length == 1) && $('#Stationen  .form-group-member').is(":hidden")){
-            $('#Stationen  .form-group-member').show()
-            $('#Stationen  .form-group-member').attr('hidden',false);
-        } else {
-        $('#Stationen  .form-group-member:last').clone().insertAfter('#Stationen  .form-group-member:last')
-        }
-    })
-
-    $("#Stationen").on('click', "#delete_Stationen", function(e) {
-        e.preventDefault();
-        if ($('#Stationen .form-group-member').length == 1){
-            $(this).closest('#Stationen .form-group-member').hide();
-            $(this).closest('#Stationen .form-group-member').attr('hidden',true);
-        } else {
-            $(this).closest('#Stationen .form-group-member').remove();
-        }
-    })
-
-    $("#add_Fluchtversuche").on('click', function() {
-        if (($('#Fluchtversuche .form-group-member').length == 1) && $('#Fluchtversuche .form-group-member').is(":hidden")){
-            $('#Fluchtversuche .form-group-member').show()
-            $('#Fluchtversuche .form-group-member').attr('hidden',false);
-        } else {
-        $('#Fluchtversuche .form-group-member:last').clone().insertAfter('#Fluchtversuche .form-group-member:last')
-        }
-    })
-
-    $("#Fluchtversuche").on('click', "#delete_Fluchtversuche", function(e) {
-        e.preventDefault();
-        if ($('#Fluchtversuche .form-group-member').length == 1){
-            $(this).closest('#Fluchtversuche .form-group-member').hide();
-            $(this).closest('#Fluchtversuche .form-group-member').attr('hidden',true);
-        } else {
-            $(this).closest('#Fluchtversuche .form-group-member').remove();
-        }
-    })
+    // initial binding
+    bindAdd($(".add_FormElement"));
+    bindDelete($(".delete_FormElement"));
 
     function removeHidden(){
         $(".form-group-member:hidden").remove()
