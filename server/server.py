@@ -88,7 +88,7 @@ class AppServer:
         return self._render_template('survey_index.html', params={'title': "Übersicht", "data": all_data, "admin_mode": admin_mode})
 
     @cherrypy.expose
-    def survey(self, id, admin_mode=False):
+    def survey(self, _id, admin_mode=False):
         """
 
         :param vorname:
@@ -96,7 +96,7 @@ class AppServer:
         :param url:
         :return:
         """
-        query = {"_id": id}
+        query = {"_id": _id}
         existing_records = [entry for entry in self.db.find(query)]
 
         # only should be one entry
@@ -224,6 +224,9 @@ class AppServer:
 
         self.db.update_one(
             {"_id": _id}, {"$set": {**query, "fertig": admin_mode, "data": record["data"]}})
+
+        existing_records = [entry for entry in self.db.find(
+            {"_id": _id})]
 
         # maybe better to have a landing page for this or new profile shown
         return self.index()

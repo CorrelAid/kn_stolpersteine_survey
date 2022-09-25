@@ -56,7 +56,7 @@
         <tbody>
             {% for item in data %}
             <tr>
-                <td><a href="survey?id={{item['_id']}}" class="list-group-item">{{item['Nachname']}}, {{item['Vorname']}}</a></td>
+                <td><a href="survey?_id={{item['_id']}}" class="list-group-item">{{item['Nachname']}}, {{item['Vorname']}}</a></td>
                 <td><a class="list-group-item">{{item['data']|length}}</a></td>
                 {% if item["fertig"] == true %}
                 <td><a class="list-group-item">Yes</a></td>
