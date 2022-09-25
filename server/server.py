@@ -190,8 +190,6 @@ class AppServer:
 
         existing_records = [entry for entry in self.db.find(kwargs)]
         if "" in kwargs.values():
-            # TODO could be better to do this in front-end or at least have a landing page
-            #raise ValueError("All fields must be completed")
             return self._render_template('post_add_completeAllFields.html', params={'title': "Alle Felder müssen ausgefüllt werden."})
         # already in database
         elif len(existing_records) >= 1:
@@ -200,7 +198,7 @@ class AppServer:
             # add data, with empty data entry
             self.db.insert_one(
                 {**kwargs, "_id": create_id(**kwargs), "data": []})
-            return self.success_add(self.db.find_one(kwargs))
+            return self.success_post(self.db.find_one(kwargs))
 
     @cherrypy.expose
     def POST(self, _id, **kwargs):
@@ -228,11 +226,9 @@ class AppServer:
         self.db.update_one(
             {"_id": _id}, {"$set": {**query, "fertig": admin_mode, "data": record["data"]}})
 
-        existing_records = [entry for entry in self.db.find(
-            {"_id": _id})]
 
         # maybe better to have a landing page for this or new profile shown
-        return self.index()
+        return self.success_add(self.db.find_one({"_id": _id}))
 
     @cherrypy.expose
     def POST_USER(self, **kwargs):
@@ -296,7 +292,15 @@ class AppServer:
         :return:
         """
         return self._render_template('success_add.html',
-                                     params={'title': f" {info['Nachname']}, {info['Vorname']} hinzugefügt.", "info": info})
+                                     params={'title': f" {info['Nachname']}, {info['Vorname']} hinzugefügt."})
+
+    def success_post(self, info):
+        """
+
+        :return:
+        """
+        return self._render_template('success_add.html',
+                                     params={'title': f" {info['Nachname']}, {info['Vorname']} bearbeitet."})
 
     @cherrypy.expose
     def success_delete(self, num_entries):
@@ -443,6 +447,7 @@ class Public:
     
     @cherrypy.expose
     def instructions(self, **kwargs):
+
         return self._render_template('instructions.html', params={'title': "Anleitung"})
     
         
