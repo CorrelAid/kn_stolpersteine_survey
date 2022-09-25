@@ -62,13 +62,17 @@ class AppServer:
 
         self.realm = realm
 
-    def _render_template(self, tmpl_name, params={}):
+    def _render_template(self, tmpl_name, params=None):
         """
 
         :param tmpl_name:
         :param params:
         :return:
         """
+        if params is None:
+            params = {"user": cherrypy.request.login}
+        else:
+            params = {**params, "user": cherrypy.request.login}
         tmpl = self._env.get_template(tmpl_name)
         return tmpl.render(**params)
 

@@ -72,9 +72,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/admin">Admin-Bereich</a>
             </li>
+            {% if user %}
             <li class="nav-item">
                 <a class="nav-link" id="logout" onclick="logout('/logged_out')">Ausloggen</a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="/Impressum">Impressum</a>
             </li>
