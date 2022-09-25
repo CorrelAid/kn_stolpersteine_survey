@@ -170,7 +170,7 @@ class SurveyObject:
         option_text = ""
         for curr_option, curr_label in zip(options, labels):
             option_text += f"<div class='form-check'>\n" \
-            f"<input class='form-check-input' type='checkbox' value={curr_option}, {name}{self.name_append}  {'checked' if curr_option in data else ''}>\n" \
+            f"<input class='form-check-input' type='checkbox' value='{curr_option}' name='{name}{self.name_append}'  {'checked' if curr_option in data else ''}>\n" \
             f"<label class='form-check-label' for={curr_option}>{curr_label}</label>\n" \
             f"</div>" \
 
