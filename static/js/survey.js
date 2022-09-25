@@ -2,7 +2,6 @@ $(document).ready(function () {
     function bindDelete(selector) {
         selector.on('click', function(e) {
             e.preventDefault();
-            console.log("delete")
             if ($(this).parent().parent().parent().children('.form-group-member').length == 1){
                 $(this).parent().parent().parent().children('.form-group-member').first().hide();
                 $(this).parent().parent().parent().children('.form-group-member').first().attr('hidden',true);
