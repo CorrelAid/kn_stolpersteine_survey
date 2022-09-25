@@ -124,8 +124,7 @@ class AppServer:
                 current_data = record["data"][-1]
             else:
                 current_data = {}
-            current_data = {**current_data, **{key: val for key,
-                                               val in record.items() if key != "data"}}
+            current_data = {**current_data, **{key: record[key] for key in set(record.keys())-set(current_data.keys()) if key != "data"}}
 
             html = SurveyObject(questions, current_data, data).construct_survey(
                 questions, current_data)
