@@ -361,8 +361,8 @@ class AdminConsole(AppServer):
         return super().index(admin_mode=True)
 
     @cherrypy.expose
-    def survey(self, id):
-        return super().survey(id, admin_mode=True)
+    def survey(self, _id):
+        return super().survey(_id, admin_mode=True)
 
     @cherrypy.expose
     def add(self):
