@@ -132,7 +132,7 @@ class SurveyObject:
 
         return f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
                f"</label>\n" \
-               f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value={data if data else ''}>\n" \
+               f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value=\"{data if data else ''}\">\n" \
                + tooltip_text + checkbox_text
 
     def construct_nested_questions(self, type, style=None, label=None, subquestions=None, data=None, tooltip=None):
@@ -192,9 +192,9 @@ class SurveyObject:
         if self.name_append == "":
             pass
         return f"<option value=''>--</option>\n" \
-               + '\n'.join([f"<option selected='selected' value={curr_option}>{curr_label}</option>" \
+               + '\n'.join([f"<option selected='selected' value=\"{curr_option}\">{curr_label}</option>" \
                                 if name in data and data[name] == str(curr_option) else \
-                                f"<option value={curr_option}>{curr_label}</option>" \
+                                f"<option value=\"{curr_option}\">{curr_label}</option>" \
                             for curr_option, curr_label in zip(option_list,label_list)]) + "\n"
 
     def construct_dropdown(self, type, name, options, label=None, label_list=None, data=None):
