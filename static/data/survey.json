@@ -217,23 +217,14 @@
         "parsley_validator": "data-parsley-capslock"
       },
       {
-      "type": "nested-dynamic",
-      "label": "Durchgangsörter",
-      "name": "Durchgangsörter",
-      "tooltip": {
-        "text": "Bitte geben Sie alle Durchgangsörter ein",
-        "icon": "help"
+        "type": "text",
+        "name": "Durchgangsstadt",
+        "parsley_validator": "data-parsley-capslock"
       },
-      "subquestions": [{
-          "type": "text",
-          "name": "Durchgangsstadt",
-          "parsley_validator": "data-parsley-capslock"
-        },
-        {
-          "type": "text",
-          "name": "Durchgangsland",
-          "parsley_validator": "data-parsley-capslock"
-        }]
+      {
+        "type": "text",
+        "name": "Durchgangsland",
+        "parsley_validator": "data-parsley-capslock"
       },
       {
         "type": "date",
