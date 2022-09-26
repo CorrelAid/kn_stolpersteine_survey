@@ -104,7 +104,7 @@ class SurveyObject:
         # handle if only one entry -> all fields stirngs
         elif all([not isinstance(data[data_field],list) for data_field in data_fields]):
             entry = self.construct_nested_questions(
-                    **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label"]}, type="nested-questions",
+                    **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]}, type="nested-questions",
                     data=data)
             return group_start + individual_start + entry + individual_end + group_end
         else:
