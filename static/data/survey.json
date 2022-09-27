@@ -208,12 +208,22 @@
     "subquestions": [
       {
         "type": "text",
-        "name": "Zielort",
+        "name": "Zielstadt",
         "parsley_validator": "data-parsley-capslock"
       },
       {
         "type": "text",
-        "name": "Durchgangsort",
+        "name": "Zielland",
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "name": "Durchgangsstadt",
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "name": "Durchgangsland",
         "parsley_validator": "data-parsley-capslock"
       },
       {

@@ -56,7 +56,7 @@ class SurveyObject:
         return survey
 
     def construct_dynamic_nested(self, question, data):
-        group_start = f"<div class='form-group' id='{question['label']}{self.name_append}'>\n" \
+        group_start = f"<div class='form-group {question['label']}{self.name_append}'>\n" \
                       f"<label>{question['label']}:</label>"
 
         if question["tooltip"]:
@@ -67,25 +67,29 @@ class SurveyObject:
 
         individual_end = f"</div>\n" \
                   f"<div>\n" \
-                  f"<button type='button' id='delete_{question['label']}{self.name_append}' class='btn btn-primary btn-right'>löschen</button> \n" \
+                  f"<button type='button' class='delete_FormElement btn btn-primary btn-right'>löschen</button> \n" \
                   f"</div>\n" \
                   f"</div>\n" \
                   f"<br\n>" \
 
 
-        group_end = f"<button type='button' id='add_{question['label']}{self.name_append}' class='btn btn-primary'>weitere {question['label']}</button>\n" \
+        group_end = f"<button type='button' class='add_FormElement btn btn-primary'>weitere {question['label']}</button>\n" \
                     f"</div>\n"
 
         data_fields = []
         for subquestion in question["subquestions"]:
-            if subquestion["type"] != "date":
+            if subquestion["type"] == "nested-dynamic":
+                #TODO: definitely better way to architect this, but here allowing only one level of nesting
+                #e.g. multiple Durchgangsörter in one Fluchtversuch
+                data_fields.extend([subsubquestion["name"] for subsubquestion in subquestion["subquestions"]])
+            elif subquestion["type"] != "date":
                 data_fields.append(subquestion["name"])
             else:
                 data_fields.extend([f"{subquestion['name']}_{time_field}" for time_field in ["jahr", "monat", "datum"]])
 
         if all(data_field not in data for data_field in data_fields) or all(data[data_field]=="" for data_field in data_fields):
             return group_start + individual_start + \
-                   self.construct_nested_questions(**{key: val for key, val in question.items() if key not in ["tooltip", "type", "label"]},
+                   self.construct_nested_questions(**{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]},
                                                       type="nested-questions") \
                    + individual_end + group_end
         # handle all entries lists
@@ -100,7 +104,7 @@ class SurveyObject:
         # handle if only one entry -> all fields stirngs
         elif all([not isinstance(data[data_field],list) for data_field in data_fields]):
             entry = self.construct_nested_questions(
-                    **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label"]}, type="nested-questions",
+                    **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]}, type="nested-questions",
                     data=data)
             return group_start + individual_start + entry + individual_end + group_end
         else:
@@ -128,7 +132,7 @@ class SurveyObject:
 
         return f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
                f"</label>\n" \
-               f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value={data if data else ''}>\n" \
+               f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value=\"{data if data else ''}\">\n" \
                + tooltip_text + checkbox_text
 
     def construct_nested_questions(self, type, style=None, label=None, subquestions=None, data=None, tooltip=None):
@@ -188,9 +192,9 @@ class SurveyObject:
         if self.name_append == "":
             pass
         return f"<option value=''>--</option>\n" \
-               + '\n'.join([f"<option selected='selected' value={curr_option}>{curr_label}</option>" \
+               + '\n'.join([f"<option selected='selected' value=\"{curr_option}\">{curr_label}</option>" \
                                 if name in data and data[name] == str(curr_option) else \
-                                f"<option value={curr_option}>{curr_label}</option>" \
+                                f"<option value=\"{curr_option}\">{curr_label}</option>" \
                             for curr_option, curr_label in zip(option_list,label_list)]) + "\n"
 
     def construct_dropdown(self, type, name, options, label=None, label_list=None, data=None):
