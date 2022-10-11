@@ -71,7 +71,7 @@
     ],
     "labels": [
       "Angehörige des Judentums",
-      "Politische Verfolgte",
+      "Politisch Verfolgte",
       "Menschen im Widerstand",
       "Opfer der Aktion T4/\"Euthanasie\"",
       "Religiös Verfolgte",
@@ -83,7 +83,7 @@
   {
     "type": "text",
     "label": "zusätzliche Opfergruppen",
-    "name": "weitere_Opfergruppen",
+    "name": "andere_opfergruppen",
     "parsley_validator": "data-parsley-capslock"
   },
   {
