@@ -131,7 +131,7 @@
         "vermutet": true,
         "name": "Geburtsort",
         "tooltip": {
-          "text": "'Stadt, Land' oder nur Land, falls Stadt nicht angegeben ist.",
+          "text": "\"Stadt, Land\" oder nur Land, falls Stadt nicht angegeben ist.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -152,7 +152,7 @@
         "vermutet": true,
         "name": "Todesort",
         "tooltip": {
-          "text": "'Stadt, Land' oder nur Land, falls Stadt nicht angegeben ist.",
+          "text": "\"Stadt, Land\" oder nur Land, falls Stadt nicht angegeben ist.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
