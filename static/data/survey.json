@@ -159,6 +159,7 @@
       },
       {
         "type": "checkbox",
+        "label": "Tod in Haft",
         "name": "Todesort_haft"
       }
     ]
