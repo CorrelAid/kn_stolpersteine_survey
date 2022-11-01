@@ -61,18 +61,16 @@
     "type": "form-check",
     "options": [
       "juedisch",
-      "religioes",
       "politisch",
-      "widerstand",
       "t4",
+      "religioes",
       "sinti_u_roma",
       "queer",
       "deserteur"
     ],
     "labels": [
       "Angehörige des Judentums",
-      "Politische Verfolgte",
-      "Menschen im Widerstand",
+      "Politische Verfolgte / Menschen im Widerstand",
       "Opfer der Aktion T4/\"Euthanasie\"",
       "Religiös Verfolgte",
       "Sinti und Roma",
