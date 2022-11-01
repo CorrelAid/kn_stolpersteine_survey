@@ -80,9 +80,13 @@
   },
   {
     "type": "text",
-    "label": "Beruf vor der NS-Zeit",
+    "label": "Beruf",
     "name": "Beruf",
-    "parsley_validator": "data-parsley-capslock"
+    "parsley_validator": "data-parsley-capslock",
+    "tooltip": {
+      "text": "Beruf vor der NS-Zeit, wenn das Opfer seinen Beruf nicht ausüben durfte.",
+      "icon": "help"
+    }
   },
   {
     "type": "nested-dynamic",
