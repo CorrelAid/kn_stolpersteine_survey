@@ -11,6 +11,15 @@
     ]
   },
   {
+    "label": "Geschlecht",
+    "name": "Gender",
+    "type": "dropdown",
+    "options": [
+      "weiblich",
+      "männlich"
+    ]
+  },
+  {
     "type": "text",
     "name": "Geburtsname",
     "tooltip": {
@@ -45,15 +54,6 @@
       "icon": "help"
     },
     "parsley_validator": "data-parsley-capslock"
-  },
-  {
-    "label": "Geschlecht",
-    "name": "Gender",
-    "type": "dropdown",
-    "options": [
-      "weiblich",
-      "männlich"
-    ]
   },
   {
     "label": "Opfergruppe",
