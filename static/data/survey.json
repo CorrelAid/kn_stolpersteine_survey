@@ -165,9 +165,9 @@
   },
   {
     "type": "nested-dynamic",
-    "label": "Stationen",
+    "label": "Verfolgunsstationen",
     "tooltip": {
-      "text": "Bitte tragen Sie nur Stationen der Art Konzentrationslager, Gefängnis etc. ein.",
+      "text": "Bitte tragen Sie nur Verfolgunsstationen, d.h. Stationen der Art Konzentrationslager, Gefängnis etc. ein.",
       "icon": "help"
     },
     "subquestions": [
