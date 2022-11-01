@@ -226,13 +226,13 @@ class SurveyObject:
 
         return f"<label>{label if label else name}</label>\n" \
                f"<div class='form_date'>\n" \
-               f"<select class='jahr' name='{name}_jahr{self.name_append}'>\n" \
-               + self.construct_options(f"{name}_jahr", self.possible_years, data=data) + \
+               f"<select class='datum' name='{name}_datum{self.name_append}'>\n" \
+               + self.construct_options(f"{name}_datum", self.possible_dates, data=data) + \
                f"</select>\n" \
                f"<select class='monat' name='{name}_monat{self.name_append}'>\n" \
                + self.construct_options(f"{name}_monat", self.possible_months, data=data) + \
                f"</select>\n" \
-               f"<select class='datum' name='{name}_datum{self.name_append}'>\n" \
-               + self.construct_options(f"{name}_datum", self.possible_dates, data=data) + \
+               f"<select class='jahr' name='{name}_jahr{self.name_append}'>\n" \
+               + self.construct_options(f"{name}_jahr", self.possible_years, data=data) + \
                f"</select>\n </div> \n" + checkbox_text
 
