@@ -110,7 +110,7 @@ class SurveyObject:
             raise ValueError("Mismatch of lengths / existence of previous data!")
 
     def construct_tooltip(self, text, icon):
-        return f"<span class='material-icons' data-toggle='popover' title='{text}'>{icon}</span>\n"
+        return f"<span class='material-icons' data-toggle='popover' data-content='{text}'>{icon}</span>\n"
 
     def construct_text_question(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None, tooltip=None):
         if type != "text":
