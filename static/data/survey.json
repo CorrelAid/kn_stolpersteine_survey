@@ -297,11 +297,15 @@
     "subquestions": [
       {
         "type": "long_text",
+        "tooltip": "Hier ist Platz für Kommentare zu der Datenerfassung. Was war unklar, an welcher Stelle sind Sie sich nicht sicher und warum?",
+        "icon": "help",
         "label": "Anmerkungen zur Datenerfassung",
         "name": "comments_survey"
       },
       {
         "type": "long_text",
+        "tooltip": "Hier ist Platz für Kommentare zu der Website. Ist ihnen zB. eine Inkonsistenz, eine falsche Information aufgefallen?",
+        "icon": "help",
         "label": "Anmerkungen zur alten Website",
         "name": "comments_website"
       }

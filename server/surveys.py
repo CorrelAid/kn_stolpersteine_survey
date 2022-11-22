@@ -260,15 +260,14 @@ class SurveyObject:
                + self.construct_options(f"{name}_jahr", self.possible_years, data=data) + \
                f"</select>" + checkbox_text + "</div>"
 
-    def construct_long_text(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None, tooltip=None):
+    def construct_long_text(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None, tooltip=None, icon=None):
         if tooltip is not None:
-            tooltip_text = self.construct_tooltip(**tooltip)
+            tooltip_text = self.construct_tooltip(tooltip, icon)
         else:
             tooltip_text = ""
 
         return "<div class='long_text_quest'>" \
-               f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
+               f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" + tooltip_text + \
                f"</label>" +\
             f"<textarea class='form-control' rows='4' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value=\"{data if data else ''}\"></textarea>" + \
-               tooltip_text + \
             "</div>"
