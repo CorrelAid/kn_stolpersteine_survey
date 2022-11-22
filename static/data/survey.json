@@ -11,6 +11,15 @@
     ]
   },
   {
+    "label": "Geschlecht",
+    "name": "Gender",
+    "type": "dropdown",
+    "options": [
+      "weiblich",
+      "männlich"
+    ]
+  },
+  {
     "type": "text",
     "name": "Geburtsname",
     "tooltip": {
@@ -47,32 +56,21 @@
     "parsley_validator": "data-parsley-capslock"
   },
   {
-    "label": "Geschlecht",
-    "name": "Gender",
-    "type": "dropdown",
-    "options": [
-      "weiblich",
-      "männlich"
-    ]
-  },
-  {
     "label": "Opfergruppe",
     "name": "Opfergruppen",
     "type": "form-check",
     "options": [
       "juedisch",
-      "religioes",
       "politisch",
-      "widerstand",
       "t4",
+      "religioes",
       "sinti_u_roma",
       "queer",
       "deserteur"
     ],
     "labels": [
       "Angehörige des Judentums",
-      "Politisch Verfolgte",
-      "Menschen im Widerstand",
+      "Politische Verfolgte / Menschen im Widerstand",
       "Opfer der Aktion T4/\"Euthanasie\"",
       "Religiös Verfolgte",
       "Sinti und Roma",
@@ -90,7 +88,11 @@
     "type": "text",
     "label": "Beruf vor der NS-Zeit",
     "name": "Beruf",
-    "parsley_validator": "data-parsley-capslock"
+    "parsley_validator": "data-parsley-capslock",
+    "tooltip": {
+      "text": "Beruf vor der NS-Zeit, wenn das Opfer seinen Beruf nicht ausüben durfte.",
+      "icon": "help"
+    }
   },
   {
     "type": "nested-dynamic",
@@ -132,14 +134,15 @@
       {
         "type": "date",
         "vermutet": true,
-        "name": "Geburtsdatum"
+        "name": "Geburtsdatum",
+        "wide_range":  true
       },
       {
         "type": "text",
         "vermutet": true,
         "name": "Geburtsort",
         "tooltip": {
-          "text": "'Stadt, Land' oder nur Land, falls Stadt nicht angegeben ist.",
+          "text": "\"Stadt, Land\" oder nur Land, falls Stadt nicht angegeben ist.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -152,6 +155,7 @@
     "subquestions": [
       {
         "type": "date",
+        "wide_range":  true,
         "vermutet": true,
         "name": "Todesdatum"
       },
@@ -160,22 +164,23 @@
         "vermutet": true,
         "name": "Todesort",
         "tooltip": {
-          "text": "'Stadt, Land' oder nur Land, falls Stadt nicht angegeben ist.",
+          "text": "\"Stadt, Land\" oder nur Land, falls Stadt nicht angegeben ist.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
       },
       {
         "type": "checkbox",
+        "label": "Tod in Haft",
         "name": "Todesort_haft"
       }
     ]
   },
   {
     "type": "nested-dynamic",
-    "label": "Stationen",
+    "label": "Verfolgunsstationen",
     "tooltip": {
-      "text": "Bitte tragen Sie nur Stationen der Art Konzentrationslager, Gefängnis etc. ein.",
+      "text": "Bitte tragen Sie nur Verfolgunsstationen, d.h. Stationen der Art Konzentrationslager, Gefängnis etc. ein.",
       "icon": "help"
     },
     "subquestions": [
@@ -185,6 +190,7 @@
         "parsley_validator": "data-parsley-capslock"
       },
       {
+        "wide_range":  false,
         "type": "date",
         "vermutet": true,
         "label": "Anfangsdatum",
