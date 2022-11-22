@@ -55,7 +55,7 @@ class SurveyObject:
         return survey
 
     def construct_dynamic_nested(self, question, data):
-        group_start = f"<div class='form-group {question['label']}{self.name_append}'>\n" \
+        group_start = f"<div class='my-5 p-3 border rounded form-group {question['label']}{self.name_append}'>\n" \
                       f"<label>{question['label']}:</label>"
 
         if question["tooltip"]:
@@ -129,17 +129,20 @@ class SurveyObject:
         else:
             tooltip_text = ""
 
-        return f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
+        return "<div class='text_quest'>" \
+               f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
                f"</label>\n" \
                f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value=\"{data if data else ''}\">\n" \
-               + tooltip_text + checkbox_text
+               + tooltip_text + checkbox_text +\
+                "</div>"
+               
 
     def construct_nested_questions(self, type, style=None, label=None, subquestions=None, data=None, tooltip=None):
         if type != "nested-questions":
             raise ValueError("Question must be of type 'nested-questions'")
 
         style_text = f"style={style}" if style is not None else ""
-        label_text = f"<label>{label}</label>\n" if label is not None else ""
+        label_text = f'<label class="font-weight-bold pb-3 pt-1">{label}</label>\n' if label is not None else ""
 
         if data is None:
             data = {}
@@ -149,7 +152,7 @@ class SurveyObject:
         else:
             tooltip_text = ""
 
-        return f"<div class='form-group' {style_text}>\n" \
+        return f"<div class='my-5 p-3 border rounded form-group' {style_text}>\n" \
                f"{label_text}\n<br>\n" \
                + self.construct_survey(subquestions, data) + tooltip_text + "\n</div>\n"
 
@@ -201,8 +204,8 @@ class SurveyObject:
             raise ValueError("Question must be of type 'dropdown'")
 
         return f"<div class='dropdown'>\n" \
-               f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" \
-               f"<select name={name}{self.name_append}>\n" \
+               f"<label class='mr-1' for={name}{self.name_append}>{label if label else name}:</label>" \
+               f"<select name={name}{self.name_append}>" \
                + self.construct_options(name, options, label_list=label_list, data=data) + "</select></div>\n"
 
     def construct_dropdown_victims(self, type, name, data=None):
@@ -228,15 +231,15 @@ class SurveyObject:
         else:
             self.possible_years = list(range(1920, 1951))
 
-        return f"<label>{label if label else name}</label>\n" \
+        return f"<label>{label if label else name}:</label>" \
                f"<div class='form_date'>\n" \
-               f"<select class='datum' name='{name}_datum{self.name_append}'>\n" \
+               f"<select class='datum mb-1' name='{name}_datum{self.name_append}'>\n" \
                + self.construct_options(f"{name}_datum", self.possible_dates, data=data) + \
                f"</select>\n" \
                f"<select class='monat' name='{name}_monat{self.name_append}'>\n" \
                + self.construct_options(f"{name}_monat", self.possible_months, data=data) + \
                f"</select>\n" \
-               f"<select class='jahr' name='{name}_jahr{self.name_append}'>\n" \
+               f"<select class='jahr mr-2' name='{name}_jahr{self.name_append}'>\n" \
                + self.construct_options(f"{name}_jahr", self.possible_years, data=data) + \
-               f"</select>\n </div> \n" + checkbox_text
+               f"</select>" + checkbox_text + "</div>" 
 

@@ -11,52 +11,143 @@
     ]
   },
   {
-    "label": "Geschlecht",
-    "name": "Gender",
-    "type": "dropdown",
-    "options": [
-      "weiblich",
-      "männlich"
+    "type": "nested-questions",
+    "label": "Allgemeine Informationen",
+    "subquestions": [
+      {
+        "label": "Geschlecht",
+        "name": "Gender",
+        "type": "dropdown",
+        "options": [
+          "weiblich",
+          "männlich"
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Geburtsname",
+        "tooltip": {
+          "text": "Bitte geben Sie den Geburtsnamen an, falls das Opfer einen Ehenamen während der NS-Zeit hatte.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "name": "Ehename",
+        "tooltip": {
+          "text": "Bitte geben Sie den Ehenamen an, falls das Opfer einen Ehenamen nur nach der NS-Zeit hatte.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "dropdown",
+        "name": "Akademischer Titel",
+        "options": [
+          "Dr.",
+          "Prof."
+        ]
+      },
+      {
+        "type": "text",
+        "label": "Andere Namen",
+        "name": "Anderenamen",
+        "tooltip": {
+          "text": "z.B. Spitzname, weitere Ehenamen",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "label": "Beruf vor der NS-Zeit",
+        "name": "Beruf",
+        "parsley_validator": "data-parsley-capslock",
+        "tooltip": {
+          "text": "Beruf vor der NS-Zeit, wenn das Opfer seinen Beruf nicht ausüben durfte.",
+          "icon": "help"
+        }
+      },
+      {
+        "label": "Überlebt",
+        "name": "Ueberlebt",
+        "type": "dropdown",
+        "options": [
+          "Ja",
+          "Nein",
+          "Unklar"
+        ]
+      }
     ]
   },
-  {
-    "type": "text",
-    "name": "Geburtsname",
-    "tooltip": {
-      "text": "Bitte geben Sie den Geburtsnamen an, falls das Opfer einen Ehenamen während der NS-Zeit hatte.",
-      "icon": "help"
-    },
-    "parsley_validator": "data-parsley-capslock"
-  },
-  {
-    "type": "text",
-    "name": "Ehename",
-    "tooltip": {
-      "text": "Bitte geben Sie den Ehenamen an, falls das Opfer einen Ehenamen nur nach der NS-Zeit hatte.",
-      "icon": "help"
-    },
-    "parsley_validator": "data-parsley-capslock"
-  },
-  {
-    "type": "dropdown",
-    "name": "Akademischer_Titel",
-    "options": [
-      "Dr.",
-      "Prof."
+  { "type":"nested-questions",
+    "label": "Biographische Daten",
+    "subquestions": [
+      {
+        "type": "date",
+        "vermutet": true,
+        "name": "Geburtsdatum",
+        "wide_range": true
+      },
+      {
+        "type": "text",
+        "vermutet": true,
+        "name": "Geburtsland",
+        "tooltip": {
+          "text": "Geburtsland",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "vermutet": true,
+        "name": "Geburtsort",
+        "tooltip": {
+          "text": "Stadt oder Ort der Geburt. Ein Wort angeben. Keine Straße etc.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "date",
+        "wide_range": true,
+        "vermutet": true,
+        "name": "Todesdatum"
+      },
+      {
+        "type": "text",
+        "vermutet": true,
+        "name": "Todesland",
+        "tooltip": {
+          "text": "Todesland",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "vermutet": true,
+        "name": "Todesort",
+        "tooltip": {
+          "text": "Stadt oder Ort des Todes. Ein Wort angeben. Keine Straße etc.",
+          "icon": "help"
+        },
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "checkbox",
+        "label": "Tod in Haft",
+        "name": "Todesort_haft"
+      }
     ]
   },
+  { "type":"nested-questions",
+    "label": "Opfergruppen",
+    "subquestions": [
   {
-    "type": "text",
-    "label": "Andere Namen",
-    "name": "Anderenamen",
-    "tooltip": {
-      "text": "z.B. Spitzname, weitere Ehenamen",
-      "icon": "help"
-    },
-    "parsley_validator": "data-parsley-capslock"
-  },
-  {
-    "label": "Opfergruppe",
+    "label": "Haupt-Opfergruppen",
     "name": "Opfergruppen",
     "type": "form-check",
     "options": [
@@ -80,20 +171,10 @@
   },
   {
     "type": "text",
-    "label": "zusätzliche Opfergruppen",
+    "label": "Zusätzliche Opfergruppen",
     "name": "andere_opfergruppen",
     "parsley_validator": "data-parsley-capslock"
-  },
-  {
-    "type": "text",
-    "label": "Beruf vor der NS-Zeit",
-    "name": "Beruf",
-    "parsley_validator": "data-parsley-capslock",
-    "tooltip": {
-      "text": "Beruf vor der NS-Zeit, wenn das Opfer seinen Beruf nicht ausüben durfte.",
-      "icon": "help"
-    }
-  },
+  }]},
   {
     "type": "nested-dynamic",
     "label": "Familienangehörige",
@@ -128,59 +209,10 @@
     ]
   },
   {
-    "type": "nested-questions",
-    "label": "Geburtsdaten",
-    "subquestions": [
-      {
-        "type": "date",
-        "vermutet": true,
-        "name": "Geburtsdatum",
-        "wide_range":  true
-      },
-      {
-        "type": "text",
-        "vermutet": true,
-        "name": "Geburtsort",
-        "tooltip": {
-          "text": "\"Stadt, Land\" oder nur Land, falls Stadt nicht angegeben ist.",
-          "icon": "help"
-        },
-        "parsley_validator": "data-parsley-capslock"
-      }
-    ]
-  },
-  {
-    "type": "nested-questions",
-    "label": "Todesdaten",
-    "subquestions": [
-      {
-        "type": "date",
-        "wide_range":  true,
-        "vermutet": true,
-        "name": "Todesdatum"
-      },
-      {
-        "type": "text",
-        "vermutet": true,
-        "name": "Todesort",
-        "tooltip": {
-          "text": "\"Stadt, Land\" oder nur Land, falls Stadt nicht angegeben ist.",
-          "icon": "help"
-        },
-        "parsley_validator": "data-parsley-capslock"
-      },
-      {
-        "type": "checkbox",
-        "label": "Tod in Haft",
-        "name": "Todesort_haft"
-      }
-    ]
-  },
-  {
     "type": "nested-dynamic",
     "label": "Verfolgunsstationen",
     "tooltip": {
-      "text": "Bitte tragen Sie nur Verfolgunsstationen, d.h. Stationen der Art Konzentrationslager, Gefängnis etc. ein.",
+      "text": "Bitte tragen Sie nur den Namen von Verfolgunsstationen, d.h. Stationen der Art Konzentrationslager, Gefängnis etc. ein. Beispiel: KZ Auschwitz",
       "icon": "help"
     },
     "subquestions": [
@@ -190,7 +222,7 @@
         "parsley_validator": "data-parsley-capslock"
       },
       {
-        "wide_range":  false,
+        "wide_range": false,
         "type": "date",
         "vermutet": true,
         "label": "Anfangsdatum",
@@ -253,16 +285,6 @@
           "Unklar"
         ]
       }
-    ]
-  },
-  {
-    "label": "Überlebt",
-    "name": "Ueberlebt",
-    "type": "dropdown",
-    "options": [
-      "Ja",
-      "Nein",
-      "Unklar"
     ]
   }
 ]

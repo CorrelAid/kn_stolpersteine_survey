@@ -1,5 +1,9 @@
 [
   {
+    "type": "nested-questions",
+    "label": "Grundlegende Informationen",
+    "subquestions": [
+  {
     "type": "text",
     "label": "Vorname(n)",
     "name": "Vorname",
@@ -23,7 +27,7 @@
       "icon": "help"
     },
     "parsley_validator": "data-parsley-url"
-  },
+  }]},
     {
     "type": "nested-questions",
     "label": "Aktueller Standort des Stolpersteins",

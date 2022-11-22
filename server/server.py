@@ -129,7 +129,7 @@ class AppServer:
                 questions, current_data)
 
             if "URL" in current_data:
-                html = f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + html
+                html = f"<h4 class='font-weight-bold pt-2'> Zu übertragen:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL'] }.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a></h4>" + html
         else:
             if len(record["data"]) < 3:
                  return self.fail_admin_overview()
@@ -144,7 +144,7 @@ class AppServer:
 
                     if "URL" in current_data:
                         html.append(
-                            f"Link zum Eintrag auf der alten Website:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a><br><br>" + so.construct_survey(questions, current_data))
+                            f"<h4 class='font-weight-bold'>Zu übertragen:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a></h4>" + so.construct_survey(questions, current_data))
 
         return self._render_template('survey.html', params={'title': "Datenerfassung", "post_route": f"{self.realm}/POST",
                                                             "html": html, "admin_mode": admin_mode})
