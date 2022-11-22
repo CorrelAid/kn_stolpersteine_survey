@@ -11,7 +11,8 @@ class SurveyObject:
         self.all_victim_names = []
         self.all_victim_ids = []
         for victim in all_victims_in_database:
-            self.all_victim_names.append(f"{victim['Nachname']}, {victim['Vorname']}")
+            self.all_victim_names.append(
+                f"{victim['Nachname']}, {victim['Vorname']}")
             self.all_victim_ids.append(victim['_id'])
 
         self.questions = questions
@@ -23,27 +24,34 @@ class SurveyObject:
         else:
             self.name_append = name_append
 
-
     def construct_survey(self, questions, data):
         survey = ""
 
         for question in questions:
             if question["type"] == "text":
-                survey += self.construct_text_question(**question, data = data[question["name"]] if question["name"] in data else None)
+                survey += self.construct_text_question(
+                    **question, data=data[question["name"]] if question["name"] in data else None)
             elif question["type"] == "checkbox":
-                survey += self.construct_checkbox(**question, data = "true" if (question["name"] in data) and (data[question["name"]] == "true") else None )
+                survey += self.construct_checkbox(**question, data="true" if (
+                    question["name"] in data) and (data[question["name"]] == "true") else None)
             elif question["type"] == "nested-questions":
-                survey += self.construct_nested_questions(**question, data=data)
+                survey += self.construct_nested_questions(
+                    **question, data=data)
             elif question["type"] == "dropdown":
                 survey += self.construct_dropdown(**question, data=data)
             elif question["type"] == "dropdown_victims":
-                survey += self.construct_dropdown_victims(**question, data=data)
+                survey += self.construct_dropdown_victims(
+                    **question, data=data)
             elif question["type"] == "date":
                 survey += self.construct_date(**question, data=data)
             elif question["type"] == "form-check":
-                survey += self.construct_form_check(**question, data = data[question["name"]] if question["name"] in data else None)
+                survey += self.construct_form_check(
+                    **question, data=data[question["name"]] if question["name"] in data else None)
             elif question["type"] == "nested-dynamic":
-                survey +=  self.construct_dynamic_nested(question, data)
+                survey += self.construct_dynamic_nested(question, data)
+            elif question["type"] == "long_text":
+                survey += self.construct_long_text(
+                    **question, data=data[question["name"]] if question["name"] in data else None)
             else:
                 raise ValueError(f"{question['type']}")
 
@@ -59,17 +67,17 @@ class SurveyObject:
                       f"<label>{question['label']}:</label>"
 
         if question["tooltip"]:
-            group_start +=  self.construct_tooltip(**question["tooltip"])
+            group_start += self.construct_tooltip(**question["tooltip"])
 
         individual_start = f"<div class='form-group-member'>\n" \
-                    f"<div style='display: flex; justify-content: space-around'>\n"
+            f"<div style='display: flex; justify-content: space-around'>\n"
 
         individual_end = f"</div>\n" \
-                  f"<div>\n" \
-                  f"<button type='button' class='delete_FormElement btn btn-primary btn-right'>löschen</button> \n" \
-                  f"</div>\n" \
-                  f"</div>\n" \
-                  f"<br\n>" \
+            f"<div>\n" \
+            f"<button type='button' class='delete_FormElement btn btn-primary btn-right'>löschen</button> \n" \
+            f"</div>\n" \
+            f"</div>\n" \
+            f"<br\n>" \
 
 
         group_end = f"<button type='button' class='add_FormElement btn btn-primary'>weitere {question['label']}</button>\n" \
@@ -78,39 +86,43 @@ class SurveyObject:
         data_fields = []
         for subquestion in question["subquestions"]:
             if subquestion["type"] == "nested-dynamic":
-                #TODO: definitely better way to architect this, but here allowing only one level of nesting
-                #e.g. multiple Durchgangsörter in one Fluchtversuch
-                data_fields.extend([subsubquestion["name"] for subsubquestion in subquestion["subquestions"]])
+                # TODO: definitely better way to architect this, but here allowing only one level of nesting
+                # e.g. multiple Durchgangsörter in one Fluchtversuch
+                data_fields.extend([subsubquestion["name"]
+                                   for subsubquestion in subquestion["subquestions"]])
             elif subquestion["type"] != "date":
                 data_fields.append(subquestion["name"])
             else:
-                data_fields.extend([f"{subquestion['name']}_{time_field}" for time_field in ["jahr", "monat", "datum"]])
+                data_fields.extend([f"{subquestion['name']}_{time_field}" for time_field in [
+                                   "jahr", "monat", "datum"]])
 
-        if all(data_field not in data for data_field in data_fields) or all(data[data_field]=="" for data_field in data_fields):
+        if all(data_field not in data for data_field in data_fields) or all(data[data_field] == "" for data_field in data_fields):
             return group_start + individual_start + \
-                   self.construct_nested_questions(**{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]},
-                                                      type="nested-questions") \
-                   + individual_end + group_end
+                self.construct_nested_questions(**{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]},
+                                                type="nested-questions") \
+                + individual_end + group_end
         # handle all entries lists
-        elif len({len(data[data_field]) for data_field in data_fields}) == 1 and all([isinstance(data[data_field],list) for data_field in data_fields]):
+        elif len({len(data[data_field]) for data_field in data_fields}) == 1 and all([isinstance(data[data_field], list) for data_field in data_fields]):
             all_entries = group_start
             for curr_idx in range(len(data[data_fields[0]])):
-                curr_data = {data_field: (data[data_field][curr_idx]) for data_field in data_fields}
+                curr_data = {data_field: (
+                    data[data_field][curr_idx]) for data_field in data_fields}
                 all_entries += individual_start + self.construct_nested_questions(
                     **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label"]}, type="nested-questions",
                     data=curr_data) + individual_end
             return all_entries + group_end
         # handle if only one entry -> all fields stirngs
-        elif all([not isinstance(data[data_field],list) for data_field in data_fields]):
+        elif all([not isinstance(data[data_field], list) for data_field in data_fields]):
             entry = self.construct_nested_questions(
-                    **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]}, type="nested-questions",
-                    data=data)
+                **{key: val for key, val in question.items() if key not in ["tooltip", "type", "label", "name"]}, type="nested-questions",
+                data=data)
             return group_start + individual_start + entry + individual_end + group_end
         else:
-            raise ValueError("Mismatch of lengths / existence of previous data!")
+            raise ValueError(
+                "Mismatch of lengths / existence of previous data!")
 
     def construct_tooltip(self, text, icon):
-        return f"<span class='material-icons' data-toggle='popover' title='{text}'>{icon}</span>\n"
+        return f"<span class='material-icons' data-toggle='popover' data-content='{text}'>{icon}</span>\n"
 
     def construct_text_question(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None, tooltip=None):
         if type != "text":
@@ -120,7 +132,8 @@ class SurveyObject:
             data = {}
 
         if vermutet == True:
-            checkbox_text = self.construct_checkbox("checkbox", f"{name}_vermutet", label="nur vermutet", data=data[f"{name}_vermutet"] if f"{name}_vermutet" in data else None)
+            checkbox_text = self.construct_checkbox(
+                "checkbox", f"{name}_vermutet", label="nur vermutet", data=data[f"{name}_vermutet"] if f"{name}_vermutet" in data else None)
         else:
             checkbox_text = ""
 
@@ -134,8 +147,7 @@ class SurveyObject:
                f"</label>\n" \
                f"<input type='text' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value=\"{data if data else ''}\">\n" \
                + tooltip_text + checkbox_text +\
-                "</div>"
-               
+            "</div>"
 
     def construct_nested_questions(self, type, style=None, label=None, subquestions=None, data=None, tooltip=None):
         if type != "nested-questions":
@@ -154,14 +166,16 @@ class SurveyObject:
 
         return f"<div class='my-5 p-3 border rounded form-group' {style_text}>\n" \
                f"{label_text}\n<br>\n" \
-               + self.construct_survey(subquestions, data) + tooltip_text + "\n</div>\n"
+               + self.construct_survey(subquestions, data) + \
+            tooltip_text + "\n</div>\n"
 
     def construct_checkbox(self, type, name, label=None, parsley_validator=None, data=None):
         if type != "checkbox":
             raise ValueError("Question must be of type 'checkbox'")
 
         if parsley_validator is not None:
-            raise ValueError("No parsley validator is supported for checkbox type!")
+            raise ValueError(
+                "No parsley validator is supported for checkbox type!")
 
         return f"<input type='checkbox' value='true' name={name}{self.name_append} {'checked' if data=='true' else ''}>\n" \
                f"<label for={name}{self.name_append}>{label if label else name}</label>\n"
@@ -176,9 +190,9 @@ class SurveyObject:
         option_text = ""
         for curr_option, curr_label in zip(options, labels):
             option_text += f"<div class='form-check'>\n" \
-            f"<input class='form-check-input' type='checkbox' value='{curr_option}' name='{name}{self.name_append}'  {'checked' if curr_option in data else ''}>\n" \
-            f"<label class='form-check-label' for={curr_option}>{curr_label}</label>\n" \
-            f"</div>" \
+                f"<input class='form-check-input' type='checkbox' value='{curr_option}' name='{name}{self.name_append}'  {'checked' if curr_option in data else ''}>\n" \
+                f"<label class='form-check-label' for={curr_option}>{curr_label}</label>\n" \
+                f"</div>" \
 
         return f"<div class='form-group'>\n" \
                f"<label>{label}:</label>\n" \
@@ -189,15 +203,15 @@ class SurveyObject:
             data = {}
 
         if label_list is None:
-            label_list=option_list
+            label_list = option_list
 
         if self.name_append == "":
             pass
         return f"<option value=''>--</option>\n" \
-               + '\n'.join([f"<option selected='selected' value=\"{curr_option}\">{curr_label}</option>" \
-                                if name in data and data[name] == str(curr_option) else \
-                                f"<option value=\"{curr_option}\">{curr_label}</option>" \
-                            for curr_option, curr_label in zip(option_list,label_list)]) + "\n"
+               + '\n'.join([f"<option selected='selected' value=\"{curr_option}\">{curr_label}</option>"
+                            if name in data and data[name] == str(curr_option) else
+                            f"<option value=\"{curr_option}\">{curr_label}</option>"
+                            for curr_option, curr_label in zip(option_list, label_list)]) + "\n"
 
     def construct_dropdown(self, type, name, options, label=None, label_list=None, data=None):
         if "dropdown" not in type:
@@ -206,7 +220,8 @@ class SurveyObject:
         return f"<div class='dropdown'>\n" \
                f"<label class='mr-1' for={name}{self.name_append}>{label if label else name}:</label>" \
                f"<select name={name}{self.name_append}>" \
-               + self.construct_options(name, options, label_list=label_list, data=data) + "</select></div>\n"
+               + self.construct_options(name, options, label_list=label_list,
+                                        data=data) + "</select></div>\n"
 
     def construct_dropdown_victims(self, type, name, data=None):
         if type != "dropdown_victims":
@@ -219,13 +234,15 @@ class SurveyObject:
             raise ValueError("Question must be of type 'date'")
 
         if parsley_validator is not None:
-            raise ValueError("No parsley validator is supported for date type!")
+            raise ValueError(
+                "No parsley validator is supported for date type!")
 
         if vermutet == True:
-            checkbox_text = self.construct_checkbox("checkbox", f"{name}_vermutet", label="nur vermutet", data=data[f"{name}_vermutet"] if f"{name}_vermutet" in data else None)
+            checkbox_text = self.construct_checkbox(
+                "checkbox", f"{name}_vermutet", label="nur vermutet", data=data[f"{name}_vermutet"] if f"{name}_vermutet" in data else None)
         else:
             checkbox_text = ""
-        
+
         if wide_range == True:
             self.possible_years = list(range(1800, 2023))
         else:
@@ -241,5 +258,16 @@ class SurveyObject:
                f"</select>\n" \
                f"<select class='jahr mr-2' name='{name}_jahr{self.name_append}'>\n" \
                + self.construct_options(f"{name}_jahr", self.possible_years, data=data) + \
-               f"</select>" + checkbox_text + "</div>" 
+               f"</select>" + checkbox_text + "</div>"
 
+    def construct_long_text(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None, tooltip=None, icon=None):
+        if tooltip is not None:
+            tooltip_text = self.construct_tooltip(tooltip, icon)
+        else:
+            tooltip_text = ""
+
+        return "<div class='long_text_quest'>" \
+               f"<label for={name}{self.name_append}>{label if label else name}:</label>\n" + tooltip_text + \
+               f"</label>" +\
+            f"<textarea class='form-control' rows='4' name={name}{self.name_append} {parsley_validator if parsley_validator else ''} value=\"{data if data else ''}\"></textarea>" + \
+            "</div>"

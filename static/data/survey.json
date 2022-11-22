@@ -81,7 +81,8 @@
       }
     ]
   },
-  { "type":"nested-questions",
+  {
+    "type": "nested-questions",
     "label": "Biographische Daten",
     "subquestions": [
       {
@@ -143,38 +144,41 @@
       }
     ]
   },
-  { "type":"nested-questions",
+  {
+    "type": "nested-questions",
     "label": "Opfergruppen",
     "subquestions": [
-  {
-    "label": "Haupt-Opfergruppen",
-    "name": "Opfergruppen",
-    "type": "form-check",
-    "options": [
-      "juedisch",
-      "politisch",
-      "t4",
-      "religioes",
-      "sinti_u_roma",
-      "queer",
-      "deserteur"
-    ],
-    "labels": [
-      "Angehörige des Judentums",
-      "Politische Verfolgte / Menschen im Widerstand",
-      "Opfer der Aktion T4/\"Euthanasie\"",
-      "Religiös Verfolgte",
-      "Sinti und Roma",
-      "Queere Menschen/Homosexuelle",
-      "Deserteure"
+      {
+        "label": "Haupt-Opfergruppen",
+        "name": "Opfergruppen",
+        "type": "form-check",
+        "options": [
+          "juedisch",
+          "politisch",
+          "t4",
+          "religioes",
+          "sinti_u_roma",
+          "queer",
+          "deserteur"
+        ],
+        "labels": [
+          "Angehörige des Judentums",
+          "Politische Verfolgte / Menschen im Widerstand",
+          "Opfer der Aktion T4/\"Euthanasie\"",
+          "Religiös Verfolgte",
+          "Sinti und Roma",
+          "Queere Menschen/Homosexuelle",
+          "Deserteure"
+        ]
+      },
+      {
+        "type": "text",
+        "label": "Zusätzliche Opfergruppen",
+        "name": "andere_opfergruppen",
+        "parsley_validator": "data-parsley-capslock"
+      }
     ]
   },
-  {
-    "type": "text",
-    "label": "Zusätzliche Opfergruppen",
-    "name": "andere_opfergruppen",
-    "parsley_validator": "data-parsley-capslock"
-  }]},
   {
     "type": "nested-dynamic",
     "label": "Familienangehörige",
@@ -284,6 +288,26 @@
           "Nein",
           "Unklar"
         ]
+      }
+    ]
+  },
+  {
+    "type": "nested-questions",
+    "label": "Anmerkungen",
+    "subquestions": [
+      {
+        "type": "long_text",
+        "tooltip": "Hier ist Platz für Kommentare zu der Datenerfassung. Was war unklar, an welcher Stelle sind Sie sich nicht sicher und warum?",
+        "icon": "help",
+        "label": "Anmerkungen zur Datenerfassung",
+        "name": "comments_survey"
+      },
+      {
+        "type": "long_text",
+        "tooltip": "Hier ist Platz für Kommentare zu der Website. Ist ihnen zB. eine Inkonsistenz, eine falsche Information aufgefallen?",
+        "icon": "help",
+        "label": "Anmerkungen zur alten Website",
+        "name": "comments_website"
       }
     ]
   }
