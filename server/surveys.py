@@ -1,6 +1,5 @@
 class SurveyObject:
     def __init__(self, questions, data, all_victims_in_database, name_append=None):
-        self.possible_years = list(range(1800, 2023))
         self.possible_months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
                                 "Oktober", "November", "Dezember"]
         self.possible_dates = list(range(1, 32))
@@ -212,7 +211,7 @@ class SurveyObject:
 
         return self.construct_dropdown(type, name, self.all_victim_ids, label_list=self.all_victim_names, data=data)
 
-    def construct_date(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None):
+    def construct_date(self, type, name, label=None, vermutet=False, parsley_validator=None, data=None, wide_range=False):
         if type != "date":
             raise ValueError("Question must be of type 'date'")
 
@@ -223,6 +222,11 @@ class SurveyObject:
             checkbox_text = self.construct_checkbox("checkbox", f"{name}_vermutet", label="nur vermutet", data=data[f"{name}_vermutet"] if f"{name}_vermutet" in data else None)
         else:
             checkbox_text = ""
+        
+        if wide_range == True:
+            self.possible_years = list(range(1800, 2023))
+        else:
+            self.possible_years = list(range(1920, 1951))
 
         return f"<label>{label if label else name}</label>\n" \
                f"<div class='form_date'>\n" \

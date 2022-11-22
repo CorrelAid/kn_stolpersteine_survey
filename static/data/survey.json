@@ -128,7 +128,8 @@
       {
         "type": "date",
         "vermutet": true,
-        "name": "Geburtsdatum"
+        "name": "Geburtsdatum",
+        "wide_range":  true
       },
       {
         "type": "text",
@@ -148,6 +149,7 @@
     "subquestions": [
       {
         "type": "date",
+        "wide_range":  true,
         "vermutet": true,
         "name": "Todesdatum"
       },
@@ -182,6 +184,7 @@
         "parsley_validator": "data-parsley-capslock"
       },
       {
+        "wide_range":  false,
         "type": "date",
         "vermutet": true,
         "label": "Anfangsdatum",
