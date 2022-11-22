@@ -80,7 +80,13 @@
   },
   {
     "type": "text",
-    "label": "Beruf",
+    "label": "zusätzliche Opfergruppen",
+    "name": "andere_opfergruppen",
+    "parsley_validator": "data-parsley-capslock"
+  },
+  {
+    "type": "text",
+    "label": "Beruf vor der NS-Zeit",
     "name": "Beruf",
     "parsley_validator": "data-parsley-capslock",
     "tooltip": {
