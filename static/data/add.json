@@ -7,15 +7,15 @@
     "type": "text",
     "label": "Vorname(n)",
     "name": "Vorname",
+    "tooltip": {
+      "text": "Bitte hier auch Zweitnamen angeben.",
+      "icon": "help"
+    },
     "parsley_validator": "data-parsley-capslock"
   },
   {
     "type": "text",
     "name": "Nachname",
-    "tooltip": {
-      "text": "Bitte geben Sie den Nachnamen während der NS-Zeit an.",
-      "icon": "help"
-    },
     "parsley_validator": "data-parsley-capslock"
   },
   {

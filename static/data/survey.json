@@ -26,17 +26,24 @@
       {
         "type": "text",
         "name": "Geburtsname",
+        "parsley_validator": "data-parsley-capslock"
+      },
+      {
+        "type": "text",
+        "label": "Frühere Nachnamen",
+        "name": "Fruehere_nachnamen",
         "tooltip": {
-          "text": "Bitte geben Sie den Geburtsnamen an, falls das Opfer einen Ehenamen während der NS-Zeit hatte.",
+          "text": "Umfasst nicht den Geburtsnamen. Bitte geben Sie zB. Ehenamen aus geschiedenen Ehen an. Mehrere Namen mit Komma trennen.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
       },
       {
         "type": "text",
-        "name": "Ehename",
+        "label": "Andere Vornamen",
+        "name": "Fruehere_vornamen",
         "tooltip": {
-          "text": "Bitte geben Sie den Ehenamen an, falls das Opfer einen Ehenamen nur nach der NS-Zeit hatte.",
+          "text": "Zum Beispiel Spitznamen. Mehrere Namen mit Komma trennen.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -51,21 +58,11 @@
       },
       {
         "type": "text",
-        "label": "Andere Namen",
-        "name": "Anderenamen",
-        "tooltip": {
-          "text": "z.B. Spitzname, weitere Ehenamen",
-          "icon": "help"
-        },
-        "parsley_validator": "data-parsley-capslock"
-      },
-      {
-        "type": "text",
-        "label": "Beruf vor der NS-Zeit",
+        "label": "Beruf",
         "name": "Beruf",
         "parsley_validator": "data-parsley-capslock",
         "tooltip": {
-          "text": "Beruf vor der NS-Zeit, wenn das Opfer seinen Beruf nicht ausüben durfte.",
+          "text": "Geben sie den letzten bekannten Beruf an. Jedoch: wenn die Person während der NS-Zeit ihren Beruf nicht ausüben durfte, geben sie den Beruf vor der NS-Zeit an.",
           "icon": "help"
         }
       },
@@ -95,10 +92,6 @@
         "type": "text",
         "vermutet": true,
         "name": "Geburtsland",
-        "tooltip": {
-          "text": "Geburtsland",
-          "icon": "help"
-        },
         "parsley_validator": "data-parsley-capslock"
       },
       {
@@ -106,7 +99,7 @@
         "vermutet": true,
         "name": "Geburtsort",
         "tooltip": {
-          "text": "Stadt oder Ort der Geburt. Ein Wort angeben. Keine Straße etc.",
+          "text": "Stadt oder Ort der Geburt. Keine Straße etc.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -121,10 +114,6 @@
         "type": "text",
         "vermutet": true,
         "name": "Todesland",
-        "tooltip": {
-          "text": "Todesland",
-          "icon": "help"
-        },
         "parsley_validator": "data-parsley-capslock"
       },
       {
@@ -132,7 +121,7 @@
         "vermutet": true,
         "name": "Todesort",
         "tooltip": {
-          "text": "Stadt oder Ort des Todes. Ein Wort angeben. Keine Straße etc.",
+          "text": "Stadt oder Ort des Todes. Wenn dies mit einer Verfolgunsstation übereinstimmt, nennen sie den geographischen Ort, nicht die Station. Keine Straße etc.",
           "icon": "help"
         },
         "parsley_validator": "data-parsley-capslock"
@@ -300,14 +289,14 @@
         "tooltip": "Hier ist Platz für Kommentare zu der Datenerfassung. Was war unklar, an welcher Stelle sind Sie sich nicht sicher und warum?",
         "icon": "help",
         "label": "Anmerkungen zur Datenerfassung",
-        "name": "comments_survey"
+        "name": "Kommentare_Datenerfassung"
       },
       {
         "type": "long_text",
-        "tooltip": "Hier ist Platz für Kommentare zu der Website. Ist ihnen zB. eine Inkonsistenz, eine falsche Information aufgefallen?",
+        "tooltip": "Hier ist Platz für Kommentare zur Stolpersteine-Website. Ist ihnen zB. eine Inkonsistenz, eine falsche Information aufgefallen?",
         "icon": "help",
-        "label": "Anmerkungen zur alten Website",
-        "name": "comments_website"
+        "label": "Anmerkungen zur Stolpersteine-Website",
+        "name": "Kommentare_Website"
       }
     ]
   }
