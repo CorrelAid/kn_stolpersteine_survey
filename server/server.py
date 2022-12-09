@@ -142,9 +142,13 @@ class AppServer:
                     so = SurveyObject(questions, current_data,
                                       data, name_append=name_append)
 
-                    if "URL" in current_data:
+                    if "URL" in current_data and not admin_mode:
                         html.append(
                             f"<h4 class='font-weight-bold'>Zu übertragen:  <a href='https://www.stolpersteine-konstanz.de/{current_data['URL']}.html' target='_blank' rel='noopener noreferrer'>https://www.stolpersteine-konstanz.de/{current_data['URL']}.html</a></h4>" + so.construct_survey(questions, current_data))
+                    elif admin_mode:
+                        html.append(
+                            f"<h4 class='font-weight-bold'>User ID: {current_data['user']}</h4>" + so.construct_survey(
+                                questions, current_data))
 
         return self._render_template('survey.html', params={'title': "Datenerfassung", "post_route": f"{self.realm}/POST",
                                                             "html": html, "admin_mode": admin_mode})
