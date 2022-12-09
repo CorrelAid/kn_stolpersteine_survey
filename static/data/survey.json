@@ -249,16 +249,6 @@
         "parsley_validator": "data-parsley-capslock"
       },
       {
-        "type": "text",
-        "name": "Durchgangsstadt",
-        "parsley_validator": "data-parsley-capslock"
-      },
-      {
-        "type": "text",
-        "name": "Durchgangsland",
-        "parsley_validator": "data-parsley-capslock"
-      },
-      {
         "type": "date",
         "vermutet": true,
         "label": "Anfangsdatum",
