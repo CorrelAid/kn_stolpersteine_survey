@@ -215,11 +215,11 @@ class AppServer:
         assert(len(existing_records) == 1)
 
         record = existing_records[0]
-        record["data"].append({**{key: kwargs[key] for key in kwargs.keys()
-                              if key not in self.identifying_info}, "user": cherrypy.request.login})
+        updated_data = [individual_record for individual_record in record["data"] if individual_record["user"] != cherrypy.request.login] + [{**{key: kwargs[key] for key in kwargs.keys()
+                              if key not in self.identifying_info}, "user": cherrypy.request.login}]
 
         self.db.update_one(
-            {"_id": _id}, {"$set": {**query, "fertig": admin_mode, "data": record["data"]}})
+            {"_id": _id}, {"$set": {**query, "fertig": admin_mode, "data": updated_data}})
 
 
         # maybe better to have a landing page for this or new profile shown
