@@ -14,13 +14,23 @@ $(document).ready(function () {
     function bindAdd(selector) {
         selector.on('click', function (e) {
             e.preventDefault();
-            if (($(this).parent().children('.form-group-member').length == 1) && $(this).parent().children('.form-group-member').first().is(":hidden")) {
-                $(this).parent().children('.form-group-member').first().show()
-                $(this).parent().children('.form-group-member').first().attr('hidden', false);
+            var parent_class = this
+
+            if (($(parent_class).parent().children('.form-group-member').length == 1) && $(parent_class).parent().children('.form-group-member').first().is(":hidden")) {
+                $(parent_class).parent().children('.form-group-member').first().show()
+                $(parent_class).parent().children('.form-group-member').first().attr('hidden', false);
             } else {
-                $(this).parent().children('.form-group-member').last().clone().insertAfter($(this).parent().children('.form-group-member').last());
-                bindDelete($(this).parent().children('.form-group-member').last().find(".delete_FormElement"));
-                bindAdd($(this).parent().children('.form-group-member').last().find(".add_FormElement"));
+                $(parent_class).parent().children('.form-group-member').last().clone().insertAfter($(parent_class).parent().children('.form-group-member').last());
+
+                // clear dropdowns
+                $(parent_class).parent().children('.form-group-member').last().find('select').each(function() { this.selectedIndex = 0 });
+                // clear text
+                $(parent_class).parent().children('.form-group-member').last().find('input[type=text]').each(function() { $(this).val(""); });
+                // clear checkbox
+                $(parent_class).parent().children('.form-group-member').last().find('input[type=checkbox]').each(function() { $(this).removeAttr('checked'); });
+
+                bindDelete($(parent_class).parent().children('.form-group-member').last().find(".delete_FormElement"));
+                bindAdd($(parent_class).parent().children('.form-group-member').last().find(".add_FormElement"));
             }
         });
     }
