@@ -266,12 +266,12 @@ class AppServer:
             raise ValueError("Username already is taken!")
         
     
-    @cherrypy.expose
-    def delete_entries(self):
-        # TODO This is only here for testing, this must be removed just in case!!
-        length_all_data = len(list(self.db.find({})))
-        self.db.delete_many({})
-        return self.success_delete(length_all_data)
+    # @cherrypy.expose
+    # def delete_entries(self):
+    #     # TODO This is only here for testing, this must be removed just in case!!
+    #     length_all_data = len(list(self.db.find({})))
+    #     self.db.delete_many({})
+    #     return self.success_delete(length_all_data)
     
     ### custom error messages ###########################
     #####################################################
