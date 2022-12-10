@@ -178,7 +178,7 @@ class SurveyObject:
                 "No parsley validator is supported for checkbox type!")
 
         return f"<input type='hidden' name={name}{self.name_append} value={'1' if data=='1' else '0'}>" \
-               f"<input type='checkbox' onclick='this.previousSibling.value=1-this.previousSibling.value'>\n" \
+               f"<input type='checkbox' {'checked' if data=='1' else ''} onclick='this.previousSibling.value=1-this.previousSibling.value'>\n" \
                f"<label for={name}{self.name_append}>{label if label else name}</label>\n"
 
     def construct_form_check(self, type, name, label, options, labels, data=None):
