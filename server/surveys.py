@@ -32,8 +32,7 @@ class SurveyObject:
                 survey += self.construct_text_question(
                     **question, data=data[question["name"]] if question["name"] in data else None)
             elif question["type"] == "checkbox":
-                survey += self.construct_checkbox(**question, data="true" if (
-                    question["name"] in data) and (data[question["name"]] == "true") else None)
+                survey += self.construct_checkbox(**question, data=data[question["name"]] if question["name"] in data else None)
             elif question["type"] == "nested-questions":
                 survey += self.construct_nested_questions(
                     **question, data=data)
