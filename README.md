@@ -1,8 +1,4 @@
-Current VIP: stolper.jstet.net
 
-General information about the project to which this repository belongs can be found [here](https://pad.correlaid.org/zHZbVjb4TS6Vntt4XpnrBA?both).
-
-For issues associated with the whole project take a look at [this](https://github.com/orgs/CorrelAid/projects/10)
 
 # How do I run this locally?
 
